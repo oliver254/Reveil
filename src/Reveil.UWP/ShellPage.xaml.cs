@@ -13,18 +13,30 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Reveil.UWP
 {
     /// <summary>
     /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class ShellPage : Page
     {
-        public MainPage()
+
+        #region Champs
+        #endregion
+
+        #region Constructeurs
+        public ShellPage()
         {
             this.InitializeComponent();
         }
+        #endregion
+
+        #region Propriétés
+        #endregion
+
+        #region Méthodes
+        #endregion
     }
 }

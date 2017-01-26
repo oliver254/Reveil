@@ -22,6 +22,11 @@ namespace Reveil.UWP
     /// </summary>
     sealed partial class App : Application
     {
+
+        #region Champs
+        #endregion
+
+        #region Constructeurs
         /// <summary>
         /// Initialise l'objet d'application de singleton.  Il s'agit de la première ligne du code créé
         /// à être exécutée. Elle correspond donc à l'équivalent logique de main() ou WinMain().
@@ -31,6 +36,13 @@ namespace Reveil.UWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
+        #endregion
+
+        #region Propriétés
+        #endregion
+
+        #region Méthodes
+        #endregion
 
         /// <summary>
         /// Invoqué lorsque l'application est lancée normalement par l'utilisateur final.  D'autres points d'entrée
@@ -66,7 +78,7 @@ namespace Reveil.UWP
                     // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
                 }
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
