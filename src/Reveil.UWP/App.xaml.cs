@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MvvmCross.Core.ViewModels;
+using MvvmCross.Platform;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,6 +73,7 @@ namespace Reveil.UWP
                 Window.Current.Content = rootFrame;
             }
 
+
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -78,7 +81,13 @@ namespace Reveil.UWP
                     // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
-                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
+                    var setup = new Setup(rootFrame);
+                    setup.Initialize();
+
+                    var start = Mvx.Resolve<IMvxAppStart>();
+                    start.Start();
+                        
+                    //rootFrame.Navigate(typeof(ShellPage), e.Arguments);
                 }
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
