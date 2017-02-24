@@ -4,12 +4,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Reveil.UWP.Controls"
     xmlns:views="using:MvvmCross.WindowsUWP.Views"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Border Background="LightBlue">
-            
-        </Border>
+    <Grid x:Name="RootElement" 
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <SplitView x:Name="Splitter" 
+                   DisplayMode="Overlay"
+                   IsPaneOpen="False"
+                   PanePlacement="Right">
+            <SplitView.Content>
+                <Grid>
+                    <controls:CircularProgressBar
+                        Percentage="50"
+                        Radius="500">
+                        <controls:CircularProgressBar.SegmentColor>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="Blue"/>
+                            </LinearGradientBrush>
+                        </controls:CircularProgressBar.SegmentColor>
+                    </controls:CircularProgressBar>
+                </Grid>
+            </SplitView.Content>
+            <SplitView.Pane>
+                <Grid Background="Red">
+                </Grid>
+            </SplitView.Pane>
+        </SplitView>
+
+        <Button Name="HamburgerButton" 
+                Background="Transparent" 
+                BorderThickness="0" 
+                Click="HamburgerButton_Click" 
+                Height="40" 
+                HorizontalAlignment="Right" 
+                Margin="0,0" 
+                Padding="0" 
+                VerticalAlignment="Top" 
+                Width="60">
+            <FontIcon FontFamily="Segoe MDL2 Assets" 
+                      Glyph="&#xE700;" 
+                      HorizontalAlignment="Right" 
+                      Margin="0,0,10,0">
+            </FontIcon>
+        </Button>
     </Grid>
 </views:MvxWindowsPage>

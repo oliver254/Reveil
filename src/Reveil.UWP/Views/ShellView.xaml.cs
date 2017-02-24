@@ -23,9 +23,36 @@ namespace Reveil.UWP.Views
     /// </summary>
     public sealed partial class ShellView : MvxWindowsPage
     {
+        #region Champs
+        public static readonly DependencyProperty RadiusProperty =
+            DependencyProperty.Register(
+                "Radius",
+                typeof(int),
+                typeof(ShellView),
+                new PropertyMetadata(100, new PropertyChangedCallback(OnPropertyChanged)));
+        #endregion
+
+        #region Constructeurs
         public ShellView()
         {
             this.InitializeComponent();
         }
+        #endregion
+
+        #region Propriétés
+        #endregion
+
+        #region Méthodes
+        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ShellView shellView = sender as ShellView;
+            
+        }
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            Splitter.IsPaneOpen = !Splitter.IsPaneOpen;
+        }
+        #endregion
+
     }
 }
