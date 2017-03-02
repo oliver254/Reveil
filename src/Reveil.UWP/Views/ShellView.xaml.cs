@@ -39,8 +39,6 @@ namespace Reveil.UWP.Views
         }
         #endregion
 
-        #region Propriétés
-        #endregion
 
         #region Méthodes
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)

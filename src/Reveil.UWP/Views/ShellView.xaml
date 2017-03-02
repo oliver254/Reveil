@@ -16,15 +16,8 @@
                    PanePlacement="Right">
             <SplitView.Content>
                 <Grid>
-                    <controls:CircularProgressBar
-                        Percentage="50"
-                        Radius="500">
-                        <controls:CircularProgressBar.SegmentColor>
-                            <LinearGradientBrush EndPoint="1,0">
-                                <GradientStop Color="Blue"/>
-                            </LinearGradientBrush>
-                        </controls:CircularProgressBar.SegmentColor>
-                    </controls:CircularProgressBar>
+                    <controls:CircularClock  StrokeThickness="10">
+                    </controls:CircularClock>
                 </Grid>
             </SplitView.Content>
             <SplitView.Pane>

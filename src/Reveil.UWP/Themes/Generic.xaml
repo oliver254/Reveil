@@ -1,0 +1,32 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Reveil.UWP.Controls"
+    xmlns:local="using:Reveil.UWP">
+    <Style TargetType="controls:CircularClock">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:CircularClock">
+                    <Viewbox>
+                        <Grid x:Name="PART_Container"
+                              Background="Transparent">
+
+                            <!--  Scale  -->
+                            <Path x:Name="PART_Scale" 
+                                  Stroke="{TemplateBinding ScaleBrush}"
+                                  StrokeThickness="{TemplateBinding StrokeThickness}"
+                                  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                            <!--  Trail  -->
+                            <Path x:Name="PART_Trail" 
+                                Stroke="{TemplateBinding ScaleBrush}"
+                                StrokeThickness="{TemplateBinding StrokeThickness}"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+                        </Grid>
+                        </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
