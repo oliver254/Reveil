@@ -16,8 +16,14 @@
                    PanePlacement="Right">
             <SplitView.Content>
                 <Grid>
-                    <controls:CircularClock  StrokeThickness="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <controls:CircularClock x:Name="chronoClock"  StrokeThickness="10">
                     </controls:CircularClock>
+                    <Button x:Name="startButton" Click="{x:Bind chronoClock.Start}" Content="Start" Grid.Row="1"/>
+                    <Button x:Name="stopButton" Click="{x:Bind chronoClock.Stop}" Content="Stop"  Grid.Row="1"/>
                 </Grid>
             </SplitView.Content>
             <SplitView.Pane>
