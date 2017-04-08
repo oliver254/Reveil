@@ -22,17 +22,20 @@
                     </Grid.RowDefinitions>
                     <controls:CircularClock x:Name="chronoClock"  StrokeThickness="10">
                     </controls:CircularClock>
-                    <Button x:Name="startButton" Click="{x:Bind chronoClock.Start}" Content="Start" Grid.Row="1"/>
-                    <Button x:Name="stopButton" Click="{x:Bind chronoClock.Stop}" Content="Stop"  Grid.Row="1"/>
+                    <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
+                        <Button x:Name="startButton" Click="{x:Bind chronoClock.Start}" Content="Start" Margin="4,0" Width="100"/>
+                        <Button x:Name="stopButton" Click="{x:Bind chronoClock.Stop}" Content="Stop" Width="100"/>
+                    </StackPanel>
                 </Grid>
             </SplitView.Content>
             <SplitView.Pane>
-                <Grid Background="Red">
+                <Grid Background="LightGray">
+                    <Button/>
                 </Grid>
             </SplitView.Pane>
         </SplitView>
 
-        <Button Name="HamburgerButton" 
+        <ToggleButton Name="HamburgerButton" 
                 Background="Transparent" 
                 BorderThickness="0" 
                 Click="HamburgerButton_Click" 
@@ -47,6 +50,6 @@
                       HorizontalAlignment="Right" 
                       Margin="0,0,10,0">
             </FontIcon>
-        </Button>
+        </ToggleButton>
     </Grid>
 </views:MvxWindowsPage>

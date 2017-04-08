@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -43,8 +44,9 @@ namespace Reveil.UWP.Controls
         private const string ScalePartName = "PART_Scale";
         private const string TrailPartName = "PART_Trail";
 
+        private readonly DispatcherTimer _timer;
+
         private DateTime? _end;
-        private DispatcherTimer _timer;
         #endregion
 
         #region Constructeurs
@@ -121,7 +123,6 @@ namespace Reveil.UWP.Controls
         /// </summary>
         public void Start()
         {
-            _timer.Stop();
             if(Duration != null)
             {
                 _end = DateTime.Now + Duration;
@@ -134,7 +135,7 @@ namespace Reveil.UWP.Controls
         /// Arrête la montre
         /// </summary>
         public void Stop()
-        {            
+        {
             _timer.Stop();
             _end = null;
         }
@@ -230,9 +231,10 @@ namespace Reveil.UWP.Controls
 
         private void UpdateTime()
         {
-            int seconds = 0;
-            int minutes = 0;
-            if(_end != null)
+            int seconds;
+            int minutes;
+
+            if (_end != null)
             {
                 var ts =  (_end.Value - DateTime.Now);
                 seconds = ts.Seconds;

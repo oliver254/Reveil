@@ -39,11 +39,10 @@ namespace Reveil.UWP.Views
         }
         #endregion
 
-
         #region Méthodes
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            ShellView shellView = sender as ShellView;
+
             
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
