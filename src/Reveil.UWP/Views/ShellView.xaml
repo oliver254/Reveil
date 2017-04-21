@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Reveil.UWP.Controls"
+    xmlns:models="using:Reveil.Core.Models"
     xmlns:views="using:MvvmCross.WindowsUWP.Views"
     mc:Ignorable="d">
 
@@ -12,7 +13,7 @@
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView x:Name="Splitter" 
                    DisplayMode="Overlay"
-                   IsPaneOpen="False"
+                   IsPaneOpen="True"
                    PanePlacement="Right">
             <SplitView.Content>
                 <Grid>
@@ -29,15 +30,27 @@
                 </Grid>
             </SplitView.Content>
             <SplitView.Pane>
-                <Grid Background="LightGray">
-                    <Button/>
-                </Grid>
+                <ListBox ItemsSource="{x:Bind ShellViewModel.Items}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:MenuItem">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="24"
+                                    Text="{x:Bind Icon}">
+                                </TextBlock>
+                                <TextBlock Margin="20,5,0,0"
+                                    FontSize="14"
+                                    Text="{x:Bind Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </SplitView.Pane>
         </SplitView>
 
-        <ToggleButton Name="HamburgerButton" 
+        <ToggleButton x:Name="HamburgerButton" 
                 Background="Transparent" 
-                BorderThickness="0" 
+                BorderThickness="0"
                 Click="HamburgerButton_Click" 
                 Height="40" 
                 HorizontalAlignment="Right" 
@@ -46,9 +59,9 @@
                 VerticalAlignment="Top" 
                 Width="60">
             <FontIcon FontFamily="Segoe MDL2 Assets" 
-                      Glyph="&#xE700;" 
-                      HorizontalAlignment="Right" 
-                      Margin="0,0,10,0">
+                Glyph="&#xE700;" 
+                HorizontalAlignment="Right" 
+                Margin="0,0,10,0">
             </FontIcon>
         </ToggleButton>
     </Grid>

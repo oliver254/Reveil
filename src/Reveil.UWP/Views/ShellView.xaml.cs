@@ -1,4 +1,6 @@
 ﻿using MvvmCross.WindowsUWP.Views;
+using Reveil.Core.ViewModels;
+using Reveil.UWP.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
@@ -39,14 +42,36 @@ namespace Reveil.UWP.Views
         }
         #endregion
 
+        #region Propriétés
+        public Frame AppFrame
+        {
+            get
+            {
+                return Frame;
+            }
+        }
+
+        /// <summary>
+        /// Obtient le view model
+        /// </summary>
+        public ShellViewModel ShellViewModel
+        {
+            get
+            {
+                return ViewModel as ShellViewModel;
+            }
+        }
+        #endregion
+
         #region Méthodes
+
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
 
             
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
+        {          
             Splitter.IsPaneOpen = !Splitter.IsPaneOpen;
         }
         #endregion

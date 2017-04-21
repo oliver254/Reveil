@@ -54,7 +54,7 @@ namespace Reveil.UWP.Controls
         {
             DefaultStyleKey = typeof(CircularClock);
             _timer = new DispatcherTimer();
-            _timer.Tick += Timer_Tick;
+            _timer.Tick += Timer_Tick;            
         }
 
 
