@@ -14,23 +14,36 @@
         <SplitView x:Name="Splitter" 
                    DisplayMode="Overlay"
                    IsPaneOpen="True"
-                   PanePlacement="Right">
+                   PanePlacement="Right"
+                   OpenPaneLength="200">
             <SplitView.Content>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <controls:CircularClock x:Name="chronoClock"  StrokeThickness="10">
+                    <controls:CircularClock x:Name="chronoClock"  
+                                            Duration="{x:Bind ShellViewModel.Duration,Mode=TwoWay}"
+                                            StrokeThickness="10">
                     </controls:CircularClock>
-                    <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
-                        <Button x:Name="startButton" Click="{x:Bind chronoClock.Start}" Content="Start" Margin="4,0" Width="100"/>
-                        <Button x:Name="stopButton" Click="{x:Bind chronoClock.Stop}" Content="Stop" Width="100"/>
+                    <StackPanel HorizontalAlignment="Center" 
+                                Grid.Row="1" 
+                                Orientation="Horizontal">
+                        <Button x:Name="startButton" 
+                                Click="{x:Bind chronoClock.Start}" 
+                                Content="Start" 
+                                Margin="4,0" 
+                                Width="100"/>
+                        <Button x:Name="stopButton" 
+                                Click="{x:Bind chronoClock.Stop}" 
+                                Content="Stop" Width="100"/>
                     </StackPanel>
                 </Grid>
             </SplitView.Content>
             <SplitView.Pane>
-                <ListBox ItemsSource="{x:Bind ShellViewModel.Items}">
+                <ListBox x:Name="MenuList" 
+                         ItemsSource="{x:Bind ShellViewModel.Items}" 
+                         SelectedItem="{Binding SelectedMenuItem,Mode=TwoWay}" SelectionChanged="MenuList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="models:MenuItem">
                             <StackPanel Orientation="Horizontal">
@@ -48,7 +61,7 @@
             </SplitView.Pane>
         </SplitView>
 
-        <ToggleButton x:Name="HamburgerButton" 
+        <Button x:Name="HamburgerButton" 
                 Background="Transparent" 
                 BorderThickness="0"
                 Click="HamburgerButton_Click" 
@@ -63,6 +76,6 @@
                 HorizontalAlignment="Right" 
                 Margin="0,0,10,0">
             </FontIcon>
-        </ToggleButton>
+        </Button>
     </Grid>
 </views:MvxWindowsPage>

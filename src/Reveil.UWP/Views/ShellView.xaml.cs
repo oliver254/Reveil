@@ -1,6 +1,7 @@
 ﻿using MvvmCross.WindowsUWP.Views;
 using Reveil.Core.ViewModels;
 using Reveil.UWP.Controls;
+using Reveil.UWP.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +40,7 @@ namespace Reveil.UWP.Views
         public ShellView()
         {
             this.InitializeComponent();
+
         }
         #endregion
 
@@ -50,6 +52,7 @@ namespace Reveil.UWP.Views
                 return Frame;
             }
         }
+        
 
         /// <summary>
         /// Obtient le view model
@@ -64,6 +67,11 @@ namespace Reveil.UWP.Views
         #endregion
 
         #region Méthodes
+        private void MenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Splitter.IsPaneOpen = false;
+
+        }
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
@@ -74,6 +82,7 @@ namespace Reveil.UWP.Views
         {          
             Splitter.IsPaneOpen = !Splitter.IsPaneOpen;
         }
+
         #endregion
 
     }

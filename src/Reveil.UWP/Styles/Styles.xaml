@@ -18,7 +18,11 @@
                                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                             <!--  Trail  -->
-                            <Path x:Name="PART_Trail" 
+                            <Path x:Name="PART_SecondTrail" 
+                                Stroke="{TemplateBinding ScaleBrush}"
+                                StrokeThickness="{TemplateBinding StrokeThickness}"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                            <Path x:Name="PART_MinuteTrail" 
                                 Stroke="{TemplateBinding ScaleBrush}"
                                 StrokeThickness="{TemplateBinding StrokeThickness}"
                                 HorizontalAlignment="Left" VerticalAlignment="Top" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>

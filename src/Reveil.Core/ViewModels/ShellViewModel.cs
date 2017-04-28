@@ -3,6 +3,7 @@ using Reveil.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Reveil.Core.ViewModels
     {
         #region Champs
         private MenuItem _selection;
+        private TimeSpan? _duration;
         #endregion
 
         #region Constructeurs
@@ -40,10 +42,28 @@ namespace Reveil.Core.ViewModels
                 }
 
             };
+            PropertyChanged += ViewModel_PropertyChanged;
+
         }
         #endregion
 
         #region Propriétés
+        /// <summary>
+        /// Obtient ou définit la durée
+        /// </summary>
+        public TimeSpan? Duration
+        {
+            get
+            {
+                return _duration;
+            }
+            set
+            {
+                _duration = value;
+                RaisePropertyChanged(nameof(Duration));
+            }
+        }
+
         /// <summary>
         /// Obtient les items du menu.
         /// </summary>
@@ -53,6 +73,9 @@ namespace Reveil.Core.ViewModels
             private set;
         }
 
+        /// <summary>
+        /// Obtient ou définit le item du menu sélectionné
+        /// </summary>
 
         public MenuItem SelectedMenuItem
         {
@@ -64,11 +87,35 @@ namespace Reveil.Core.ViewModels
             {
                 _selection = value;
                 RaisePropertyChanged(nameof(SelectedMenuItem));
+
             }
         }
         #endregion
 
         #region Méthodes
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName != nameof(SelectedMenuItem) || 
+                SelectedMenuItem == null)
+            {
+                return;
+            }
+
+            switch (SelectedMenuItem.State)
+            {
+                case State.Sprint:
+                    {
+                        Duration = TimeSpan.FromMinutes(25);
+                        break;
+                    }
+                default:
+                    {
+                        Duration = null;
+                        break;
+                    }
+
+            }
+        }
         #endregion
 
     }

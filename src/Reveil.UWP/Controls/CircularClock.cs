@@ -13,36 +13,39 @@ namespace Reveil.UWP.Controls
 {
     [TemplatePart(Name = ContainerPartName, Type = typeof(Grid))]
     [TemplatePart(Name = ScalePartName, Type = typeof(Path))]
-    [TemplatePart(Name = TrailPartName, Type = typeof(Path))]
+    [TemplatePart(Name = MinuteTrailPartName, Type = typeof(Path))]
+    [TemplatePart(Name = SecondTrailPartName, Type = typeof(Path))]
     public sealed class CircularClock : Control
     {
         #region Champs
+        private const string ContainerPartName = "PART_Container";
+        private const string ScalePartName = "PART_Scale";
+        private const string MinuteTrailPartName = "PART_MinuteTrail";
+        private const string SecondTrailPartName = "PART_SecondTrail";
+
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register(nameof(Duration), typeof(TimeSpan?), typeof(CircularClock), new PropertyMetadata(null));
 
         public static readonly DependencyProperty MinuteAngleProperty =
-            DependencyProperty.Register(nameof(MinuteAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, OnMinuteAngleChanged));
+            DependencyProperty.Register(nameof(MinuteAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, Clock_MinuteAngleChanged));
+
+        public static readonly DependencyProperty MinuteTrailBrushProperty =
+            DependencyProperty.Register(nameof(MinuteTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.DarkBlue)));
 
         public static readonly DependencyProperty RadiusProperty = 
-            DependencyProperty.Register(nameof(Radius), typeof(int), typeof(CircularClock), new PropertyMetadata(25));
+            DependencyProperty.Register(nameof(Radius), typeof(int), typeof(CircularClock), new PropertyMetadata(50));
 
         public static readonly DependencyProperty ScaleBrushProperty =
             DependencyProperty.Register(nameof(ScaleBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         public static readonly DependencyProperty SecondAngleProperty =
-            DependencyProperty.Register(nameof(SecondAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, OnSecondAngleChanged));
+            DependencyProperty.Register(nameof(SecondAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, Clock_SecondAngleChanged));
 
+        public static readonly DependencyProperty SecondTrailBrushProperty =
+            DependencyProperty.Register(nameof(MinuteTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.Blue)));
 
         public static readonly DependencyProperty StrokeThicknessProperty = 
-            DependencyProperty.Register("StrokeThickness", typeof(int), typeof(CircularClock), new PropertyMetadata(5));
-
-
-        public static readonly DependencyProperty TrailBrushProperty =
-            DependencyProperty.Register(nameof(TrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.DarkBlue)));
-
-        private const string ContainerPartName = "PART_Container";
-        private const string ScalePartName = "PART_Scale";
-        private const string TrailPartName = "PART_Trail";
+            DependencyProperty.Register("StrokeThickness", typeof(int), typeof(CircularClock), new PropertyMetadata(10));
 
         private readonly DispatcherTimer _timer;
 
@@ -56,8 +59,6 @@ namespace Reveil.UWP.Controls
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;            
         }
-
-
         #endregion
 
         #region Propriétés
@@ -79,8 +80,14 @@ namespace Reveil.UWP.Controls
             set { SetValue(MinuteAngleProperty, value); }
         }
 
+        public Brush MinuteTrailBrush
+        {
+            get { return (Brush)GetValue(MinuteTrailBrushProperty); }
+            set { SetValue(MinuteTrailBrushProperty, value); }
+        }
+
         /// <summary>
-        /// Obtient ou définit le rayon
+        /// Obtient ou définit le rayon.
         /// </summary>
         public int Radius
         {
@@ -88,7 +95,9 @@ namespace Reveil.UWP.Controls
             set { SetValue(RadiusProperty, value); }
         }
 
-
+        /// <summary>
+        /// Obtient ou définit le pinceau de couleur pour le fond.
+        /// </summary>
         public Brush ScaleBrush
         {
             get { return (Brush)GetValue(ScaleBrushProperty); }
@@ -104,16 +113,22 @@ namespace Reveil.UWP.Controls
             set { SetValue(SecondAngleProperty, value); }
         }
 
+        /// <summary>
+        /// Obtient ou définit le pinceau de la couleur pour les secondes.
+        /// </summary>
+        public Brush SecondTrailBrush
+        {
+            get { return (Brush)GetValue(SecondTrailBrushProperty); }
+            set { SetValue(SecondTrailBrushProperty, value); }
+        }
+
+        /// <summary>
+        /// Obtient ou définit la largeur de l'horloge
+        /// </summary>
         public int StrokeThickness
         {
             get { return (int)GetValue(StrokeThicknessProperty); }
             set { SetValue(StrokeThicknessProperty, value); }
-        }
-
-        public Brush TrailBrush
-        {
-            get { return (Brush)GetValue(TrailBrushProperty); }
-            set { SetValue(TrailBrushProperty, value); }
         }
         #endregion
 
@@ -146,10 +161,46 @@ namespace Reveil.UWP.Controls
             {
                 scalePath.Stroke = ScaleBrush;
                 scalePath.StrokeThickness = StrokeThickness;
-                RenderArc(360, scalePath);
+                RenderArc(360, Radius, scalePath);
             }
             base.OnApplyTemplate();
 
+        }
+
+        private static void Clock_DurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            CircularClock clock = (CircularClock)sender;
+            clock.UpdateTime();
+        }
+
+        private static void Clock_MinuteAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            CircularClock clock = (CircularClock)sender;
+
+            // trainée des minutes
+            if(clock.GetTemplateChild(MinuteTrailPartName) is Path trailPath)
+            {
+                trailPath.Stroke = clock.MinuteTrailBrush;
+                trailPath.StrokeThickness = clock.StrokeThickness / 2;
+
+                int radius = (int)(clock.Radius + trailPath.StrokeThickness);
+
+                clock.RenderArc(clock.MinuteAngle, radius, trailPath);
+            }
+        }
+
+        private static void Clock_SecondAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            CircularClock clock = (CircularClock)sender;
+
+            // trainée des secondes
+            if (clock.GetTemplateChild(SecondTrailPartName) is Path trailPath)
+            {
+                trailPath.Stroke = clock.MinuteTrailBrush;
+                trailPath.StrokeThickness = clock.StrokeThickness / 2;               
+
+                clock.RenderArc(clock.SecondAngle, clock.Radius, trailPath);
+            }
         }
 
         private static Point ComputeCartesianCoordinate(double angle, double radius)
@@ -168,46 +219,28 @@ namespace Reveil.UWP.Controls
             return (dtime * 6);
         }
 
-
-        private static void OnMinuteAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private void RenderArc(double angle, int radius, Path pathRoot)
         {
-            // [TODO]
-        }
+            double strokeThickness = pathRoot.StrokeThickness;
 
-        private static void OnSecondAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            CircularClock circle = (CircularClock)sender;
-
-            // trainée des secondes
-            if (circle.GetTemplateChild(TrailPartName) is Path trailPath)
-            {
-                trailPath.Stroke = circle.TrailBrush;
-                trailPath.StrokeThickness = circle.StrokeThickness;
-                circle.RenderArc(circle.SecondAngle, trailPath);
-            }
-        }
-
-
-        private void RenderArc(double angle, Path pathRoot)
-        {
             var pg = new PathGeometry();
             var pathFigure = new PathFigure();
             var arcSegment = new ArcSegment();
             pathFigure.Segments.Add(arcSegment);
             pg.Figures.Add(pathFigure);
 
-            Point startPoint = new Point(Radius, 0);
-            Point endPoint = ComputeCartesianCoordinate(angle, Radius);
-            endPoint.X += Radius;
-            endPoint.Y += Radius;
+            Point startPoint = new Point(radius, 0);
+            Point endPoint = ComputeCartesianCoordinate(angle, radius);
+            endPoint.X += radius;
+            endPoint.Y += radius;
 
-            pathRoot.Width = Radius * 2 + StrokeThickness;
-            pathRoot.Height = Radius * 2 + StrokeThickness;
-            pathRoot.Margin = new Thickness(StrokeThickness, StrokeThickness, 0, 0);
+            pathRoot.Width = radius * 2 + StrokeThickness;
+            pathRoot.Height = radius * 2 + StrokeThickness;
+            //pathRoot.Margin = new Thickness(strokeThickness, strokeThickness, 0, 0);
 
             bool largeArc = angle > 180.0;
 
-            Size outerArcSize = new Size(Radius, Radius);
+            Size outerArcSize = new Size(radius, radius);
 
             pathFigure.StartPoint = startPoint;
 
