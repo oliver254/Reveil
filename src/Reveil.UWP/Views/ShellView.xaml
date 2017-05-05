@@ -24,7 +24,7 @@
                     </Grid.RowDefinitions>
                     <controls:CircularClock x:Name="chronoClock"  
                                             Duration="{x:Bind ShellViewModel.Duration,Mode=TwoWay}"
-                                            StrokeThickness="10">
+                                            StrokeThickness="1">
                     </controls:CircularClock>
                     <StackPanel HorizontalAlignment="Center" 
                                 Grid.Row="1" 

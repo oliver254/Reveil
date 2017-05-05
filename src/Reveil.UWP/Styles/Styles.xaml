@@ -15,17 +15,16 @@
                             <Path x:Name="PART_Scale" 
                                   Stroke="{TemplateBinding ScaleBrush}"
                                   StrokeThickness="{TemplateBinding StrokeThickness}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                             <!--  Trail  -->
                             <Path x:Name="PART_SecondTrail" 
-                                Stroke="{TemplateBinding ScaleBrush}"
+                                Stroke="{TemplateBinding SecondTrailBrush}"
                                 StrokeThickness="{TemplateBinding StrokeThickness}"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                HorizontalAlignment="Center" VerticalAlignment="Center" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                             <Path x:Name="PART_MinuteTrail" 
-                                Stroke="{TemplateBinding ScaleBrush}"
-                                StrokeThickness="{TemplateBinding StrokeThickness}"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                Stroke="{TemplateBinding MinuteTrailBrush}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
 
                         </Grid>
                     </Viewbox>

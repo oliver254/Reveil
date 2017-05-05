@@ -1,5 +1,4 @@
 ﻿using System;
-using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -42,10 +41,10 @@ namespace Reveil.UWP.Controls
             DependencyProperty.Register(nameof(SecondAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, Clock_SecondAngleChanged));
 
         public static readonly DependencyProperty SecondTrailBrushProperty =
-            DependencyProperty.Register(nameof(MinuteTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.Blue)));
+            DependencyProperty.Register(nameof(SecondTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.Blue)));
 
         public static readonly DependencyProperty StrokeThicknessProperty = 
-            DependencyProperty.Register("StrokeThickness", typeof(int), typeof(CircularClock), new PropertyMetadata(10));
+            DependencyProperty.Register(nameof(StrokeThickness), typeof(int), typeof(CircularClock), new PropertyMetadata(4));
 
         private readonly DispatcherTimer _timer;
 
@@ -80,6 +79,9 @@ namespace Reveil.UWP.Controls
             set { SetValue(MinuteAngleProperty, value); }
         }
 
+        /// <summary>
+        /// Obtient ou définit le pinceau de couleur pour la trainée des minutes.
+        /// </summary>
         public Brush MinuteTrailBrush
         {
             get { return (Brush)GetValue(MinuteTrailBrushProperty); }
@@ -114,7 +116,7 @@ namespace Reveil.UWP.Controls
         }
 
         /// <summary>
-        /// Obtient ou définit le pinceau de la couleur pour les secondes.
+        /// Obtient ou définit le pinceau de la couleur pour la trainée des secondes.
         /// </summary>
         public Brush SecondTrailBrush
         {
@@ -158,10 +160,10 @@ namespace Reveil.UWP.Controls
         protected override void OnApplyTemplate()
         {
             if (GetTemplateChild(ScalePartName) is Path scalePath)
-            {
+            {              
                 scalePath.Stroke = ScaleBrush;
                 scalePath.StrokeThickness = StrokeThickness;
-                RenderArc(360, Radius, scalePath);
+                RenderArc(360, scalePath);
             }
             base.OnApplyTemplate();
 
@@ -183,9 +185,11 @@ namespace Reveil.UWP.Controls
                 trailPath.Stroke = clock.MinuteTrailBrush;
                 trailPath.StrokeThickness = clock.StrokeThickness / 2;
 
-                int radius = (int)(clock.Radius + trailPath.StrokeThickness);
+                int size = (int)(trailPath.StrokeThickness / 2);
 
-                clock.RenderArc(clock.MinuteAngle, radius, trailPath);
+                int radius = (int)(clock.Radius - size);
+
+                clock.RenderArcForTrail(clock.MinuteAngle, radius, trailPath);
             }
         }
 
@@ -196,10 +200,14 @@ namespace Reveil.UWP.Controls
             // trainée des secondes
             if (clock.GetTemplateChild(SecondTrailPartName) is Path trailPath)
             {
-                trailPath.Stroke = clock.MinuteTrailBrush;
-                trailPath.StrokeThickness = clock.StrokeThickness / 2;               
+                trailPath.Stroke = clock.SecondTrailBrush;
+                trailPath.StrokeThickness = clock.StrokeThickness / 2;
 
-                clock.RenderArc(clock.SecondAngle, clock.Radius, trailPath);
+                int size = (int)(trailPath.StrokeThickness / 2);
+
+                int radius = clock.Radius + size;
+
+                clock.RenderArcForTrail(clock.SecondAngle, radius, trailPath);    
             }
         }
 
@@ -219,7 +227,45 @@ namespace Reveil.UWP.Controls
             return (dtime * 6);
         }
 
-        private void RenderArc(double angle, int radius, Path pathRoot)
+        private void RenderArc(double angle, Path pathRoot)
+        {
+            var pg = new PathGeometry();
+            var pathFigure = new PathFigure();
+            var arcSegment = new ArcSegment();
+            pathFigure.Segments.Add(arcSegment);
+            pg.Figures.Add(pathFigure);
+
+            Point startPoint = new Point(Radius, 0);
+            Point endPoint = ComputeCartesianCoordinate(angle, Radius);
+            endPoint.X += Radius;
+            endPoint.Y += Radius;
+
+            double width = Radius * 2 + StrokeThickness;
+
+            pathRoot.Width = width;
+            pathRoot.Height = width;
+            pathRoot.Margin = new Thickness(StrokeThickness, StrokeThickness, 0, 0);
+
+            bool largeArc = angle > 180.0;
+
+            Size outerArcSize = new Size(Radius, Radius);
+
+            pathFigure.StartPoint = startPoint;
+
+            if (startPoint.X == Math.Round(endPoint.X) && startPoint.Y == Math.Round(endPoint.Y))
+            {
+                endPoint.X -= 0.01;
+            }
+
+            arcSegment.SweepDirection = SweepDirection.Clockwise;
+            arcSegment.Point = endPoint;
+            arcSegment.Size = outerArcSize;
+            arcSegment.IsLargeArc = largeArc;
+
+            pathRoot.Data = pg;
+        }
+
+        private void RenderArcForTrail(double angle, int radius, Path pathRoot)
         {
             double strokeThickness = pathRoot.StrokeThickness;
 
@@ -234,9 +280,11 @@ namespace Reveil.UWP.Controls
             endPoint.X += radius;
             endPoint.Y += radius;
 
-            pathRoot.Width = radius * 2 + StrokeThickness;
-            pathRoot.Height = radius * 2 + StrokeThickness;
-            //pathRoot.Margin = new Thickness(strokeThickness, strokeThickness, 0, 0);
+            double width = radius * 2 + StrokeThickness;  
+
+            pathRoot.Width = width;
+            pathRoot.Height = width;
+            pathRoot.Margin = new Thickness(StrokeThickness, StrokeThickness, 0, 0);
 
             bool largeArc = angle > 180.0;
 
