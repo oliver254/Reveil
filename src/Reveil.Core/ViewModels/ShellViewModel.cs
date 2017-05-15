@@ -1,5 +1,7 @@
 ﻿using MvvmCross.Core.ViewModels;
+using Reveil.Core.Infrastructure;
 using Reveil.Core.Models;
+using Reveil.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,13 +15,18 @@ namespace Reveil.Core.ViewModels
     public class ShellViewModel : MvxViewModel
     {
         #region Champs
+        private readonly ISettingsManager _settingsManager;
+
         private MenuItem _selection;
         private TimeSpan? _duration;
+
         #endregion
 
         #region Constructeurs
-        public ShellViewModel()
+        public ShellViewModel(ISettingsManager settingsManager)
         {
+            _settingsManager = settingsManager;
+
             Items = new ObservableCollection<MenuItem>
             {
                 new MenuItem()
@@ -101,11 +108,23 @@ namespace Reveil.Core.ViewModels
                 return;
             }
 
+            Settings settings = _settingsManager.Get();
+
             switch (SelectedMenuItem.State)
             {
                 case State.Sprint:
                     {
-                        Duration = TimeSpan.FromMinutes(25);
+                        Duration = TimeSpan.FromMinutes(settings.Sprint);
+                        break;
+                    }
+                case State.LongBreak:
+                    {
+                        Duration = TimeSpan.FromMinutes(settings.LongBreak);
+                        break;
+                    }
+                case State.ShortBreak:
+                    {
+                        Duration = TimeSpan.FromMinutes(settings.ShortBreak);
                         break;
                     }
                 default:

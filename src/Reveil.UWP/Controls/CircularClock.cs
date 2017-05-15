@@ -23,28 +23,59 @@ namespace Reveil.UWP.Controls
         private const string SecondTrailPartName = "PART_SecondTrail";
 
         public static readonly DependencyProperty DurationProperty =
-            DependencyProperty.Register(nameof(Duration), typeof(TimeSpan?), typeof(CircularClock), new PropertyMetadata(null));
+            DependencyProperty.Register(
+                nameof(Duration), 
+                typeof(TimeSpan?), 
+                typeof(CircularClock), 
+                new PropertyMetadata(null));
 
         public static readonly DependencyProperty MinuteAngleProperty =
-            DependencyProperty.Register(nameof(MinuteAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, Clock_MinuteAngleChanged));
+            DependencyProperty.Register(
+                nameof(MinuteAngle), 
+                typeof(double), 
+                typeof(CircularClock), 
+                new PropertyMetadata(0d, Clock_MinuteAngleChanged));
 
         public static readonly DependencyProperty MinuteTrailBrushProperty =
-            DependencyProperty.Register(nameof(MinuteTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.DarkBlue)));
+            DependencyProperty.Register(
+                nameof(MinuteTrailBrush), 
+                typeof(Brush), typeof(CircularClock), 
+                new PropertyMetadata(new SolidColorBrush(Colors.DarkBlue)));
 
         public static readonly DependencyProperty RadiusProperty = 
-            DependencyProperty.Register(nameof(Radius), typeof(int), typeof(CircularClock), new PropertyMetadata(50));
+            DependencyProperty.Register(
+                nameof(Radius), 
+                typeof(int), 
+                typeof(CircularClock), 
+                new PropertyMetadata(50));
 
         public static readonly DependencyProperty ScaleBrushProperty =
-            DependencyProperty.Register(nameof(ScaleBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
+            DependencyProperty.Register(
+                nameof(ScaleBrush), 
+                typeof(Brush), 
+                typeof(CircularClock), 
+                new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         public static readonly DependencyProperty SecondAngleProperty =
-            DependencyProperty.Register(nameof(SecondAngle), typeof(double), typeof(CircularClock), new PropertyMetadata(0d, Clock_SecondAngleChanged));
+            DependencyProperty.Register(
+                nameof(SecondAngle), 
+                typeof(double), 
+                typeof(CircularClock), 
+                new PropertyMetadata(0d, Clock_SecondAngleChanged));
 
         public static readonly DependencyProperty SecondTrailBrushProperty =
-            DependencyProperty.Register(nameof(SecondTrailBrush), typeof(Brush), typeof(CircularClock), new PropertyMetadata(new SolidColorBrush(Colors.Blue)));
+            DependencyProperty.Register(
+                nameof(SecondTrailBrush), 
+                typeof(Brush), 
+                typeof(CircularClock), 
+                new PropertyMetadata(new SolidColorBrush(Colors.LightBlue)));
 
         public static readonly DependencyProperty StrokeThicknessProperty = 
-            DependencyProperty.Register(nameof(StrokeThickness), typeof(int), typeof(CircularClock), new PropertyMetadata(4));
+            DependencyProperty.Register(
+                nameof(StrokeThickness), 
+                typeof(int), 
+                typeof(CircularClock), 
+                new PropertyMetadata(4));
 
         private readonly DispatcherTimer _timer;
 

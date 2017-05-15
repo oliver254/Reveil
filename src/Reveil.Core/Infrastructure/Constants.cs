@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reveil.UWP.Infrastructure
+namespace Reveil.Core.Infrastructure
 {
     public static class Constants
     {
         public const string ClockSettings = "ClockSettings";
-        public const string Sprint = "Sprint";        
+        public const string Sprint = "Sprint";
         public const string LongBreak = "LongBreak";
         public const string ShortBreak = "ShortBreak";
 

@@ -1,4 +1,5 @@
-﻿using Reveil.UWP.Infrastructure;
+﻿using Reveil.Core.Infrastructure;
+using Reveil.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,15 @@ using Windows.Storage;
 
 namespace Reveil.UWP.Services
 {
-    public class SettingsManager
+    public class SettingsManager : ISettingsManager
     {
 
         #region Champs
-        private static ApplicationDataContainer _container = null;
+        private readonly ApplicationDataContainer _container = null;
         #endregion
 
         #region Constructeurs
-        static SettingsManager()
+        public SettingsManager()
         {
             _container = ApplicationData.Current.LocalSettings.CreateContainer(
                 Constants.ClockSettings, 
@@ -24,8 +25,9 @@ namespace Reveil.UWP.Services
         }
         #endregion
 
-        #region Méthodes
-        internal static Settings Get()
+        #region Méthodes      
+
+        public Settings Get()
         {
             Settings settings = new Settings()
             {
@@ -50,7 +52,7 @@ namespace Reveil.UWP.Services
             return settings;
         }
 
-        internal static void Save(Settings settings)
+        public void Save(Settings settings)
         {
             _container.Values[Constants.Sprint] = settings.Sprint;
             _container.Values[Constants.LongBreak] = settings.LongBreak;

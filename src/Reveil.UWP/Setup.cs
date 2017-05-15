@@ -1,4 +1,5 @@
-﻿using MvvmCross.WindowsUWP.Platform;
+﻿using MvvmCross.Platform.IoC;
+using MvvmCross.WindowsUWP.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,6 @@ namespace Reveil.UWP
     class Setup : MvxWindowsSetup
     {
 
-        #region Champs
-        #endregion
-
         #region Constructeurs
         public Setup(Frame rootFrame)
             : base(rootFrame)
@@ -24,10 +22,17 @@ namespace Reveil.UWP
         }
         #endregion
 
-        #region Propriétés
-        #endregion
-
         #region Méthodes
+        protected override void InitializeFirstChance()
+        {
+            CreatableTypes()
+                .EndingWith("Manager")
+                .AsInterfaces()
+                .RegisterAsSingleton();
+
+            base.InitializeFirstChance();
+
+        }
         protected override IMvxApplication CreateApp()
         {
             return new Core.App();

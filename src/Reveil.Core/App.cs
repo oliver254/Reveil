@@ -10,25 +10,18 @@ namespace Reveil.Core
 {
     public class App : MvxApplication
     {
-        #region Champs
-        #endregion
-
-        #region Constructeurs
-        #endregion
-
-        #region Propriétés
-        #endregion
-
-        #region Méthodes
         public override void Initialize()
         {
+            //CreatableTypes()
+            //    .EndingWith("Service")
+            //    .AsInterfaces()
+            //    .RegisterAsLazySingleton();
             CreatableTypes()
-                .EndingWith("Service")
+                .EndingWith("Manager")
                 .AsInterfaces()
-                .RegisterAsLazySingleton();
+                .RegisterAsSingleton();            
 
             RegisterAppStart<ViewModels.ShellViewModel>();
         }
-        #endregion
     }
 }
