@@ -1,0 +1,43 @@
+﻿<Window x:Class="Reveil.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Reveil.Controls"
+        Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"            
+        Title="Reveil" Height="380" Width="300" Topmost="True"  Loaded="OnLoaded" WindowStyle="ToolWindow" Icon="Reveil.ico">
+    <Window.CacheMode>
+        <BitmapCache/>
+    </Window.CacheMode>
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem x:Name="MenuItemConfiguration" Click="MenuItemConfiguration_Click" >
+                    <MenuItem.Header>
+                        <TextBlock Foreground="Black" Text="Configuration"/>                        
+                    </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Foreground="Black" IsChecked="{Binding Path=PomodoroVM.IsPomodoroMode}" Command="{Binding Path=PomodoroVM.PomodoroModeCommand}">
+                <MenuItem.Header>
+                    <TextBlock Foreground="Black" Text="Pomodoro"/>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem x:Name="MenuItemDual" Foreground="Black" IsCheckable="True" Click="MenuItemDual_Click">
+                <MenuItem.Header>
+                    <TextBlock Foreground="Black" Text="Dual screen" />
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Click="OnCloseClick">
+                <MenuItem.Header>
+                    <TextBlock Foreground="Black" Text="Fermer"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+    </Window.ContextMenu>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <controls:Pomodoro DataContext="{Binding Path=PomodoroVM}" Alarm="{Binding Path=Alarm}" />    
+    </Grid>
+
+</Window>

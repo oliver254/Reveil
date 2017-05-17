@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Reveil.Controls.ReveilClock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Reveil.Controls"
+             mc:Ignorable="d" 
+             x:Name="reveilView"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Ellipse x:Name="centerEllipse" Fill="{DynamicResource HoverBrush}" Height="230" Width="230" />
+        <Ellipse x:Name="centerEllipse1" Fill="{DynamicResource ControlBackgroundBrush}" Height="110" Width="110" />
+        <Path x:Name="pathMinutes" Stroke="{Binding MinuteColor, ElementName=reveilView}"
+            StrokeThickness="{Binding StrokeThickness, ElementName=reveilView}"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigureCollection>
+                            <PathFigure x:Name="pfMinutes">
+                                <PathFigure.Segments>
+                                    <PathSegmentCollection>
+                                        <ArcSegment x:Name="arcMinutes" SweepDirection="Clockwise" />
+                                    </PathSegmentCollection>
+                                </PathFigure.Segments>
+                            </PathFigure>
+                        </PathFigureCollection>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Path x:Name="pathSeconds" Stroke="{Binding SecondColor, ElementName=reveilView}"
+            StrokeThickness="{Binding StrokeThickness, ElementName=reveilView}"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigureCollection>
+                            <PathFigure x:Name="pfSeconds">
+                                <PathFigure.Segments>
+                                    <PathSegmentCollection>
+                                        <ArcSegment x:Name="arcSeconds" SweepDirection="Clockwise" />
+                                    </PathSegmentCollection>
+                                </PathFigure.Segments>
+                            </PathFigure>
+                        </PathFigureCollection>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+    </Grid>
+</UserControl>
