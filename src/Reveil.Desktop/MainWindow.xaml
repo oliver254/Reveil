@@ -4,40 +4,80 @@
         xmlns:controls="clr-namespace:Reveil.Controls"
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"            
-        Title="Reveil" Height="380" Width="300" Topmost="True"  Loaded="OnLoaded" WindowStyle="ToolWindow" Icon="Reveil.ico">
+        Title="Reveil" 
+        Height="380" 
+        Loaded="Window_Loaded" 
+        Topmost="True"  
+        Width="300" 
+        WindowStyle="ToolWindow" 
+        Icon="Reveil.ico">
     <Window.CacheMode>
         <BitmapCache/>
     </Window.CacheMode>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+    </Window.Resources>
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem x:Name="MenuItemConfiguration" Click="MenuItemConfiguration_Click" >
+            <MenuItem x:Name="MenuItemConfiguration" 
+                      Click="MenuItemConfiguration_Click" >
                     <MenuItem.Header>
-                        <TextBlock Foreground="Black" Text="Configuration"/>                        
+                        <TextBlock Foreground="Black" 
+                                   Text="Configuration"/>                        
                     </MenuItem.Header>
             </MenuItem>
-            <MenuItem Foreground="Black" IsChecked="{Binding Path=PomodoroVM.IsPomodoroMode}" Command="{Binding Path=PomodoroVM.PomodoroModeCommand}">
+            <MenuItem Foreground="Black" 
+                      IsChecked="{Binding Path=PomodoroVM.IsPomodoroMode}" 
+                      Command="{Binding Path=PomodoroVM.PomodoroModeCommand}">
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" Text="Pomodoro"/>
+                    <TextBlock Foreground="Black" 
+                               Text="Pomodoro"/>
                 </MenuItem.Header>
             </MenuItem>
-            <MenuItem x:Name="MenuItemDual" Foreground="Black" IsCheckable="True" Click="MenuItemDual_Click">
+            <MenuItem x:Name="MenuItemDual" 
+                      Foreground="Black" 
+                      IsCheckable="True" 
+                      Click="MenuItemDual_Click">
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" Text="Dual screen" />
+                    <TextBlock Foreground="Black" 
+                               Text="Dual screen" />
                 </MenuItem.Header>
             </MenuItem>
-            <MenuItem Click="OnCloseClick">
+            <MenuItem Click="Window_CloseClick" >
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" Text="Fermer"/>
+                    <TextBlock Foreground="Black" 
+                               Text="Fermer"/>
                 </MenuItem.Header>
             </MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
-    <Grid>
+    <Grid Background="{StaticResource ResourceKey=ControlBackgroundBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <controls:Pomodoro DataContext="{Binding Path=PomodoroVM}" Alarm="{Binding Path=Alarm}" />    
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>        
+        <!-- horloge -->
+        <controls:ReveilClock HorizontalAlignment="Stretch" 
+                              Duration="{Binding Path=Duration,Mode=TwoWay}" 
+                              StrokeThickness="30"
+                              VerticalAlignment="Stretch"/>
+        <!-- horloge texte -->
+        <TextBlock Grid.Row="1" Text="{Binding Path=Time,StringFormat=HH:mm:ss}" FontWeight="Light" FontSize="52" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Content="Sprint" Command="{Binding Path=SprintCommand}"/>
+            <Button Grid.Column="1" Content="Short break" Command="{Binding Path=ShortBreakCommand}"/>
+            <Button Grid.Column="2" Content="Long break" Command="{Binding Path=LongBreakCommand}"/>
+            <Button Background="Red" Grid.Column="3" Content="Stop" Command="{Binding Path=StopCommand}"/>
+        </Grid>
+        <MediaElement Grid.Row="3" x:Name="meAlarm" Source="{Binding Path=MusicPath}" LoadedBehavior="Manual" />
     </Grid>
-
 </Window>

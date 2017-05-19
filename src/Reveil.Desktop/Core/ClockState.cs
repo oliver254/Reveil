@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reveil.ViewModels
+namespace Reveil.Core
 {
-    public class TimeViewModel
+    public enum ClockState
     {
+        Alarm,
+        Clock,
+        StopWatch
     }
 }

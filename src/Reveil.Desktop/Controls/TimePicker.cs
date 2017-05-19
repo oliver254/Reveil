@@ -74,7 +74,7 @@ namespace Reveil.Controls
         private int hourMaxValue = 23;
         private int minuteMaxValue = 59;
         private int secondMaxValue = 59;
-        private int hourMinValue = 0;
+        private int hourMinValue;
         private int minuteMinValue = 0;
         private int secondMinValue = 0;
         //data memebers to store the textboxes for hours, minutes and seconds
@@ -91,8 +91,8 @@ namespace Reveil.Controls
         static TimePicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TimePicker), new FrameworkPropertyMetadata(typeof(TimePicker)
-                    ));
+                typeof(TimePicker), 
+                new FrameworkPropertyMetadata(typeof(TimePicker)));
         }
 
         /// <summary>
@@ -466,9 +466,11 @@ namespace Reveil.Controls
 
         private void OnTimeSelectedChanged(TimeSpan newTime, TimeSpan oldTime)
         {
-            TimeSelectedChangedRoutedEventArgs args = new TimeSelectedChangedRoutedEventArgs(SelectedTimeChangedEvent);
-            args.NewTime = newTime;
-            args.OldTime = oldTime;
+            TimeSelectedChangedRoutedEventArgs args = new TimeSelectedChangedRoutedEventArgs(SelectedTimeChangedEvent)
+            {
+                NewTime = newTime,
+                OldTime = oldTime
+            };
             RaiseEvent(args);
         }
 

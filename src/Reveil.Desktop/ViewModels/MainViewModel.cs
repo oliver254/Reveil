@@ -1,7 +1,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Reveil.Configuration;
 using Reveil.Core;
 using Reveil.Messages;
+using System;
 using System.Windows.Threading;
 
 namespace Reveil.ViewModels
@@ -24,90 +26,76 @@ namespace Reveil.ViewModels
         #region Champs
         public const string RingPathPropertyName = "RingPath";
 
-        private DispatcherTimer _timer;
-        private PomodoroViewModel _pomodoroVM;
+        private readonly ConfigurationStore _configuration;
+
+        private TimeSpan? _duree;   
         #endregion
 
         #region Constructeurs
-        public MainViewModel()
+        public MainViewModel(ConfigurationStore configuration)
         {
-            this.PomodoroVM = new PomodoroViewModel();
-            //timer
-            _timer = new DispatcherTimer();
-            _timer.Tick += new System.EventHandler(_pomodoroVM.OnTick);
-            _timer.Interval = new System.TimeSpan(0, 0, 0, 0, 1);
-            _timer.Start();
-            //les message
-            this.MessengerInstance.Register<RingPathMessage>(this, OnRingPath);
+            _configuration = configuration;
+
+
             //les commandes
-            ResetCommand = new RelayCommand(ExecuteResetCommand);
+            SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
+            LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
+            ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
         }
         #endregion
 
         #region Propriétés
-        /// <summary>
-        /// Détermine si la fenêtre est sur le double écran
-        /// </summary>
-        public bool IsDualMode
+        public TimeSpan? Duration
         {
-            get;
-            private set;
-        }
-        /// <summary>
-        /// Retourne le modele de vue PomodoroVM
-        /// </summary>
-        public PomodoroViewModel PomodoroVM
-        {
-            get { return _pomodoroVM; }
-            private set
+            get
             {
-                _pomodoroVM = value;
+                return _duree;
+            }
+            set
+            {
+                _duree = value;
+                RaisePropertyChanged(nameof(Duration));
             }
         }
-        /// <summary>
-        /// Retourne la commande Reset
-        /// </summary>
-        public RelayCommand ResetCommand
+
+        public RelayCommand LongBreakCommand
         {
             get;
             private set;
         }
+ 
         /// <summary>
         /// Retourne ou définit le chemin de la sonnerie
         /// </summary>
         public string RingPath
         {
-            get { return ConfigManager.Instance.GetRingPath(); }
-            set
-            {
-                ConfigManager.Instance.SetRingPath(value);
-                RaisePropertyChanged(RingPathPropertyName);
-            }
-        }
-        #endregion
+            get { return _configuration.RingPath; }
 
-        #region Méthodes
-        public override void Cleanup()
-        {
-            base.Cleanup();
-            if (_timer != null)
-            {
-                _timer.Stop();
-                _timer = null;
-            }
         }
 
-        private void OnRingPath(RingPathMessage message)
+
+        public RelayCommand ShortBreakCommand
         {
-            RingPath = message.Path; 
+            get;
+            private set;
         }
 
         /// <summary>
-        /// Exécutes la commande Reset
+        /// Obtient la commande Sprint
         /// </summary>
-        private void ExecuteResetCommand()
+        public RelayCommand SprintCommand
         {
-            PomodoroVM.Reset();
+            get;
+            private set;
+        }
+
+        #endregion
+
+        #region Méthodes      
+        private void ExecuteCommand(int duration)
+        {
+            Duration = TimeSpan.FromMinutes(duration);
+
         }
         #endregion
 

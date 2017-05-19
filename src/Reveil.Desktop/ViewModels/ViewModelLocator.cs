@@ -1,5 +1,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using Reveil.Configuration;
+using System.Configuration;
 
 namespace Reveil.ViewModels
 {
@@ -17,11 +19,29 @@ namespace Reveil.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            // services
+            SimpleIoc.Default.Register<ConfigurationStore>();
+
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ConfigurationViewModel>();
         }
         #endregion
 
         #region Propriétés
+        /// <summary>
+        /// Obtient le modèle de la vue Configuration
+        /// </summary>
+        public ConfigurationViewModel Configuration
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ConfigurationViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Obtient le modèle de la vue principale
+        /// </summary>
         public MainViewModel Main
         {
             get
@@ -35,7 +55,7 @@ namespace Reveil.ViewModels
         #region Méthodes
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();
         }
         #endregion
 

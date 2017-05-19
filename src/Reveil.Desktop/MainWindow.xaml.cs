@@ -1,6 +1,10 @@
-﻿using Reveil.Core;
+﻿using GalaSoft.MvvmLight.Ioc;
+using Reveil.Core;
+using Reveil.Configuration;
 using Reveil.Views;
 using System.Windows;
+using GalaSoft.MvvmLight.Messaging;
+using Reveil.Messages;
 
 namespace Reveil
 {
@@ -9,18 +13,26 @@ namespace Reveil
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Champs
-        #endregion
-
-        #region Méthodes
+        #region Constructeurs
         public MainWindow()
         {
             InitializeComponent();
+
+            Messenger.Default.Register<MoveDualMessage>(this, Window_MoveDualReceived);
         }
-        private void DoDualScreen(bool valeur)
+        #endregion
+
+        #region Méthodes
+        /// <summary>
+        /// Obtient si le mode dual mode est actif.
+        /// </summary>
+        /// <returns></returns>
+        private static bool GetDualMode()
         {
-            this.Left = valeur ? System.Windows.SystemParameters.VirtualScreenWidth - this.Width : System.Windows.SystemParameters.WorkArea.Width - this.Width;
+            return SimpleIoc.Default.GetInstance<ConfigurationStore>().DualMode;
         }
+
+
         private void MenuItemConfiguration_Click(object sender, RoutedEventArgs e)
         {
             ConfigurationView configDlg;
@@ -35,24 +47,41 @@ namespace Reveil
             bool bvaleur;
 
             bvaleur = MenuItemDual.IsChecked;
-            this.DoDualScreen(bvaleur);
-            ConfigManager.Instance.SetDualScreen(bvaleur);
+            MoveDualScreen(bvaleur);
+
         }
-        private void OnCloseClick(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// Déplace la fenêtre sur le deuxième écran.
+        /// </summary>
+        /// <param name="valeur"></param>
+        private void MoveDualScreen(bool valeur)
+        {
+            Left = valeur ? SystemParameters.VirtualScreenWidth - Width : SystemParameters.WorkArea.Width - Width;
+        }
+
+        private void Window_CloseClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            bool bdual;
-
             Top = 16;
-            bdual = ConfigManager.Instance.GetDualScreen();
-            DoDualScreen(bdual);
-            MenuItemDual.IsChecked = bdual;
+            MoveDualScreen(GetDualMode());
+        }
 
+        /// <summary>
+        /// Déplace la fenêtre sur le deuxième écran.
+        /// </summary>
+        /// <param name="message"></param>
+        private void Window_MoveDualReceived(MoveDualMessage message)
+        {
+            MoveDualScreen(message.Mode);
         }
         #endregion
+
+
     }
 }

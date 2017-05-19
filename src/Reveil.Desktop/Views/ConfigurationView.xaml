@@ -13,7 +13,7 @@
         ShowInTaskbar="False" 
         ResizeMode="NoResize" 
         WindowStyle="ToolWindow"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+        DataContext="{Binding Source={StaticResource Locator}, Path=Configuration}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
@@ -31,36 +31,75 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Pomodoro clock-->
-        <TextBlock Margin="0,0,15,0" Text="Pomodoro Clock:"/>
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Margin="0,0,15,0" Text="Sprint:"/>
-            <TextBox Margin="0,0,15,0"  Text="{Binding PomodoroVM.Sprint}" Width="20"/>
-            <TextBlock Margin="0,0,15,0" Text="Long Break:"/>
-            <TextBox Margin="0,0,15,0" Text="{Binding PomodoroVM.LongBreak}" Width="20"/>
-            <TextBlock Margin="0,0,15,0" Text="Short Break:"/>
-            <TextBox Margin="0,0,15,0" Text="{Binding PomodoroVM.ShortBreak}" Width="20"/>
+        <TextBlock Margin="0,0,15,0" 
+                   Text="Pomodoro Clock:"/>
+        <StackPanel Grid.Column="1" 
+                    Grid.Row="1" 
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,0,15,0" 
+                       Text="Sprint:"/>
+            <TextBox Margin="0,0,15,0" 
+                     Text="{Binding Sprint}" 
+                     Width="20"/>
+            <TextBlock Margin="0,0,15,0" 
+                       Text="Long Break:"/>
+            <TextBox Margin="0,0,15,0" 
+                     Text="{Binding LongBreak}" 
+                     Width="20"/>
+            <TextBlock Margin="0,0,15,0" 
+                       Text="Short Break:"/>
+            <TextBox Margin="0,0,15,0" 
+                     Text="{Binding ShortBreak}" Width="20"/>
         </StackPanel>
         <!-- Sonnerie -->
-        <TextBlock Grid.Row="2" Text="Sonnerie:"/>
-        <Grid Grid.Column="1" Grid.Row="3">
+        <TextBlock Grid.Row="2" 
+                   Text="Sonnerie:"/>
+        <Grid Grid.Column="1" 
+              Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
-              <TextBox IsReadOnly="True" Text="{Binding Path=RingPath}"/>
-            <Button x:Name="ButtonPath" Grid.Column="1" Content="..." Height="20" Margin="0.4,0,-0.4,0" VerticalAlignment="Bottom" Click="ButtonPath_Click"/>
+              <TextBox IsReadOnly="True" 
+                       Text="{Binding Path=RingPath}"/>
+            <Button x:Name="ButtonPath" 
+                    Grid.Column="1" 
+                    Content="..." 
+                    Height="20" 
+                    Margin="0.4,0,-0.4,0" 
+                    VerticalAlignment="Bottom" 
+                    Click="ButtonPath_Click"/>
         </Grid>
         <!-- Paramètres -->
-        <TextBlock Grid.Row="4" Text="Paramètres:"/>
-        <WrapPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
-            <RadioButton  Content="Réinitialiser tous les paramètres" IsChecked="True" Margin="0,0,5,0"/>
-            <Button Command="{Binding ResetCommand}" Content="OK" Width="50"/>
+        <TextBlock Grid.Row="4" 
+                   Text="Paramètres:"/>
+        <WrapPanel Grid.Column="1" 
+                   Grid.Row="5" 
+                   Orientation="Horizontal">
+            <RadioButton  Content="Réinitialiser tous les paramètres" 
+                          IsChecked="True" 
+                          Margin="0,0,5,0"/>
+            <Button Command="{Binding ResetCommand}" 
+                    Content="OK" 
+                    Width="50"/>
         </WrapPanel>
         <!-- Alarme -->
-        <TextBlock Grid.Row="7" Text="Alarme:"/>
-        <WrapPanel Grid.Column="1" Grid.Row="8" Orientation="Horizontal">
-            <controls:TimePicker Background="White" BorderBrush="Gray" Foreground="Black" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" Margin="0,5"/>
-            <Button Command="{Binding ResetCommand}" Content="OK" Margin="5" Width="50"/>
+        <TextBlock Grid.Row="7" 
+                   Text="Alarme:"/>
+        <WrapPanel Grid.Column="1" 
+                   Grid.Row="8" 
+                   Orientation="Horizontal">
+            <controls:TimePicker Background="White" 
+                                 BorderBrush="Gray" 
+                                 Foreground="Black" 
+                                 Grid.Column="1" 
+                                 Grid.Row="8" 
+                                 HorizontalAlignment="Left" 
+                                 Margin="0,5"/>
+            <Button Command="{Binding ResetCommand}" 
+                    Content="OK" 
+                    Margin="5" 
+                    Width="50"/>
         </WrapPanel>
     </Grid>
 </Window>

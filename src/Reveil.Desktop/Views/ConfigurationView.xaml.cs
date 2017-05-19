@@ -35,14 +35,19 @@ namespace Reveil.Views
         {
             RingPathMessage message;
             OpenFileDialog dlg = new OpenFileDialog();
-
             dlg.Filter = "Musiques|*.mp3|Tous les fichiers|*.*";
             bool? bresult = dlg.ShowDialog(this);
-            if(bresult != null && bresult == true)
+
+            if (bresult == null || !bresult.Value)
             {
-                message = new RingPathMessage(dlg.FileName);
-                Messenger.Default.Send<RingPathMessage>(message);
+                return;
             }
+            message = new RingPathMessage
+            {
+                Path = dlg.FileName
+            };
+            Messenger.Default.Send<RingPathMessage>(message);
+
         }
         #endregion
     }
