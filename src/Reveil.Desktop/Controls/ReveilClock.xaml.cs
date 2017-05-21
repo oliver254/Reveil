@@ -1,6 +1,9 @@
-﻿using Reveil.Core;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Reveil.Core;
+using Reveil.Messages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,9 +54,15 @@ namespace Reveil.Controls
             DependencyProperty.Register(nameof(StrokeThickness), 
                 typeof(int), typeof(ReveilClock), 
                 new PropertyMetadata(20, new PropertyChangedCallback(Clock_PropertyChanged)));
+        public static readonly DependencyProperty TimeProperty =
+            DependencyProperty.Register(nameof(Time),
+                typeof(string),
+                typeof(ReveilClock),
+                new PropertyMetadata(string.Empty, new PropertyChangedCallback(Clock_TimeChanged)));
 
         private DateTime? _end;
         private DispatcherTimer _timer;
+        private bool _alarme = false;
         #endregion
 
         #region Constructeurs
@@ -65,7 +74,7 @@ namespace Reveil.Controls
 
         #region Propriétés
         /// <summary>
-        /// Retourne ou définit le temps
+        /// Retourne ou définit la durée du chronomètre. 
         /// </summary>
         public TimeSpan? Duration
         {
@@ -101,7 +110,7 @@ namespace Reveil.Controls
         }
 
         /// <summary>
-        /// Retourne ou définit
+        /// Obtient ou définit la largeur de la trainée des minutes ou des secondes.
         /// </summary>
         public int StrokeThickness
         {
@@ -109,30 +118,60 @@ namespace Reveil.Controls
             set { SetValue(StrokeThicknessProperty, value); }
         }
 
+        /// <summary>
+        /// Obtient le temps de l'horloge.
+        /// </summary>
+        public string Time
+        {
+            get
+            {
+                return (string)GetValue(TimeProperty);
+            }
+            set
+            {
+                SetValue(TimeProperty, value);
+            }
+        }
         #endregion
 
         #region Méthodes
-        private static void Clock_PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            ReveilClock circle = sender as ReveilClock;
-            circle.RenderArc();
-        }
 
         private static void Clock_DurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             ReveilClock clock = (ReveilClock)sender;
-            clock.SetEnd((TimeSpan?)args.NewValue);
+            clock.SetDuration((TimeSpan?)args.NewValue);
             
+        }
+        private static void Clock_PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ReveilClock circle = sender as ReveilClock;
+            circle.RenderArc();
+        }        
+
+        private static void Clock_TimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ReveilClock reveil = (ReveilClock)sender;
+            reveil.TimeTextBlock.Text = (string)args.NewValue;
         }
 
 
         private void Clock_Loaded(object sender, RoutedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
             _timer.Start();
 
+            Messenger.Default.Register<RingPathMessage>(this, Clock_RingPathChanged);              
+        }
+
+        private void Clock_RingPathChanged(RingPathMessage message)
+        {
+            alarmMediaElement.Source = new Uri(message.Path);
         }
 
         private Point ComputeCartesianCoordinate(double angle, double radius)
@@ -146,9 +185,37 @@ namespace Reveil.Controls
             return new Point(x, y);
         }
 
+        private void ConvertToAngle(DateTime? end, out double minute, out double second)
+        {
+            DateTime now = DateTime.Now;
+            minute = 0;
+            second = 0;
+
+            if (end == null)
+            {
+                minute = Convert.ToDouble(now.Minute);
+                second = Convert.ToDouble(now.Second);
+                Time = $"{now:HH:mm:ss}";
+            }
+            else if (end > now)
+            {
+                TimeSpan duration = end.Value.Subtract(now);
+                minute = Convert.ToDouble(duration.Minutes);
+                second = Convert.ToDouble(duration.Seconds);
+                Time = $"{duration:hh\\:mm\\:ss}";
+            }
+            else if(!_alarme)
+            {
+                alarmMediaElement.Play();
+                _alarme = true;
+            }
+            minute *= 6;
+            second *= 6;
+        }
+
         private void RenderArc()
         {
-            MathUtil.ConvertToAngle(_end, out double minutes, out double secondes);
+            ConvertToAngle(_end, out double minutes, out double secondes);
             RenderArc(minutes, Radius, pathMinutes, pfMinutes, arcMinutes);
 
             double radius = Radius - (double)StrokeThickness;
@@ -184,7 +251,7 @@ namespace Reveil.Controls
 
         }    
 
-        private void SetEnd(TimeSpan? duration)
+        private void SetDuration(TimeSpan? duration)
         {
             if(duration == null)
             {
@@ -192,7 +259,8 @@ namespace Reveil.Controls
                 return;
             }
 
-            _end = DateTime.Now.Add(duration.Value);
+            _end = DateTime.Now.Add(duration.Value).AddSeconds(1);
+            _alarme = false;
         }
 
         private void Timer_Tick(object sender, EventArgs e)

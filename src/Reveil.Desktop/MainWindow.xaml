@@ -36,8 +36,8 @@
             </MenuItem>
             <MenuItem x:Name="MenuItemDual" 
                       Foreground="Black" 
-                      IsCheckable="True" 
-                      Click="MenuItemDual_Click">
+                      Command="{Binding DualModeCommand}"
+                      IsCheckable="{Binding  DualMode}">
                 <MenuItem.Header>
                     <TextBlock Foreground="Black" 
                                Text="Dual screen" />
@@ -63,8 +63,6 @@
                               Duration="{Binding Path=Duration,Mode=TwoWay}" 
                               StrokeThickness="30"
                               VerticalAlignment="Stretch"/>
-        <!-- horloge texte -->
-        <TextBlock Grid.Row="1" Text="{Binding Path=Time,StringFormat=HH:mm:ss}" FontWeight="Light" FontSize="52" HorizontalAlignment="Center"/>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -72,12 +70,19 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
-            <Button Content="Sprint" Command="{Binding Path=SprintCommand}"/>
-            <Button Grid.Column="1" Content="Short break" Command="{Binding Path=ShortBreakCommand}"/>
-            <Button Grid.Column="2" Content="Long break" Command="{Binding Path=LongBreakCommand}"/>
-            <Button Background="Red" Grid.Column="3" Content="Stop" Command="{Binding Path=StopCommand}"/>
+
+            <Button Command="{Binding Path=SprintCommand}"
+                Content="Sprint"/>
+            <Button Command="{Binding Path=ShortBreakCommand}"
+                Content="Short break" 
+                Grid.Column="1"/>
+            <Button Command="{Binding Path=LongBreakCommand}"
+                Content="Long break"
+                Grid.Column="2" />
+            <Button Background="Red"
+                    Command="{Binding Path=StopCommand}"
+                    Content="Stop" 
+                    Grid.Column="3"/>
         </Grid>
-        <MediaElement Grid.Row="3" x:Name="meAlarm" Source="{Binding Path=MusicPath}" LoadedBehavior="Manual" />
     </Grid>
 </Window>

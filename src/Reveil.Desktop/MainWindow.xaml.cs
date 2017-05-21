@@ -42,14 +42,6 @@ namespace Reveil
             configDlg.ShowDialog();
 
         }
-        private void MenuItemDual_Click(object sender, RoutedEventArgs e)
-        {
-            bool bvaleur;
-
-            bvaleur = MenuItemDual.IsChecked;
-            MoveDualScreen(bvaleur);
-
-        }
 
         /// <summary>
         /// Déplace la fenêtre sur le deuxième écran.
@@ -81,7 +73,6 @@ namespace Reveil
             MoveDualScreen(message.Mode);
         }
         #endregion
-
 
     }
 }

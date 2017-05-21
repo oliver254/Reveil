@@ -7,6 +7,10 @@
              x:Name="reveilClock"
              d:DesignHeight="300" d:DesignWidth="300" Loaded="Clock_Loaded">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Ellipse x:Name="centerEllipse"
                  Fill="{DynamicResource HoverBrush}" 
                  Height="230" 
@@ -59,5 +63,14 @@
                 </PathGeometry>
             </Path.Data>
         </Path>
+        <!-- horloge texte -->
+        <TextBlock x:Name="TimeTextBlock"
+            Grid.Row="1" 
+            HorizontalAlignment="Center"
+            FontSize="52" 
+            FontWeight="Light"/>
+        <MediaElement x:Name="alarmMediaElement"
+                      Grid.Row="1"
+                      LoadedBehavior="Manual" />
     </Grid>
 </UserControl>

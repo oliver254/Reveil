@@ -91,6 +91,22 @@ namespace Reveil.ViewModels
             }
 
         }
+
+        /// <summary>
+        /// Obtient ou définit la durée d'un sprint.
+        /// </summary>
+        public int Sprint
+        {
+            get
+            {
+                return _configuration.Sprint;
+            }
+            set
+            {
+                _configuration.Sprint = value;
+                RaisePropertyChanged(nameof(Sprint));
+            }
+        }
         #endregion
 
         #region Méthodes

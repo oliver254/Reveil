@@ -12,27 +12,6 @@ namespace Reveil.Core
     public static class MathUtil
     {
 
-        public static void ConvertToAngle(DateTime? end, out double minute, out double second)
-        {
-            DateTime now = DateTime.Now;
-            minute = 0;
-            second = 0;
-
-            if(end == null)
-            {
-                minute = Convert.ToDouble(now.Minute);
-                second = Convert.ToDouble(now.Second);
-            }
-            else if(end > now)
-            {
-                TimeSpan duration = end.Value.Subtract(now);
-                minute = Convert.ToDouble(duration.Minutes);
-                second = Convert.ToDouble(duration.Seconds);
-            }
-            minute *= 6;
-            second *= 6;
-        }
-
         /// <summary>
         /// Validates the string passed by parsing it as int and checking if it is inside the bounds specified 
         /// then the resulting int will be incremented/decremented

@@ -22,7 +22,6 @@ namespace Reveil.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-
         #region Champs
         public const string RingPathPropertyName = "RingPath";
 
@@ -36,15 +35,34 @@ namespace Reveil.ViewModels
         {
             _configuration = configuration;
 
-
             //les commandes
             SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
+            DualModeCommand = new RelayCommand(ExecuteDualModeCommand);
         }
         #endregion
 
         #region Propriétés
+        /// <summary>
+        /// Obtient ou définit le mode double écran.
+        /// </summary>
+        public bool DualMode
+        {
+            get
+            {
+                return _configuration.DualMode;
+            }
+            set
+            {
+                _configuration.DualMode = value;
+                RaisePropertyChanged(nameof(DualMode));
+            }
+        }
+
+        /// <summary>
+        /// Obtient ou définit la durée.
+        /// </summary>
         public TimeSpan? Duration
         {
             get
@@ -58,6 +76,18 @@ namespace Reveil.ViewModels
             }
         }
 
+        /// <summary>
+        /// Obtient la commande DualMode
+        /// </summary>
+        public RelayCommand DualModeCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Obtient la commande LongBreak.
+        /// </summary>
         public RelayCommand LongBreakCommand
         {
             get;
@@ -74,6 +104,9 @@ namespace Reveil.ViewModels
         }
 
 
+        /// <summary>
+        /// Obtient la commande ShortBreak.
+        /// </summary>
         public RelayCommand ShortBreakCommand
         {
             get;
@@ -96,6 +129,11 @@ namespace Reveil.ViewModels
         {
             Duration = TimeSpan.FromMinutes(duration);
 
+        }
+
+        private void ExecuteDualModeCommand()
+        {
+            DualMode = !DualMode;
         }
         #endregion
 
