@@ -43,6 +43,11 @@ namespace Reveil.Controls
                 typeof(int), 
                 typeof(ReveilClock), 
                 new PropertyMetadata(100, new PropertyChangedCallback(Clock_PropertyChanged)));
+        public static readonly DependencyProperty RingPathProperty =
+            DependencyProperty.Register(nameof(RingPath),
+                typeof(string),
+                typeof(ReveilClock),
+                new PropertyMetadata(null, new PropertyChangedCallback(Clock_PropertyChanged)));
         // Using a DependencyProperty as the backing store for SegmentColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SecondColorProperty =
             DependencyProperty.Register(nameof(SecondColor), 
@@ -98,6 +103,21 @@ namespace Reveil.Controls
         {
             get { return (int)GetValue(RadiusProperty); }
             set { SetValue(RadiusProperty, value); }
+        }
+
+        /// <summary>
+        /// Obtient ou définit le chemin du son de l'alarme.
+        /// </summary>
+        public string RingPath
+        {
+            get
+            {
+                return (string)GetValue(RingPathProperty);
+            }
+            set
+            {
+                SetValue(RingPathProperty, value);
+            }
         }
 
         /// <summary>

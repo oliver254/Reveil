@@ -40,6 +40,7 @@ namespace Reveil.ViewModels
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
             DualModeCommand = new RelayCommand(ExecuteDualModeCommand);
+            StopCommand = new RelayCommand(ExecuteStopCommand);
         }
         #endregion
 
@@ -122,6 +123,15 @@ namespace Reveil.ViewModels
             private set;
         }
 
+        /// <summary>
+        /// Obtient la commande Stop
+        /// </summary>
+        public RelayCommand StopCommand
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region Méthodes      
@@ -134,6 +144,12 @@ namespace Reveil.ViewModels
         private void ExecuteDualModeCommand()
         {
             DualMode = !DualMode;
+        }
+
+        private void ExecuteStopCommand()
+        {
+            Duration = null;
+
         }
         #endregion
 

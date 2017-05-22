@@ -71,6 +71,7 @@
             FontWeight="Light"/>
         <MediaElement x:Name="alarmMediaElement"
                       Grid.Row="1"
-                      LoadedBehavior="Manual" />
+                      LoadedBehavior="Manual" 
+                      Volume="1"/>
     </Grid>
 </UserControl>

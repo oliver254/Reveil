@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Reveil.Configuration;
 using Reveil.Messages;
 using System;
@@ -21,8 +22,10 @@ namespace Reveil.ViewModels
         {
             _parentVM = parentVM;
             _configuration = configuration;
-
+            // les messages 
             MessengerInstance.Register<RingPathMessage>(this, Configuration_RingPathReceived);
+            // les commandes
+            ResetCommand = new RelayCommand(ExecuteResetCommand);
         }
         #endregion
 
@@ -57,6 +60,15 @@ namespace Reveil.ViewModels
                 _configuration.LongBreak = value;
                 RaisePropertyChanged(nameof(LongBreak));
             }
+        }
+
+        /// <summary>
+        /// Obtient la commande Reset
+        /// </summary>
+        public RelayCommand ResetCommand
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -113,6 +125,13 @@ namespace Reveil.ViewModels
         private void Configuration_RingPathReceived(RingPathMessage message)
         {
             RingPath = message.Path;
+        }
+
+        private void ExecuteResetCommand()
+        {
+            _configuration.LongBreak = ConfigurationStore.DefaultLongBreak;
+            _configuration.ShortBreak = ConfigurationStore.DefaultShortBreak;
+            _configuration.Sprint = ConfigurationStore.DefaultSprint;
         }
         #endregion
     }

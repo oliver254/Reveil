@@ -5,7 +5,7 @@ namespace Reveil.Configuration
     public class ConfigurationStore
     {
         #region Champs
-        public const string DefaultRingPath = @"Resources\\alarm.wav";
+        public const string DefaultRingPath = @"pack://siteoforigin:,,,/Resources/alarm.wav";
         public const int DefaultSprint = 25;
         public const int DefaultLongBreak = 15;
         public const int DefaultShortBreak = 5;
