@@ -1,6 +1,8 @@
 # Reveil
 Reveil is a desktop alarm clock and pomodoro clock. The infrastructure is written in C# using UWP. The Application is an **unofficial application of the Pomodoro Technique®**. 
 
+![Reveil Dekstop](https://raw.githubusercontent.com/oliver254/Reveil/master/docs/images/reveildesktop.png)
+
 ## Credits
 * [WPF Loading Wait Adorner](http://www.codeproject.com/Articles/57984/WPF-Loading-Wait-Adorner), Jeremy Hutchinson, 2010-02-10
 * [Better WPF Circular Progress Bar](https://www.codeproject.com/Articles/49853/Better-WPF-Circular-Progress-Bar), Sacha Barber, 2010-01-04
