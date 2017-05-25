@@ -15,6 +15,8 @@ namespace Reveil.ViewModels
         #region Champs
         private readonly MainViewModel _parentVM;
         private readonly ConfigurationStore _configuration;
+
+        private TimeSpan _selection;
         #endregion
 
         #region Constructeurs
@@ -22,14 +24,24 @@ namespace Reveil.ViewModels
         {
             _parentVM = parentVM;
             _configuration = configuration;
-            // les messages 
-            MessengerInstance.Register<RingPathMessage>(this, Configuration_RingPathReceived);
+            SelectedTime = DateTime.Now.TimeOfDay;
+
             // les commandes
+            ActivateCommand = new RelayCommand(ExecuteActivateCommand);
             ResetCommand = new RelayCommand(ExecuteResetCommand);
+            
         }
         #endregion
 
         #region Propriétés
+        /// <summary>
+        /// Obtient la commande Activate
+        /// </summary>
+        public RelayCommand ActivateCommand
+        {
+            get;
+            private set;
+        }
         /// <summary>
         /// Obtient ou définit si le mode double écran est actif.
         /// </summary>
@@ -72,7 +84,7 @@ namespace Reveil.ViewModels
         }
 
         /// <summary>
-        /// Obtient ou définit le chemin du son de l'alarme.
+        /// Obtient ou définit le chemin du fichier son.
         /// </summary>
         public string RingPath
         {
@@ -82,8 +94,23 @@ namespace Reveil.ViewModels
             }
             set
             {
-                _configuration.RingPath = value;
+                string ringPath = value;
+                _configuration.RingPath = ringPath;
                 RaisePropertyChanged(nameof(RingPath));
+                _parentVM.RingPath = ringPath;
+            }
+        }
+
+        public TimeSpan SelectedTime
+        {
+            get
+            {
+                return _selection;
+            }
+            set
+            {
+                _selection = value;
+                RaisePropertyChanged(nameof(SelectedTime));
             }
         }
 
@@ -122,16 +149,31 @@ namespace Reveil.ViewModels
         #endregion
 
         #region Méthodes
-        private void Configuration_RingPathReceived(RingPathMessage message)
+        /// <summary>
+        /// Execute la commande Activate (l'alarme
+        /// </summary>
+        private void ExecuteActivateCommand()
         {
-            RingPath = message.Path;
+            if(SelectedTime.CompareTo(DateTime.Now) <= 0)
+            {
+                return;
+            }
+
+            TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);                       
+            _parentVM.Duration = duree;
+
         }
 
+        /// <summary>
+        /// Execute la commande Reset.
+        /// </summary>
         private void ExecuteResetCommand()
         {
-            _configuration.LongBreak = ConfigurationStore.DefaultLongBreak;
-            _configuration.ShortBreak = ConfigurationStore.DefaultShortBreak;
-            _configuration.Sprint = ConfigurationStore.DefaultSprint;
+            LongBreak = ConfigurationStore.DefaultLongBreak;
+            ShortBreak = ConfigurationStore.DefaultShortBreak;
+            Sprint = ConfigurationStore.DefaultSprint;
+            RingPath = ConfigurationStore.DefaultRingPath;
+
         }
         #endregion
     }

@@ -51,25 +51,12 @@
             <TextBox Margin="0,0,15,0" 
                      Text="{Binding ShortBreak}" Width="20"/>
         </StackPanel>
-        <!-- Sonnerie -->
+        <!-- chemin du fichier son -->
         <TextBlock Grid.Row="2" 
                    Text="Sonnerie:"/>
-        <Grid Grid.Column="1" 
-              Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="40"/>
-            </Grid.ColumnDefinitions>
-              <TextBox IsReadOnly="True" 
-                       Text="{Binding Path=RingPath}"/>
-            <Button x:Name="ButtonPath" 
-                    Grid.Column="1" 
-                    Content="..." 
-                    Height="20" 
-                    Margin="0.4,0,-0.4,0" 
-                    VerticalAlignment="Bottom" 
-                    Click="ButtonPath_Click"/>
-        </Grid>
+        <controls:FilePicker FilePath="{Binding RingPath, Mode=TwoWay}"
+            Grid.Column="1"
+            Grid.Row="3"/>
         <!-- Paramètres -->
         <TextBlock Grid.Row="4" 
                    Text="Paramètres:"/>
@@ -92,14 +79,15 @@
             <controls:TimePicker Background="White" 
                                  BorderBrush="Gray" 
                                  Foreground="Black" 
+                                 SelectedTime="{Binding SelectedTime, Mode=TwoWay}"
                                  Grid.Column="1" 
                                  Grid.Row="8" 
                                  HorizontalAlignment="Left" 
                                  Margin="0,5"/>
-            <Button Command="{Binding ResetCommand}" 
-                    Content="OK" 
+            <Button Command="{Binding ActivateCommand}" 
+                    Content="Activer" 
                     Margin="5" 
-                    Width="50"/>
+                    Width="100"/>
         </WrapPanel>
     </Grid>
 </Window>

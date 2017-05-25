@@ -108,14 +108,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\FilePicker.cs" />
     <Compile Include="Controls\ReveilClock.xaml.cs">
       <DependentUpon>ReveilClock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TimePicker.cs" />
     <Compile Include="Core\ClockState.cs" />
     <Compile Include="Core\MathUtil.cs" />
+    <Compile Include="Messages\AlarmMessage.cs" />
     <Compile Include="Messages\MoveDualMessage.cs" />
-    <Compile Include="Messages\RingPathMessenge.cs" />
+    <Compile Include="Messages\RingPathMessage.cs" />
     <Compile Include="Configuration\ConfigurationStore.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -177,9 +179,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\alarm.wav">
+    <Content Include="Resources\alarm.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

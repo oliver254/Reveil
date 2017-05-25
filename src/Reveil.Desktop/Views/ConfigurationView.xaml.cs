@@ -29,26 +29,5 @@ namespace Reveil.Views
             InitializeComponent();
         }
         #endregion
-
-        #region Méthodes
-        private void ButtonPath_Click(object sender, RoutedEventArgs e)
-        {
-            RingPathMessage message;
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Musiques|*.mp3|Tous les fichiers|*.*";
-            bool? bresult = dlg.ShowDialog(this);
-
-            if (bresult == null || !bresult.Value)
-            {
-                return;
-            }
-            message = new RingPathMessage
-            {
-                Path = dlg.FileName
-            };
-            Messenger.Default.Send<RingPathMessage>(message);
-
-        }
-        #endregion
     }
 }

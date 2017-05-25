@@ -3218,6 +3218,32 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
     </Style>
 
+    <Style TargetType="{x:Type controls:FilePicker}">
+        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:FilePicker}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="40"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="PART_FilePath" Text="{TemplateBinding FilePath}" />
+                        <Button x:Name="PART_Open" 
+                            Grid.Column="1" 
+                            Content="..." 
+                            Height="20" 
+                            Margin="4,0" 
+                            VerticalAlignment="Bottom" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type controls:TimePicker}">
         <Setter Property="MinWidth" Value="120"/>
         <Setter Property="MinHeight" Value="30"/>

@@ -47,7 +47,7 @@ namespace Reveil.Controls
             DependencyProperty.Register(nameof(RingPath),
                 typeof(string),
                 typeof(ReveilClock),
-                new PropertyMetadata(null, new PropertyChangedCallback(Clock_PropertyChanged)));
+                new PropertyMetadata(null, new PropertyChangedCallback(Clock_RingPathChanged)));
         // Using a DependencyProperty as the backing store for SegmentColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SecondColorProperty =
             DependencyProperty.Register(nameof(SecondColor), 
@@ -73,7 +73,7 @@ namespace Reveil.Controls
         #region Constructeurs
         public ReveilClock()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
         #endregion
 
@@ -164,9 +164,15 @@ namespace Reveil.Controls
         }
         private static void Clock_PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            ReveilClock circle = sender as ReveilClock;
-            circle.RenderArc();
-        }        
+            ReveilClock clock = (ReveilClock)sender;
+            clock.RenderArc();
+        }
+
+        private static void Clock_RingPathChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ReveilClock clock = (ReveilClock)sender;
+            clock.alarmMediaElement.Source = new Uri((string)args.NewValue);
+        }
 
         private static void Clock_TimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
@@ -184,14 +190,7 @@ namespace Reveil.Controls
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
-            _timer.Start();
-
-            Messenger.Default.Register<RingPathMessage>(this, Clock_RingPathChanged);              
-        }
-
-        private void Clock_RingPathChanged(RingPathMessage message)
-        {
-            alarmMediaElement.Source = new Uri(message.Path);
+            _timer.Start();            
         }
 
         private Point ComputeCartesianCoordinate(double angle, double radius)
@@ -226,6 +225,10 @@ namespace Reveil.Controls
             }
             else if(!_alarme)
             {
+                Messenger.Default.Send<AlarmMessage>(new AlarmMessage
+                {
+                    Time = now
+                });
                 alarmMediaElement.Play();
                 _alarme = true;
             }
@@ -273,14 +276,15 @@ namespace Reveil.Controls
 
         private void SetDuration(TimeSpan? duration)
         {
+            _alarme = false;
+            alarmMediaElement.Stop();
+
             if(duration == null)
             {
                 _end = null;
                 return;
             }
-
             _end = DateTime.Now.Add(duration.Value).AddSeconds(1);
-            _alarme = false;
         }
 
         private void Timer_Tick(object sender, EventArgs e)

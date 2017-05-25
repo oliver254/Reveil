@@ -28,12 +28,14 @@ namespace Reveil.ViewModels
         private readonly ConfigurationStore _configuration;
 
         private TimeSpan? _duree;   
+        private string _ringPath;
         #endregion
 
         #region Constructeurs
         public MainViewModel(ConfigurationStore configuration)
         {
             _configuration = configuration;
+            _ringPath = configuration.RingPath;
 
             //les commandes
             SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
@@ -100,7 +102,15 @@ namespace Reveil.ViewModels
         /// </summary>
         public string RingPath
         {
-            get { return _configuration.RingPath; }
+            get
+            {
+                return _configuration.RingPath;
+            }
+            set
+            {
+                _ringPath = value;
+                RaisePropertyChanged(nameof(RingPath));
+            }
 
         }
 
@@ -134,7 +144,7 @@ namespace Reveil.ViewModels
 
         #endregion
 
-        #region Méthodes      
+        #region Méthodes       
         private void ExecuteCommand(int duration)
         {
             Duration = TimeSpan.FromMinutes(duration);

@@ -5,7 +5,7 @@
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"            
         Title="Reveil" 
-        Height="380" 
+        Height="390" 
         Loaded="Window_Loaded" 
         Topmost="True"  
         Width="300" 
@@ -21,17 +21,9 @@
         <ContextMenu>
             <MenuItem x:Name="MenuItemConfiguration" 
                       Click="MenuItemConfiguration_Click" >
-                    <MenuItem.Header>
-                        <TextBlock Foreground="Black" 
-                                   Text="Configuration"/>                        
-                    </MenuItem.Header>
-            </MenuItem>
-            <MenuItem Foreground="Black" 
-                      IsChecked="{Binding Path=PomodoroVM.IsPomodoroMode}" 
-                      Command="{Binding Path=PomodoroVM.PomodoroModeCommand}">
                 <MenuItem.Header>
                     <TextBlock Foreground="Black" 
-                               Text="Pomodoro"/>
+                                   Text="Configuration"/>
                 </MenuItem.Header>
             </MenuItem>
             <MenuItem x:Name="MenuItemDual" 
@@ -60,7 +52,8 @@
         </Grid.RowDefinitions>        
         <!-- horloge -->
         <controls:ReveilClock HorizontalAlignment="Stretch" 
-                              Duration="{Binding Path=Duration,Mode=TwoWay}" 
+                              Duration="{Binding Path=Duration,Mode=TwoWay}"      
+                              RingPath="{Binding RingPath}"
                               StrokeThickness="30"
                               VerticalAlignment="Stretch"/>
         <Grid Grid.Row="2">

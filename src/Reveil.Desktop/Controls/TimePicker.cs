@@ -71,9 +71,9 @@ namespace Reveil.Controls
                 typeof(TimePicker),
                 new UIPropertyMetadata(0, TimePicker_SecondChanged));
 
-        private int hourMaxValue = 23;
-        private int minuteMaxValue = 59;
-        private int secondMaxValue = 59;
+        private readonly int hourMaxValue = 23;
+        private readonly int minuteMaxValue = 59;
+        private readonly int secondMaxValue = 59;
         private int hourMinValue;
         private int minuteMinValue = 0;
         private int secondMinValue = 0;
