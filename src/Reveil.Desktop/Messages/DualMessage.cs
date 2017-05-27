@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Reveil.Messages
 {
-    public class MoveDualMessage
+    public class DualMessage
     {
-        public bool Mode
+        public bool Move
         {
             get;
             set;

@@ -116,7 +116,7 @@
     <Compile Include="Core\ClockState.cs" />
     <Compile Include="Core\MathUtil.cs" />
     <Compile Include="Messages\AlarmMessage.cs" />
-    <Compile Include="Messages\MoveDualMessage.cs" />
+    <Compile Include="Messages\DualMessage.cs" />
     <Compile Include="Messages\RingPathMessage.cs" />
     <Compile Include="Configuration\ConfigurationStore.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />

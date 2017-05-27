@@ -154,6 +154,10 @@ namespace Reveil.ViewModels
         private void ExecuteDualModeCommand()
         {
             DualMode = !DualMode;
+            MessengerInstance.Send<DualMessage>(new DualMessage
+            {
+                Move = DualMode
+            });
         }
 
         private void ExecuteStopCommand()

@@ -239,11 +239,9 @@ namespace Reveil.Controls
         private void RenderArc()
         {
             ConvertToAngle(_end, out double minutes, out double secondes);
-            RenderArc(minutes, Radius, pathMinutes, pfMinutes, arcMinutes);
-
+            RenderArc(secondes, Radius, pathSeconds, pfSeconds, arcSeconds);
             double radius = Radius - (double)StrokeThickness;
-            RenderArc(secondes, radius, pathSeconds, pfSeconds, arcSeconds);
-
+            RenderArc(minutes, radius, pathMinutes, pfMinutes, arcMinutes);
         }
 
         private void RenderArc(double angle, double radius, Path pathRoot, PathFigure pathFigure, ArcSegment arcSegment)
