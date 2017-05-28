@@ -29,6 +29,7 @@ namespace Reveil.ViewModels
 
         private TimeSpan? _duree;   
         private string _ringPath;
+        private bool _dualMode;
         #endregion
 
         #region Constructeurs
@@ -36,6 +37,7 @@ namespace Reveil.ViewModels
         {
             _configuration = configuration;
             _ringPath = configuration.RingPath;
+            _dualMode = _configuration.DualMode;
 
             //les commandes
             SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
@@ -54,12 +56,18 @@ namespace Reveil.ViewModels
         {
             get
             {
-                return _configuration.DualMode;
+                return _dualMode;
             }
             set
             {
-                _configuration.DualMode = value;
+                _dualMode = value;
+                _configuration.DualMode = _dualMode;
+                MessengerInstance.Send<DualMessage>(new DualMessage
+                {
+                    Move = _dualMode
+                });
                 RaisePropertyChanged(nameof(DualMode));
+
             }
         }
 
@@ -153,11 +161,7 @@ namespace Reveil.ViewModels
 
         private void ExecuteDualModeCommand()
         {
-            DualMode = !DualMode;
-            MessengerInstance.Send<DualMessage>(new DualMessage
-            {
-                Move = DualMode
-            });
+            DualMode = !_dualMode;
         }
 
         private void ExecuteStopCommand()

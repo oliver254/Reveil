@@ -17,8 +17,6 @@ namespace Reveil
         public MainWindow()
         {
             InitializeComponent();
-
-            Messenger.Default.Register<DualMessage>(this, Window_MoveDualReceived);
         }
         #endregion
 
@@ -63,6 +61,8 @@ namespace Reveil
         {
             Top = 16;
             MoveDualScreen(GetDualMode());
+            Messenger.Default.Register<DualMessage>(this, Window_MoveDualReceived);
+
         }
 
         /// <summary>
