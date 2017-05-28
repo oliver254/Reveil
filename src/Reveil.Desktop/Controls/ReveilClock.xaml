@@ -19,28 +19,6 @@
                  Fill="{DynamicResource ControlBackgroundBrush}" 
                  Height="110" 
                  Width="110" />
-        <!-- minutes -->
-        <Path x:Name="pathMinutes" 
-                HorizontalAlignment="Stretch" 
-                Stroke="{Binding MinuteColor, ElementName=reveilClock}"
-                StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
-                VerticalAlignment="Stretch">
-            <Path.Data>
-                <PathGeometry>
-                    <PathGeometry.Figures>
-                        <PathFigureCollection>
-                            <PathFigure x:Name="pfMinutes">
-                                <PathFigure.Segments>
-                                    <PathSegmentCollection>
-                                        <ArcSegment x:Name="arcMinutes" SweepDirection="Clockwise" />
-                                    </PathSegmentCollection>
-                                </PathFigure.Segments>
-                            </PathFigure>
-                        </PathFigureCollection>
-                    </PathGeometry.Figures>
-                </PathGeometry>
-            </Path.Data>
-        </Path>
         <!-- secondes -->
         <Path x:Name="pathSeconds" 
                 HorizontalAlignment="Stretch" 
@@ -55,6 +33,28 @@
                                 <PathFigure.Segments>
                                     <PathSegmentCollection>
                                         <ArcSegment x:Name="arcSeconds" SweepDirection="Clockwise" />
+                                    </PathSegmentCollection>
+                                </PathFigure.Segments>
+                            </PathFigure>
+                        </PathFigureCollection>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <!-- minutes -->
+        <Path x:Name="pathMinutes" 
+                HorizontalAlignment="Stretch" 
+                Stroke="{Binding MinuteColor, ElementName=reveilClock}"
+                StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
+                VerticalAlignment="Stretch">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigureCollection>
+                            <PathFigure x:Name="pfMinutes">
+                                <PathFigure.Segments>
+                                    <PathSegmentCollection>
+                                        <ArcSegment x:Name="arcMinutes" SweepDirection="Clockwise" />
                                     </PathSegmentCollection>
                                 </PathFigure.Segments>
                             </PathFigure>

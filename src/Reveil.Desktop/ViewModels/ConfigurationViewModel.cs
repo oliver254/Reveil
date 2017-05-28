@@ -154,7 +154,7 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteActivateCommand()
         {
-            if(SelectedTime.CompareTo(DateTime.Now) <= 0)
+            if(SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
             {
                 return;
             }

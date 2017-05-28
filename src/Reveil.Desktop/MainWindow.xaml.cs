@@ -17,8 +17,6 @@ namespace Reveil
         public MainWindow()
         {
             InitializeComponent();
-
-            Messenger.Default.Register<MoveDualMessage>(this, Window_MoveDualReceived);
         }
         #endregion
 
@@ -29,7 +27,8 @@ namespace Reveil
         /// <returns></returns>
         private static bool GetDualMode()
         {
-            return SimpleIoc.Default.GetInstance<ConfigurationStore>().DualMode;
+            bool reponse = SimpleIoc.Default.GetInstance<ConfigurationStore>().DualMode;
+            return reponse;
         }
 
 
@@ -62,15 +61,17 @@ namespace Reveil
         {
             Top = 16;
             MoveDualScreen(GetDualMode());
+            Messenger.Default.Register<DualMessage>(this, Window_MoveDualReceived);
+
         }
 
         /// <summary>
         /// Déplace la fenêtre sur le deuxième écran.
         /// </summary>
         /// <param name="message"></param>
-        private void Window_MoveDualReceived(MoveDualMessage message)
+        private void Window_MoveDualReceived(DualMessage message)
         {
-            MoveDualScreen(message.Mode);
+            MoveDualScreen(message.Move);
         }
         #endregion
 

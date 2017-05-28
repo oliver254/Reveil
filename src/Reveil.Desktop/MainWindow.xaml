@@ -29,7 +29,7 @@
             <MenuItem x:Name="MenuItemDual" 
                       Foreground="Black" 
                       Command="{Binding DualModeCommand}"
-                      IsCheckable="{Binding  DualMode}">
+                      IsChecked="{Binding DualMode, Mode=TwoWay}">
                 <MenuItem.Header>
                     <TextBlock Foreground="Black" 
                                Text="Dual screen" />
