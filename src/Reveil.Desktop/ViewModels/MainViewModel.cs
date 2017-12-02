@@ -29,7 +29,6 @@ namespace Reveil.ViewModels
 
         private TimeSpan? _duree;   
         private string _ringPath;
-        private bool _dualMode;
         #endregion
 
         #region Constructeurs
@@ -37,40 +36,16 @@ namespace Reveil.ViewModels
         {
             _configuration = configuration;
             _ringPath = configuration.RingPath;
-            _dualMode = _configuration.DualMode;
 
             //les commandes
             SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
-            DualModeCommand = new RelayCommand(ExecuteDualModeCommand);
             StopCommand = new RelayCommand(ExecuteStopCommand);
         }
         #endregion
 
-        #region Propriétés
-        /// <summary>
-        /// Obtient ou définit le mode double écran.
-        /// </summary>
-        public bool DualMode
-        {
-            get
-            {
-                return _dualMode;
-            }
-            set
-            {
-                _dualMode = value;
-                _configuration.DualMode = _dualMode;
-                MessengerInstance.Send<DualMessage>(new DualMessage
-                {
-                    Move = _dualMode
-                });
-                RaisePropertyChanged(nameof(DualMode));
-
-            }
-        }
-
+        #region Propriétés        
         /// <summary>
         /// Obtient ou définit la durée.
         /// </summary>
@@ -157,11 +132,6 @@ namespace Reveil.ViewModels
         {
             Duration = TimeSpan.FromMinutes(duration);
 
-        }
-
-        private void ExecuteDualModeCommand()
-        {
-            DualMode = !_dualMode;
         }
 
         private void ExecuteStopCommand()

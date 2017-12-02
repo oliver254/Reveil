@@ -42,36 +42,10 @@ namespace Reveil
 
         }
 
-        /// <summary>
-        /// Déplace la fenêtre sur le deuxième écran.
-        /// </summary>
-        /// <param name="valeur"></param>
-        private void MoveDualScreen(bool valeur)
-        {
-            Left = valeur ? SystemParameters.VirtualScreenWidth - Width : SystemParameters.WorkArea.Width - Width;
-        }
 
         private void Window_CloseClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Top = 16;
-            MoveDualScreen(GetDualMode());
-            Messenger.Default.Register<DualMessage>(this, Window_MoveDualReceived);
-
-        }
-
-        /// <summary>
-        /// Déplace la fenêtre sur le deuxième écran.
-        /// </summary>
-        /// <param name="message"></param>
-        private void Window_MoveDualReceived(DualMessage message)
-        {
-            MoveDualScreen(message.Move);
         }
         #endregion
 

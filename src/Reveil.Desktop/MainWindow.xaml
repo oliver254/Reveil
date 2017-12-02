@@ -6,7 +6,6 @@
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"            
         Title="Reveil" 
         Height="390" 
-        Loaded="Window_Loaded" 
         Topmost="True"  
         Width="300" 
         WindowStyle="ToolWindow" 
