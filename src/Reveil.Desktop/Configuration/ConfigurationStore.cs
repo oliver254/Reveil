@@ -5,11 +5,10 @@ namespace Reveil.Configuration
     public class ConfigurationStore
     {
         #region Champs
-        public const string DefaultRingPath = @"pack://siteoforigin:,,,/Resources/alarm.wav";
-        public const int DefaultSprint = 25;
         public const int DefaultLongBreak = 15;
+        public const string DefaultRingPath = @"pack://siteoforigin:,,,/Resources/alarm.wav";
         public const int DefaultShortBreak = 5;
-
+        public const int DefaultSprint = 25;
         private readonly System.Configuration.Configuration _config;
         #endregion
 
@@ -18,34 +17,10 @@ namespace Reveil.Configuration
         {
             _config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             System.Diagnostics.Trace.WriteLine("ConfigManager's constructor is called");
-            
         }
         #endregion
 
         #region Propriétés
-        /// <summary>
-        /// Obtient ou définit si le mode double écran est actif.
-        /// </summary>
-        public bool DualMode
-        {
-            get
-            {
-                bool valeur = false;
-                if (TryGet(nameof(DualMode), out string result))
-                {
-
-                    valeur = bool.Parse(result);
-                }
-
-                return valeur;
-            }
-            set
-            {
-                bool valeur = value;
-                Save<bool>(nameof(DualMode), valeur);
-            }
-        }
-
         /// <summary>
         /// Obtient la durée d'une longue pause.
         /// </summary>
@@ -54,10 +29,9 @@ namespace Reveil.Configuration
             get
             {
                 int valeur;
-                valeur = DefaultLongBreak;
-                if (TryGet(nameof(LongBreak), out string result))
+                if (!TryGet(nameof(LongBreak), out valeur))
                 {
-                    valeur = int.Parse(result);
+                    return DefaultLongBreak;
                 }
                 return valeur;
             }
@@ -66,9 +40,28 @@ namespace Reveil.Configuration
                 int valeur = value;
                 Save<int>(nameof(LongBreak), valeur);
             }
-                
         }
 
+        /// <summary>
+        /// Détermine si le mode minimisé est actif.
+        /// </summary>
+        public bool Minimize
+        {
+            get
+            {
+                bool valeur = false;
+                if (!TryGet(nameof(Minimize), out bool value))
+                {
+                    return false;
+                }
+                return valeur;
+            }
+            set
+            {
+                bool valeur = value;
+                Save<bool>(nameof(Minimize), valeur);
+            }
+        }
         /// <summary>
         /// Obtient ou définit le chemin du son de l'alarme.
         /// </summary>
@@ -76,8 +69,8 @@ namespace Reveil.Configuration
         {
             get
             {
-                string valeur;                
-                if(!TryGet(nameof(RingPath), out valeur))
+                string valeur;
+                if (!TryGet(nameof(RingPath), out valeur))
                 {
                     return DefaultRingPath;
                 }
@@ -98,10 +91,9 @@ namespace Reveil.Configuration
             get
             {
                 int valeur;
-                valeur = DefaultShortBreak;
-                if(TryGet(nameof(ShortBreak), out string result))
+                if (!TryGet(nameof(ShortBreak), out valeur))
                 {
-                    valeur = int.Parse(result);
+                    return DefaultShortBreak;
                 }
                 return valeur;
             }
@@ -120,10 +112,9 @@ namespace Reveil.Configuration
             get
             {
                 int valeur;
-                valeur = DefaultSprint;
-                if(TryGet(nameof(Sprint), out string result))
+                if (!TryGet(nameof(Sprint), out valeur))
                 {
-                    valeur = int.Parse(result);
+                    return DefaultSprint;
                 }
                 return valeur;
             }
@@ -133,6 +124,7 @@ namespace Reveil.Configuration
                 Save<int>(nameof(Sprint), valeur);
             }
         }
+
         #endregion
 
         #region Méthodes
@@ -149,7 +141,31 @@ namespace Reveil.Configuration
             {
                 element.Value = value.ToString();
             }
-            _config.Save(ConfigurationSaveMode.Modified);            
+            _config.Save(ConfigurationSaveMode.Modified);
+        }
+
+        private bool TryGet(string name, out bool value)
+        {
+            value = false;
+
+            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
+            if (element == null)
+            {
+                return false;
+            }
+            return bool.TryParse(element.Value, out value);
+        }
+
+        private bool TryGet(string name, out int value)
+        {
+            value = 0;
+
+            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
+            if (element == null)
+            {
+                return false;
+            }
+            return int.TryParse(element.Value, out value);
         }
 
         private bool TryGet(string name, out string value)
@@ -163,7 +179,6 @@ namespace Reveil.Configuration
             }
             value = element.Value;
             return true;
-
         }
         #endregion
     }

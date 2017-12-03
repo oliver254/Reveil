@@ -1,10 +1,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using Reveil.Configuration;
-using Reveil.Core;
-using Reveil.Messages;
 using System;
-using System.Windows.Threading;
 
 namespace Reveil.ViewModels
 {
@@ -27,7 +25,7 @@ namespace Reveil.ViewModels
 
         private readonly ConfigurationStore _configuration;
 
-        private TimeSpan? _duree;   
+        private TimeSpan? _duree;
         private string _ringPath;
         #endregion
 
@@ -38,14 +36,15 @@ namespace Reveil.ViewModels
             _ringPath = configuration.RingPath;
 
             //les commandes
-            SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
+            MinimizeCommand = new RelayCommand(() => ExecuteMinimizeCommand());
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
+            SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
             StopCommand = new RelayCommand(ExecuteStopCommand);
         }
         #endregion
 
-        #region Propriétés        
+        #region Propriétés
         /// <summary>
         /// Obtient ou définit la durée.
         /// </summary>
@@ -63,15 +62,6 @@ namespace Reveil.ViewModels
         }
 
         /// <summary>
-        /// Obtient la commande DualMode
-        /// </summary>
-        public RelayCommand DualModeCommand
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Obtient la commande LongBreak.
         /// </summary>
         public RelayCommand LongBreakCommand
@@ -79,7 +69,31 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
- 
+
+        /// <summary>
+        /// Obtient la commande Minimize
+        /// </summary>
+        public RelayCommand MinimizeCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Obtient l'état du mode Minimize
+        /// </summary>
+        public bool MinimizeMode
+        {
+            get
+            {
+                return GetMinimizeMode();
+            }
+            set
+            {
+
+            }
+        }
+
         /// <summary>
         /// Retourne ou définit le chemin de la sonnerie
         /// </summary>
@@ -94,9 +108,7 @@ namespace Reveil.ViewModels
                 _ringPath = value;
                 RaisePropertyChanged(nameof(RingPath));
             }
-
         }
-
 
         /// <summary>
         /// Obtient la commande ShortBreak.
@@ -124,22 +136,47 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
-
         #endregion
 
-        #region Méthodes       
+        #region Méthodes
+        private static ConfigurationStore GetConfiguration()
+        {
+            return SimpleIoc.Default.GetInstance<ConfigurationStore>();
+        }
+
         private void ExecuteCommand(int duration)
         {
             Duration = TimeSpan.FromMinutes(duration);
+        }
 
+        private void ExecuteMinimizeCommand()
+        {
+            SetMinimizeMode(!GetMinimizeMode());
         }
 
         private void ExecuteStopCommand()
         {
             Duration = null;
+        }
+        private bool GetMinimizeMode()
+        {
+            var configuration = GetConfiguration();
+            if(configuration == null)
+            {
+                return false;
+            }
+            return configuration.Minimize;
+        }
 
+        private void SetMinimizeMode(bool value)
+        {
+            var configuration = GetConfiguration();
+            if(configuration == null)
+            {
+                return;
+            }
+            configuration.Minimize = value;
         }
         #endregion
-
     }
 }

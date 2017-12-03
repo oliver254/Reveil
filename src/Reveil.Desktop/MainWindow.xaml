@@ -3,78 +3,80 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Reveil.Controls"
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"            
-        Title="Reveil" 
-        Height="390" 
-        Topmost="True"  
-        Width="300" 
-        WindowStyle="ToolWindow" 
-        Icon="Reveil.ico">
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        Height="390"
+        Icon="Reveil.ico"
+        Loaded="Window_Loaded"
+        Title="Reveil"
+        Topmost="True"
+        Width="300"
+        WindowStyle="ToolWindow">
     <Window.CacheMode>
-        <BitmapCache/>
+        <BitmapCache />
     </Window.CacheMode>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
     </Window.Resources>
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem x:Name="MenuItemConfiguration" 
-                      Click="MenuItemConfiguration_Click" >
+            <MenuItem x:Name="MenuItemConfiguration"
+                      Click="MenuItemConfiguration_Click">
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" 
-                                   Text="Configuration"/>
+                    <TextBlock Foreground="Black"
+                               Text="Configuration" />
                 </MenuItem.Header>
             </MenuItem>
-            <MenuItem x:Name="MenuItemDual" 
-                      Foreground="Black" 
-                      Command="{Binding DualModeCommand}"
-                      IsChecked="{Binding DualMode, Mode=TwoWay}">
+            <Separator/>
+            <MenuItem Command="{Binding MinimizeCommand}" 
+                      IsChecked="{Binding MinimizeMode}">
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" 
-                               Text="Dual screen" />
+                    <TextBlock Foreground="Black"
+                               Text="Minimiser"/>
                 </MenuItem.Header>
-            </MenuItem>
-            <MenuItem Click="Window_CloseClick" >
+            </MenuItem>                      
+            <MenuItem Click="Window_CloseClick">
                 <MenuItem.Header>
-                    <TextBlock Foreground="Black" 
-                               Text="Fermer"/>
+                    <TextBlock Foreground="Black"
+                               Text="Fermer" />
                 </MenuItem.Header>
             </MenuItem>
         </ContextMenu>
     </Window.ContextMenu>
     <Grid Background="{StaticResource ResourceKey=ControlBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>        
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <!-- horloge -->
-        <controls:ReveilClock HorizontalAlignment="Stretch" 
-                              Duration="{Binding Path=Duration,Mode=TwoWay}"      
+        <controls:ReveilClock HorizontalAlignment="Stretch"
+                              Duration="{Binding Path=Duration,Mode=TwoWay}"
                               RingPath="{Binding RingPath}"
                               StrokeThickness="30"
-                              VerticalAlignment="Stretch"/>
-        <Grid Grid.Row="2">
+                              VerticalAlignment="Stretch" />
+        <!-- buttons -->
+        <Grid x:Name="ButtonGrid"
+              Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Button Command="{Binding Path=SprintCommand}"
-                Content="Sprint"/>
+                Content="Sprint" />
             <Button Command="{Binding Path=ShortBreakCommand}"
-                Content="Short break" 
-                Grid.Column="1"/>
+                    Content="Short break"
+                    Grid.Column="1" />
             <Button Command="{Binding Path=LongBreakCommand}"
-                Content="Long break"
-                Grid.Column="2" />
+                    Content="Long break"
+                    Grid.Column="2" />
             <Button Background="Red"
                     Command="{Binding Path=StopCommand}"
-                    Content="Stop" 
-                    Grid.Column="3"/>
+                    Content="Stop"
+                    Grid.Column="3" />
         </Grid>
     </Grid>
 </Window>

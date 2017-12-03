@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              x:Name="reveilClock"
-             d:DesignHeight="300" d:DesignWidth="300" Loaded="Clock_Loaded">
+             d:DesignHeight="300" 
+             d:DesignWidth="300" 
+             Loaded="Clock_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,14 +16,16 @@
         <Ellipse x:Name="centerEllipse"
                  Fill="{DynamicResource HoverBrush}" 
                  Height="230" 
+                 HorizontalAlignment="Center"
                  Width="230" />
         <Ellipse x:Name="centerEllipse1" 
                  Fill="{DynamicResource ControlBackgroundBrush}" 
                  Height="110" 
+                 HorizontalAlignment="Center"
                  Width="110" />
         <!-- secondes -->
         <Path x:Name="pathSeconds" 
-                HorizontalAlignment="Stretch" 
+                HorizontalAlignment="Center" 
                 Stroke="{Binding SecondColor, ElementName=reveilClock}"
                 StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
                 VerticalAlignment="Stretch">
@@ -32,7 +36,8 @@
                             <PathFigure x:Name="pfSeconds">
                                 <PathFigure.Segments>
                                     <PathSegmentCollection>
-                                        <ArcSegment x:Name="arcSeconds" SweepDirection="Clockwise" />
+                                        <ArcSegment x:Name="arcSeconds" 
+                                                    SweepDirection="Clockwise" />
                                     </PathSegmentCollection>
                                 </PathFigure.Segments>
                             </PathFigure>
@@ -43,7 +48,7 @@
         </Path>
         <!-- minutes -->
         <Path x:Name="pathMinutes" 
-                HorizontalAlignment="Stretch" 
+                HorizontalAlignment="Center" 
                 Stroke="{Binding MinuteColor, ElementName=reveilClock}"
                 StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
                 VerticalAlignment="Stretch">
@@ -54,7 +59,8 @@
                             <PathFigure x:Name="pfMinutes">
                                 <PathFigure.Segments>
                                     <PathSegmentCollection>
-                                        <ArcSegment x:Name="arcMinutes" SweepDirection="Clockwise" />
+                                        <ArcSegment x:Name="arcMinutes" 
+                                                    SweepDirection="Clockwise" />
                                     </PathSegmentCollection>
                                 </PathFigure.Segments>
                             </PathFigure>

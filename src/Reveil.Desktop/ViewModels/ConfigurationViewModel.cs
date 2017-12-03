@@ -1,12 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Reveil.Configuration;
-using Reveil.Messages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reveil.ViewModels
 {
@@ -29,11 +24,11 @@ namespace Reveil.ViewModels
             // les commandes
             ActivateCommand = new RelayCommand(ExecuteActivateCommand);
             ResetCommand = new RelayCommand(ExecuteResetCommand);
-            
         }
         #endregion
 
         #region Propriétés
+
         /// <summary>
         /// Obtient la commande Activate
         /// </summary>
@@ -41,21 +36,6 @@ namespace Reveil.ViewModels
         {
             get;
             private set;
-        }
-        /// <summary>
-        /// Obtient ou définit si le mode double écran est actif.
-        /// </summary>
-        public bool DualMode
-        {
-            get
-            {
-                return _configuration.DualMode;
-            }
-            set
-            {
-                _configuration.DualMode = value;
-                RaisePropertyChanged(nameof(DualMode));
-            }
         }
 
         /// <summary>
@@ -128,7 +108,6 @@ namespace Reveil.ViewModels
                 _configuration.ShortBreak = value;
                 RaisePropertyChanged(nameof(ShortBreak));
             }
-
         }
 
         /// <summary>
@@ -146,6 +125,7 @@ namespace Reveil.ViewModels
                 RaisePropertyChanged(nameof(Sprint));
             }
         }
+
         #endregion
 
         #region Méthodes
@@ -154,14 +134,13 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteActivateCommand()
         {
-            if(SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
+            if (SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
             {
                 return;
             }
 
-            TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);                       
+            TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);
             _parentVM.Duration = duree;
-
         }
 
         /// <summary>
@@ -173,7 +152,6 @@ namespace Reveil.ViewModels
             ShortBreak = ConfigurationStore.DefaultShortBreak;
             Sprint = ConfigurationStore.DefaultSprint;
             RingPath = ConfigurationStore.DefaultRingPath;
-
         }
         #endregion
     }

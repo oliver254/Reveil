@@ -1,9 +1,5 @@
 ﻿using Reveil.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -21,67 +17,75 @@ namespace Reveil.Controls
     TemplatePart(Name = DecrementTimePart, Type = typeof(ButtonBase))]
     public class TimePicker : Control
     {
-
         #region Champs
-        private const string HourPart = "PART_Hours";
-        private const string MinutePart = "PART_Minutes";
-        private const string SecondPart = "PART_Seconds";
-        private const string IncreaseTimePart = "PART_IncreaseTime";
-        private const string DecrementTimePart = "PART_DecrementTime";
-
         public static readonly DependencyProperty MaxTimeProperty =
             DependencyProperty.Register(
                 nameof(MaxTime),
                 typeof(TimeSpan),
                 typeof(TimePicker),
                 new UIPropertyMetadata(TimeSpan.MaxValue, TimePicker_LimitsChanged));
+
         public static readonly DependencyProperty MinTimeProperty =
             DependencyProperty.Register(
                 nameof(MinTime),
                 typeof(TimeSpan),
                 typeof(TimePicker),
                 new UIPropertyMetadata(TimeSpan.MinValue, TimePicker_LimitsChanged));
-        public static readonly DependencyProperty SelectedTimeProperty =
-            DependencyProperty.Register(
-                nameof(SelectedTime),
-                typeof(TimeSpan),
-                typeof(TimePicker),
-                new UIPropertyMetadata(new TimeSpan(0, 0, 0), SelectedTimePropertyChanged, ForceValidSelectedTime));
+
         public static readonly DependencyProperty SelectedHourProperty =
             DependencyProperty.Register(
                 nameof(SelectedHour),
                 typeof(int),
                 typeof(TimePicker),
                 new UIPropertyMetadata(0, TimePicker_HourChanged));
+
         public static readonly DependencyProperty SelectedMinuteProperty =
             DependencyProperty.Register(
                 nameof(SelectedMinute),
                 typeof(int),
                 typeof(TimePicker),
                 new UIPropertyMetadata(0, TimePicker_MinuteChanged));
-        public static readonly RoutedEvent SelectedTimeChangedEvent =
-             EventManager.RegisterRoutedEvent(
-                 nameof(SelectedTimeChanged),
-                 RoutingStrategy.Bubble,
-                 typeof(TimeSelectedChangedEventHandler),
-                 typeof(TimePicker));
+
         public static readonly DependencyProperty SelectedSecondProperty =
             DependencyProperty.Register(nameof(SelectedSecond),
                 typeof(int),
                 typeof(TimePicker),
                 new UIPropertyMetadata(0, TimePicker_SecondChanged));
 
+        public static readonly RoutedEvent SelectedTimeChangedEvent =
+             EventManager.RegisterRoutedEvent(
+                 nameof(SelectedTimeChanged),
+                 RoutingStrategy.Bubble,
+                 typeof(TimeSelectedChangedEventHandler),
+                 typeof(TimePicker));
+
+        public static readonly DependencyProperty SelectedTimeProperty =
+            DependencyProperty.Register(
+                nameof(SelectedTime),
+                typeof(TimeSpan),
+                typeof(TimePicker),
+                new UIPropertyMetadata(new TimeSpan(0, 0, 0), SelectedTimePropertyChanged, ForceValidSelectedTime));
+
+        private const string DecrementTimePart = "PART_DecrementTime";
+        private const string HourPart = "PART_Hours";
+        private const string IncreaseTimePart = "PART_IncreaseTime";
+        private const string MinutePart = "PART_Minutes";
+        private const string SecondPart = "PART_Seconds";
         private readonly int hourMaxValue = 23;
         private readonly int minuteMaxValue = 59;
         private readonly int secondMaxValue = 59;
-        private int hourMinValue;
-        private int minuteMinValue = 0;
-        private int secondMinValue = 0;
-        //data memebers to store the textboxes for hours, minutes and seconds
-        private TextBox hours, minutes, seconds;
+
         //the textbox that is selected
         private TextBox currentlySelectedTextBox;
+
+        private int hourMinValue;
+
+        //data memebers to store the textboxes for hours, minutes and seconds
+        private TextBox hours, minutes, seconds;
+
         private bool isUpdatingTime = false;
+        private int minuteMinValue = 0;
+        private int secondMinValue = 0;
         #endregion
 
         #region Constructeurs
@@ -91,7 +95,7 @@ namespace Reveil.Controls
         static TimePicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TimePicker), 
+                typeof(TimePicker),
                 new FrameworkPropertyMetadata(typeof(TimePicker)));
         }
 
@@ -102,6 +106,7 @@ namespace Reveil.Controls
         {
             SelectedTime = DateTime.Now.TimeOfDay;
         }
+
         #endregion
 
         #region Délégués
@@ -111,6 +116,7 @@ namespace Reveil.Controls
         /// <param name="sender">The object raising the event</param>
         /// <param name="e">The routed event arguments</param>
         public delegate void TimeSelectedChangedEventHandler(object sender, TimeSelectedChangedRoutedEventArgs e);
+
         #endregion
 
         #region Evenements
@@ -168,7 +174,7 @@ namespace Reveil.Controls
         }
 
         /// <summary>
-        /// Gets or sets the selected timestamp 
+        /// Gets or sets the selected timestamp
         /// </summary>
         public TimeSpan SelectedTime
         {
@@ -179,22 +185,13 @@ namespace Reveil.Controls
 
         #region Méthodes
         /// <summary>
-        /// Exposes TryFocusNeighbourControl
-        /// </summary>
-        /// <param name="currentControl"></param>
-        /// <param name="leftControl"></param>
-        /// <param name="rightControl"></param>
-        /// <param name="keyPressed"></param>
-        public static void ExposeTryFocusNeighbourControl(TextBox currentControl, TextBox leftControl, TextBox rightControl, Key keyPressed)
-        {
-            TryFocusNeighbourControl(currentControl, leftControl, rightControl, keyPressed);
-        }
-        /// <summary>
         /// Exposes the AdjustCarretIndexOrMoveToNeighbour
         /// </summary>
         /// <param name="current"></param>
         /// <param name="neighbour"></param>
-        public static void ExposeAdjustCarretIndexOrMoveToNeighbour(TextBox current, TextBox neighbour)
+        public static void ExposeAdjustCarretIndexOrMoveToNeighbour(
+            TextBox current, 
+            TextBox neighbour)
         {
             AdjustCarretIndexOrMoveToNeighbour(current, neighbour);
         }
@@ -206,6 +203,22 @@ namespace Reveil.Controls
         public static void ExposeTrimSelectedText(TextBox textBox)
         {
             TrimSelectedText(textBox);
+        }
+
+        /// <summary>
+        /// Exposes TryFocusNeighbourControl
+        /// </summary>
+        /// <param name="currentControl"></param>
+        /// <param name="leftControl"></param>
+        /// <param name="rightControl"></param>
+        /// <param name="keyPressed"></param>
+        public static void ExposeTryFocusNeighbourControl(
+            TextBox currentControl, 
+            TextBox leftControl, 
+            TextBox rightControl, 
+            Key keyPressed)
+        {
+            TryFocusNeighbourControl(currentControl, leftControl, rightControl, keyPressed);
         }
 
         /// <summary>
@@ -269,7 +282,6 @@ namespace Reveil.Controls
                     newText + textBox.Text //if the carrot is in front the text append the new text infront
                     : textBox.Text + newText; //else put it in behind the existing text
             }
-
         }
 
         private static object ForceValidSelectedTime(DependencyObject sender, object value)
@@ -283,7 +295,9 @@ namespace Reveil.Controls
             return time;
         }
 
-        private static void SelectedTimePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void SelectedTimePropertyChanged(
+            DependencyObject sender, 
+            DependencyPropertyChangedEventArgs e)
         {
             TimePicker timePicker = (TimePicker)sender;
             TimeSpan newTime = (TimeSpan)e.NewValue;
@@ -321,7 +335,9 @@ namespace Reveil.Controls
             }
         }
 
-        private static void TimePicker_HourChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void TimePicker_HourChanged(
+            DependencyObject sender, 
+            DependencyPropertyChangedEventArgs args)
         {
             TimePicker timePicker = (TimePicker)sender;
 
@@ -337,7 +353,9 @@ namespace Reveil.Controls
             SetNewTime(timePicker);
         }
 
-        private static void TimePicker_LimitsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void TimePicker_LimitsChanged(
+            DependencyObject sender, 
+            DependencyPropertyChangedEventArgs args)
         {
             TimePicker picker = (TimePicker)sender;
             picker.hourMinValue = picker.MinTime.Hours;
@@ -346,7 +364,9 @@ namespace Reveil.Controls
             picker.CoerceValue(SelectedTimeProperty);//make sure to update the time if appropiate
         }
 
-        private static void TimePicker_MinuteChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void TimePicker_MinuteChanged(
+            DependencyObject sender, 
+            DependencyPropertyChangedEventArgs args)
         {
             TimePicker timePicker = (TimePicker)sender;
 
@@ -362,7 +382,9 @@ namespace Reveil.Controls
             SetNewTime(timePicker);
         }
 
-        private static void TimePicker_SecondChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void TimePicker_SecondChanged(
+            DependencyObject sender, 
+            DependencyPropertyChangedEventArgs args)
         {
             TimePicker timePicker = (TimePicker)sender;
 
@@ -382,7 +404,11 @@ namespace Reveil.Controls
                 textBox.Text = textBox.Text.Remove(textBox.SelectionStart, textBox.SelectionLength);
         }
 
-        private static void TryFocusNeighbourControl(TextBox currentControl, TextBox leftControl, TextBox rightControl, Key keyPressed)
+        private static void TryFocusNeighbourControl(
+            TextBox currentControl, 
+            TextBox leftControl, 
+            TextBox rightControl, 
+            Key keyPressed)
         {
             if (keyPressed == Key.Left &&
                 leftControl != null &&
@@ -390,7 +416,6 @@ namespace Reveil.Controls
             {
                 leftControl.Focus();
             }
-
             else if (keyPressed == Key.Right &&
                  rightControl != null &&
                  //if the caret index is the same as the length of the text and the user clicks right key it means that he wants to go to the next textbox
@@ -424,6 +449,11 @@ namespace Reveil.Controls
                 ValidateAndSetHour(hours.Text);
         }
 
+        private void IncreaseTime(object sender, RoutedEventArgs e)
+        {
+            IncrementDecrementTime(true);
+        }
+
         private void IncrementDecrementTime(bool increment)
         {
             //check if hour is selected if yes set it
@@ -442,17 +472,18 @@ namespace Reveil.Controls
         private bool IncrementDecrementTime(Key selectedKey)
         {
             if (selectedKey == Key.Up)
+            {
                 IncrementDecrementTime(true);
+            }
             else if (selectedKey == Key.Down)
+            {
                 IncrementDecrementTime(false);
+            }
             else
+            {
                 return false;
+            }
             return true;
-        }
-
-        private void IncreaseTime(object sender, RoutedEventArgs e)
-        {
-            IncrementDecrementTime(true);
         }
 
         private void MinutesKeyUp(object sender, KeyEventArgs e)
@@ -461,7 +492,9 @@ namespace Reveil.Controls
             TryFocusNeighbourControl(minutes, hours, seconds, e.Key);
 
             if (!IncrementDecrementTime(e.Key))
+            {
                 ValidateAndSetMinute(minutes.Text);
+            }
         }
 
         private void OnTimeSelectedChanged(TimeSpan newTime, TimeSpan oldTime)
@@ -540,7 +573,7 @@ namespace Reveil.Controls
         private void TextGotFocus(object sender, RoutedEventArgs e)
         {
             TextBox selectedBox = (TextBox)sender;
-            //set the currently selected textbox. 
+            //set the currently selected textbox.
             //This field is used to check which entity(hour/minute/second) to increment/decrement when user clicks the buttuns
             currentlySelectedTextBox = selectedBox;
 
@@ -571,14 +604,23 @@ namespace Reveil.Controls
             SelectedSecond = secNum;
             return secNum;
         }
+
         #endregion
 
         #region Classes
+
         /// <summary>
         /// Routed event arguments for the TimeSelectedChanged event
         /// </summary>
         public class TimeSelectedChangedRoutedEventArgs : RoutedEventArgs
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="routedEvent">The event that is raised </param>
+            public TimeSelectedChangedRoutedEventArgs(RoutedEvent routedEvent)
+                : base(routedEvent) { }
+
             /// <summary>
             /// Gets or sets the new time
             /// </summary>
@@ -588,15 +630,8 @@ namespace Reveil.Controls
             /// Gets or sets the old time
             /// </summary>
             public TimeSpan OldTime { get; set; }
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="routedEvent">The event that is raised </param>
-            public TimeSelectedChangedRoutedEventArgs(RoutedEvent routedEvent)
-                : base(routedEvent) { }
         }
+
         #endregion
     }
 }
-

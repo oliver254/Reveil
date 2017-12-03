@@ -13,7 +13,6 @@ namespace Reveil.Controls
     TemplatePart(Name = OpenPart, Type = typeof(Button))]
     public class FilePicker : Control
     {
-
         #region Champs
         private const string FilePathPart = "PART_FilePath";
         private const string OpenPart = "PART_Open";

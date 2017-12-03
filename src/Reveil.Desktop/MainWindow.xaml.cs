@@ -21,16 +21,19 @@ namespace Reveil
         #endregion
 
         #region Méthodes
-        /// <summary>
-        /// Obtient si le mode dual mode est actif.
-        /// </summary>
-        /// <returns></returns>
-        private static bool GetDualMode()
+        private void ConfigureMinimizeMode()
         {
-            bool reponse = SimpleIoc.Default.GetInstance<ConfigurationStore>().DualMode;
-            return reponse;
-        }
+            var configuration = SimpleIoc.Default.GetInstance<ConfigurationStore>();
+            if (configuration == null || !configuration.Minimize)
+            {
+                Activated -= Window_Activated;
+                Deactivated -= Window_Deactivated;
+                return;
+            }
 
+            Activated += Window_Activated;
+            Deactivated += Window_Deactivated;
+        }
 
         private void MenuItemConfiguration_Click(object sender, RoutedEventArgs e)
         {
@@ -39,15 +42,30 @@ namespace Reveil
             configDlg = new ConfigurationView();
             configDlg.Owner = this;
             configDlg.ShowDialog();
-
         }
 
+        private void Window_Activated(object sender, System.EventArgs e)
+        {
+            Height = 390;
+            Opacity = 1d;
+            Width = 260;
+        }
 
         private void Window_CloseClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
-        #endregion
 
+        private void Window_Deactivated(object sender, System.EventArgs e)
+        {
+            Height = 260;
+            Opacity = 0.5d;
+            Width = 200;
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ConfigureMinimizeMode();
+        }
+        #endregion
     }
 }

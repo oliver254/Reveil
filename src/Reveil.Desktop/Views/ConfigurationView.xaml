@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Reveil.Controls"
         mc:Ignorable="d"
-        Title="Configuration" 
-        Height="300" 
-        Width="600" 
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
-        WindowStartupLocation="CenterScreen" 
-        ShowInTaskbar="False" 
+        DataContext="{Binding Source={StaticResource Locator}, Path=Configuration}"
+        Height="300" 
         ResizeMode="NoResize" 
-        WindowStyle="ToolWindow"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Configuration}">
+        ShowInTaskbar="False" 
+        Title="Configuration" 
+        Width="600" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>

@@ -21,7 +21,11 @@ namespace Reveil.Core
         /// <param name="maxVal">The max value for the bounds checking</param>
         /// <param name="increment">Pass true to increment and false to decrement</param>
         /// <returns>Returns the new number incremented or decremeneted</returns>
-        public static int IncrementDecrementNumber(string num, int minValue, int maxVal, bool increment)
+        public static int IncrementDecrementNumber(
+            string num, 
+            int minValue, 
+            int maxVal, 
+            bool increment)
         {
             int newNum = ValidateNumber(num, minValue, maxVal);
             if (increment)

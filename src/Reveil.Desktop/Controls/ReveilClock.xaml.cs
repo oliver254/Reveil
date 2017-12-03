@@ -1,20 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Reveil.Core;
 using Reveil.Messages;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -31,55 +21,62 @@ namespace Reveil.Controls
                 typeof(TimeSpan?),
                 typeof(ReveilClock),
                 new PropertyMetadata(new PropertyChangedCallback(Clock_DurationChanged)));
+
         // Using a DependencyProperty as the backing store for SegmentColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MinuteColorProperty =
-            DependencyProperty.Register(nameof(MinuteColor), 
-                typeof(Brush), 
-                typeof(ReveilClock), 
+            DependencyProperty.Register(nameof(MinuteColor),
+                typeof(Brush),
+                typeof(ReveilClock),
                 new PropertyMetadata(new SolidColorBrush(Colors.Orange)));
+
         // Using a DependencyProperty as the backing store for Radius.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RadiusProperty =
-            DependencyProperty.Register(nameof(Radius), 
-                typeof(int), 
-                typeof(ReveilClock), 
+            DependencyProperty.Register(nameof(Radius),
+                typeof(int),
+                typeof(ReveilClock),
                 new PropertyMetadata(100, new PropertyChangedCallback(Clock_PropertyChanged)));
+
         public static readonly DependencyProperty RingPathProperty =
             DependencyProperty.Register(nameof(RingPath),
                 typeof(string),
                 typeof(ReveilClock),
                 new PropertyMetadata(null, new PropertyChangedCallback(Clock_RingPathChanged)));
+
         // Using a DependencyProperty as the backing store for SegmentColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SecondColorProperty =
-            DependencyProperty.Register(nameof(SecondColor), 
+            DependencyProperty.Register(nameof(SecondColor),
                 typeof(Brush),
-                typeof(ReveilClock), 
+                typeof(ReveilClock),
                 new PropertyMetadata(new SolidColorBrush(Colors.OrangeRed)));
+
         // Using a DependencyProperty as the backing store for StrokeThickness.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StrokeThicknessProperty =
-            DependencyProperty.Register(nameof(StrokeThickness), 
-                typeof(int), typeof(ReveilClock), 
+            DependencyProperty.Register(nameof(StrokeThickness),
+                typeof(int), typeof(ReveilClock),
                 new PropertyMetadata(20, new PropertyChangedCallback(Clock_PropertyChanged)));
+
         public static readonly DependencyProperty TimeProperty =
             DependencyProperty.Register(nameof(Time),
                 typeof(string),
                 typeof(ReveilClock),
                 new PropertyMetadata(string.Empty, new PropertyChangedCallback(Clock_TimeChanged)));
 
+        private bool _alarme = false;
         private DateTime? _end;
         private DispatcherTimer _timer;
-        private bool _alarme = false;
         #endregion
 
         #region Constructeurs
         public ReveilClock()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
         #endregion
 
         #region Propriétés
+
         /// <summary>
-        /// Retourne ou définit la durée du chronomètre. 
+        /// Retourne ou définit la durée du chronomètre.
         /// </summary>
         public TimeSpan? Duration
         {
@@ -152,16 +149,16 @@ namespace Reveil.Controls
                 SetValue(TimeProperty, value);
             }
         }
+
         #endregion
 
         #region Méthodes
-
         private static void Clock_DurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             ReveilClock clock = (ReveilClock)sender;
             clock.SetDuration((TimeSpan?)args.NewValue);
-            
         }
+
         private static void Clock_PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             ReveilClock clock = (ReveilClock)sender;
@@ -180,7 +177,6 @@ namespace Reveil.Controls
             reveil.TimeTextBlock.Text = (string)args.NewValue;
         }
 
-
         private void Clock_Loaded(object sender, RoutedEventArgs e)
         {
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -190,7 +186,7 @@ namespace Reveil.Controls
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
-            _timer.Start();            
+            _timer.Start();
         }
 
         private Point ComputeCartesianCoordinate(double angle, double radius)
@@ -223,7 +219,7 @@ namespace Reveil.Controls
                 second = Convert.ToDouble(duration.Seconds);
                 Time = $"{duration:hh\\:mm\\:ss}";
             }
-            else if(!_alarme)
+            else if (!_alarme)
             {
                 Messenger.Default.Send<AlarmMessage>(new AlarmMessage
                 {
@@ -269,15 +265,14 @@ namespace Reveil.Controls
             arcSegment.Point = endPoint;
             arcSegment.Size = outerArcSize;
             arcSegment.IsLargeArc = largeArc;
-
-        }    
+        }
 
         private void SetDuration(TimeSpan? duration)
         {
             _alarme = false;
             alarmMediaElement.Stop();
 
-            if(duration == null)
+            if (duration == null)
             {
                 _end = null;
                 return;
@@ -289,7 +284,7 @@ namespace Reveil.Controls
         {
             RenderArc();
         }
-        #endregion
 
+        #endregion
     }
 }
