@@ -43,26 +43,6 @@ namespace Reveil.Configuration
         }
 
         /// <summary>
-        /// Détermine si le mode minimisé est actif.
-        /// </summary>
-        public bool Minimize
-        {
-            get
-            {
-                bool valeur = false;
-                if (!TryGet(nameof(Minimize), out bool value))
-                {
-                    return false;
-                }
-                return valeur;
-            }
-            set
-            {
-                bool valeur = value;
-                Save<bool>(nameof(Minimize), valeur);
-            }
-        }
-        /// <summary>
         /// Obtient ou définit le chemin du son de l'alarme.
         /// </summary>
         public string RingPath
@@ -82,7 +62,6 @@ namespace Reveil.Configuration
                 Save<string>(nameof(RingPath), valeur);
             }
         }
-
         /// <summary>
         /// Obtient ou définit la durée d'une courte pause.
         /// </summary>
@@ -103,7 +82,6 @@ namespace Reveil.Configuration
                 Save<int>(nameof(ShortBreak), valeur);
             }
         }
-
         /// <summary>
         /// Obtient ou définit la durée d'un sprint.
         /// </summary>
@@ -124,7 +102,24 @@ namespace Reveil.Configuration
                 Save<int>(nameof(Sprint), valeur);
             }
         }
-
+        /// <summary>
+        /// Détermine si le mode transparent est actif.
+        /// </summary>
+        public bool Transparent
+        {
+            get
+            {
+                if (!TryGet(nameof(Transparent), out bool value))
+                {
+                    return false;
+                }
+                return value;
+            }
+            set
+            {
+                Save<bool>(nameof(Transparent), value);
+            }
+        }
         #endregion
 
         #region Méthodes

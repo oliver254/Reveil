@@ -27,11 +27,11 @@
                 </MenuItem.Header>
             </MenuItem>
             <Separator/>
-            <MenuItem Command="{Binding MinimizeCommand}" 
-                      IsChecked="{Binding MinimizeMode}">
+            <MenuItem Command="{Binding TransparentCommand}" 
+                      IsChecked="{Binding Transparent}">
                 <MenuItem.Header>
                     <TextBlock Foreground="Black"
-                               Text="Minimiser"/>
+                               Text="Transparent"/>
                 </MenuItem.Header>
             </MenuItem>                      
             <MenuItem Click="Window_CloseClick">

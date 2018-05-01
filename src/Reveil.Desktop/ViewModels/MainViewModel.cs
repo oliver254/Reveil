@@ -37,7 +37,7 @@ namespace Reveil.ViewModels
 
             //les commandes
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
-            MinimizeCommand = new RelayCommand(() => ExecuteMinimizeCommand());
+            TransparentCommand = new RelayCommand(() => ExecuteTransparentCommand());
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
             SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
             StopCommand = new RelayCommand(ExecuteStopCommand);
@@ -73,24 +73,25 @@ namespace Reveil.ViewModels
         /// <summary>
         /// Obtient la commande Minimize
         /// </summary>
-        public RelayCommand MinimizeCommand
+        public RelayCommand TransparentCommand
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Obtient l'état du mode Minimize
+        /// Détermine si le mode transparent est actif.
         /// </summary>
-        public bool MinimizeMode
+        public bool Transparent
         {
             get
             {
-                return GetMinimizeMode();
+                return _configuration.Transparent;
             }
             set
             {
-
+                _configuration.Transparent = value;
+                RaisePropertyChanged(nameof(Transparent));
             }
         }
 
@@ -139,44 +140,29 @@ namespace Reveil.ViewModels
         #endregion
 
         #region Méthodes
-        private static ConfigurationStore GetConfiguration()
-        {
-            return SimpleIoc.Default.GetInstance<ConfigurationStore>();
-        }
 
         private void ExecuteCommand(int duration)
         {
             Duration = TimeSpan.FromMinutes(duration);
         }
 
-        private void ExecuteMinimizeCommand()
+
+        /// <summary>
+        /// Execute la commande Transparent
+        /// </summary>
+        private void ExecuteTransparentCommand()
         {
-            SetMinimizeMode(!GetMinimizeMode());
+            Transparent = !Transparent;
         }
 
+        /// <summary>
+        /// Execute la commande Stop
+        /// </summary>
         private void ExecuteStopCommand()
         {
             Duration = null;
         }
-        private bool GetMinimizeMode()
-        {
-            var configuration = GetConfiguration();
-            if(configuration == null)
-            {
-                return false;
-            }
-            return configuration.Minimize;
-        }
 
-        private void SetMinimizeMode(bool value)
-        {
-            var configuration = GetConfiguration();
-            if(configuration == null)
-            {
-                return;
-            }
-            configuration.Minimize = value;
-        }
         #endregion
     }
 }
