@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
 using Reveil.Messages;
+using Reveil.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,21 @@ namespace Reveil.Views
         public ConfigurationView()
         {
             InitializeComponent();
+            DataContext = ViewModel;
         }
+        #endregion
+
+        #region Propriétés
+        public ConfigurationViewModel ViewModel
+        {
+            get
+            {
+                return ViewModelLocator.Current.Configuration;
+            }
+        }
+        #endregion
+
+        #region Méthodes
         #endregion
     }
 }

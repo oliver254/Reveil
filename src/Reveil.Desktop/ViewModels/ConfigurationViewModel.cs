@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CommonServiceLocator;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Reveil.Configuration;
 using System;
@@ -8,27 +9,24 @@ namespace Reveil.ViewModels
     public class ConfigurationViewModel : ViewModelBase
     {
         #region Champs
-        private readonly MainViewModel _parentVM;
-        private readonly ConfigurationStore _configuration;
-
+        private MainViewModel _parentVM;
         private TimeSpan _selection;
         #endregion
 
         #region Constructeurs
-        public ConfigurationViewModel(MainViewModel parentVM, ConfigurationStore configuration)
+        public ConfigurationViewModel()
         {
-            _parentVM = parentVM;
-            _configuration = configuration;
             SelectedTime = DateTime.Now.TimeOfDay;
 
             // les commandes
             ActivateCommand = new RelayCommand(ExecuteActivateCommand);
             ResetCommand = new RelayCommand(ExecuteResetCommand);
+            TransparentCommand = new RelayCommand(() => ExecuteTransparentCommand());
+
         }
         #endregion
 
         #region Propriétés
-
         /// <summary>
         /// Obtient la commande Activate
         /// </summary>
@@ -37,7 +35,7 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
-
+        public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
         /// <summary>
         /// Obtient ou définit la durée d'une longue durée.
         /// </summary>
@@ -45,11 +43,11 @@ namespace Reveil.ViewModels
         {
             get
             {
-                return _configuration.LongBreak;
+                return Configuration.LongBreak;
             }
             set
             {
-                _configuration.LongBreak = value;
+                Configuration.LongBreak = value;
                 RaisePropertyChanged(nameof(LongBreak));
             }
         }
@@ -70,14 +68,15 @@ namespace Reveil.ViewModels
         {
             get
             {
-                return _configuration.RingPath;
+                return Configuration.RingPath;
             }
             set
             {
                 string ringPath = value;
-                _configuration.RingPath = ringPath;
+                Configuration.RingPath = ringPath;
                 RaisePropertyChanged(nameof(RingPath));
-                _parentVM.RingPath = ringPath;
+                _parentVM.RaisePropertyChanged(nameof(RingPath));
+
             }
         }
 
@@ -93,7 +92,6 @@ namespace Reveil.ViewModels
                 RaisePropertyChanged(nameof(SelectedTime));
             }
         }
-
         /// <summary>
         /// Obitent ou définit la durée d'une courte pause.
         /// </summary>
@@ -101,15 +99,14 @@ namespace Reveil.ViewModels
         {
             get
             {
-                return _configuration.ShortBreak;
+                return Configuration.ShortBreak;
             }
             set
             {
-                _configuration.ShortBreak = value;
+                Configuration.ShortBreak = value;
                 RaisePropertyChanged(nameof(ShortBreak));
             }
         }
-
         /// <summary>
         /// Obtient ou définit la durée d'un sprint.
         /// </summary>
@@ -117,18 +114,41 @@ namespace Reveil.ViewModels
         {
             get
             {
-                return _configuration.Sprint;
+                return Configuration.Sprint;
             }
             set
             {
-                _configuration.Sprint = value;
+                Configuration.Sprint = value;
                 RaisePropertyChanged(nameof(Sprint));
             }
         }
-
+        public bool Transparent
+        {
+            get
+            {
+                return Configuration.Transparent;
+            }
+            set
+            {
+                Configuration.Transparent = value;
+                RaisePropertyChanged(nameof(Transparent));
+            }
+        }
+        /// <summary>
+        /// Obtient la commande Transparent
+        /// </summary>
+        public RelayCommand TransparentCommand
+        {
+            get;
+            private set;
+        }
         #endregion
 
         #region Méthodes
+        public void Initialize(MainViewModel parentViewModel)
+        {
+            _parentVM = parentViewModel;
+        }
         /// <summary>
         /// Execute la commande Activate (l'alarme
         /// </summary>
@@ -152,6 +172,22 @@ namespace Reveil.ViewModels
             ShortBreak = ConfigurationStore.DefaultShortBreak;
             Sprint = ConfigurationStore.DefaultSprint;
             RingPath = ConfigurationStore.DefaultRingPath;
+        }
+        /// <summary>
+        /// Execute la commande Transparent
+        /// </summary>
+        private void ExecuteTransparentCommand()
+        {
+            _parentVM.View.Activate();
+            if (Transparent)
+            {               
+                _parentVM.View.ActivateTransparency();
+            }
+            else
+            {
+                _parentVM.View.DeactiveTransparency();
+            }
+            
         }
         #endregion
     }
