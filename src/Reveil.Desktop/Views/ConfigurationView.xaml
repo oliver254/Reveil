@@ -29,6 +29,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>            
         </Grid.RowDefinitions>
         <!-- Pomodoro clock-->
         <TextBlock Margin="0,0,15,0" 
@@ -89,5 +91,13 @@
                     Margin="5" 
                     Width="100"/>
         </WrapPanel>
+        <!-- Transparence -->
+        <TextBlock Grid.Row="9"
+                   Text="Transparence:"/>
+        <CheckBox Content="Mode Transparent"
+                  Command="{Binding TransparentCommand}"
+                  Grid.Column="1"
+                  Grid.Row="10"
+                  IsChecked="{Binding Transparent}"/>
     </Grid>
 </Window>

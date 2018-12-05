@@ -1,3 +1,4 @@
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
@@ -22,29 +23,25 @@ namespace Reveil.ViewModels
     {
         #region Champs
         public const string RingPathPropertyName = "RingPath";
-
-        private readonly ConfigurationStore _configuration;
-
         private TimeSpan? _duree;
-        private string _ringPath;
+        private MainWindow _view;
         #endregion
 
         #region Constructeurs
-        public MainViewModel(ConfigurationStore configuration)
+        public MainViewModel()
         {
-            _configuration = configuration;
-            _ringPath = configuration.RingPath;
 
             //les commandes
-            LongBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.LongBreak));
-            TransparentCommand = new RelayCommand(() => ExecuteTransparentCommand());
-            ShortBreakCommand = new RelayCommand(() => ExecuteCommand(_configuration.ShortBreak));
-            SprintCommand = new RelayCommand(() => ExecuteCommand(_configuration.Sprint));
+            LongBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.LongBreak));
+            ShortBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.ShortBreak));
+            SprintCommand = new RelayCommand(() => ExecuteCommand(Configuration.Sprint));
             StopCommand = new RelayCommand(ExecuteStopCommand);
         }
         #endregion
 
         #region Propriétés
+        public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
+
         /// <summary>
         /// Obtient ou définit la durée.
         /// </summary>
@@ -71,46 +68,15 @@ namespace Reveil.ViewModels
         }
 
         /// <summary>
-        /// Obtient la commande Minimize
-        /// </summary>
-        public RelayCommand TransparentCommand
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Détermine si le mode transparent est actif.
-        /// </summary>
-        public bool Transparent
-        {
-            get
-            {
-                return _configuration.Transparent;
-            }
-            set
-            {
-                _configuration.Transparent = value;
-                RaisePropertyChanged(nameof(Transparent));
-            }
-        }
-
-        /// <summary>
         /// Retourne ou définit le chemin de la sonnerie
         /// </summary>
         public string RingPath
         {
             get
             {
-                return _configuration.RingPath;
-            }
-            set
-            {
-                _ringPath = value;
-                RaisePropertyChanged(nameof(RingPath));
+                return Configuration.RingPath;
             }
         }
-
         /// <summary>
         /// Obtient la commande ShortBreak.
         /// </summary>
@@ -119,7 +85,6 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
-
         /// <summary>
         /// Obtient la commande Sprint
         /// </summary>
@@ -128,7 +93,6 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
-
         /// <summary>
         /// Obtient la commande Stop
         /// </summary>
@@ -137,9 +101,26 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
+
+        public MainWindow View => _view;
         #endregion
 
         #region Méthodes
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="view"></param>
+        public void Initialize(MainWindow view)
+        {
+            _view = view;
+
+            if(Configuration.Transparent)
+            {
+                _view.WindowStyle = System.Windows.WindowStyle.None;
+                _view.AllowsTransparency = true;
+                _view.ActivateTransparency();
+            }
+        }
 
         private void ExecuteCommand(int duration)
         {
@@ -148,20 +129,13 @@ namespace Reveil.ViewModels
 
 
         /// <summary>
-        /// Execute la commande Transparent
-        /// </summary>
-        private void ExecuteTransparentCommand()
-        {
-            Transparent = !Transparent;
-        }
-
-        /// <summary>
         /// Execute la commande Stop
         /// </summary>
         private void ExecuteStopCommand()
         {
             Duration = null;
         }
+
 
         #endregion
     }

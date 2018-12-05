@@ -5,8 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Forms = System.Windows.Forms;
-
 
 namespace Reveil
 {
@@ -18,15 +16,15 @@ namespace Reveil
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow mainDlg = new MainWindow();
-            var screens = Forms.Screen.AllScreens.OrderBy(s => s.WorkingArea.Left);
-            var rightScreen = screens.Last();
-            double value = rightScreen.WorkingArea.Right - mainDlg.Width;
 
-            if(Forms.Screen.AllScreens.Length > 1 && rightScreen.Primary)
+            var value = SystemParameters.VirtualScreenLeft;
+            if(value >= 0)
             {
-                var leftScreen = screens.First();
-                value = leftScreen.WorkingArea.Left;
+                value = SystemParameters.VirtualScreenWidth - mainDlg.Width; 
             }
+          
+
+
             mainDlg.Left = value;
             mainDlg.Top = 16;
             mainDlg.Show();

@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Reveil.Controls"
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Height="390"
         Icon="Reveil.ico"
-        Loaded="Window_Loaded"
         Title="Reveil"
         Topmost="True"
         Width="300"
@@ -26,14 +24,8 @@
                                Text="Configuration" />
                 </MenuItem.Header>
             </MenuItem>
-            <Separator/>
-            <MenuItem Command="{Binding TransparentCommand}" 
-                      IsChecked="{Binding Transparent}">
-                <MenuItem.Header>
-                    <TextBlock Foreground="Black"
-                               Text="Transparent"/>
-                </MenuItem.Header>
-            </MenuItem>                      
+            <Separator />
+
             <MenuItem Click="Window_CloseClick">
                 <MenuItem.Header>
                     <TextBlock Foreground="Black"
@@ -65,15 +57,19 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Button Command="{Binding Path=SprintCommand}"
+            <Button x:Name="sprintButton"
+                    Command="{Binding Path=SprintCommand}"
                 Content="Sprint" />
-            <Button Command="{Binding Path=ShortBreakCommand}"
+            <Button x:Name="shortBreakButton"
+                    Command="{Binding Path=ShortBreakCommand}"
                     Content="Short break"
                     Grid.Column="1" />
-            <Button Command="{Binding Path=LongBreakCommand}"
+            <Button x:Name="longBreakButton"
+                    Command="{Binding Path=LongBreakCommand}"
                     Content="Long break"
                     Grid.Column="2" />
-            <Button Background="Red"
+            <Button x:Name="stopButton"
+                    Background="Red"
                     Command="{Binding Path=StopCommand}"
                     Content="Stop"
                     Grid.Column="3" />
