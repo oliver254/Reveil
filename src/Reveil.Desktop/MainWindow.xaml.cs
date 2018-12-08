@@ -15,7 +15,6 @@ namespace Reveil
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.Initialize(this);
-
         }
         #endregion
 

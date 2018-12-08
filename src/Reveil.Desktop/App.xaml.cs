@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Forms = System.Windows.Forms;
 
 namespace Reveil
 {
@@ -13,21 +14,37 @@ namespace Reveil
     /// </summary>
     public partial class App : Application
     {
+        private MainWindow _mainDlg;
+        private Forms.NotifyIcon _notifyIcon;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainDlg = new MainWindow();
+            _mainDlg = new MainWindow();
 
             var value = SystemParameters.VirtualScreenLeft;
             if(value >= 0)
             {
-                value = SystemParameters.VirtualScreenWidth - mainDlg.Width; 
+                value = SystemParameters.VirtualScreenWidth - _mainDlg.Width; 
             }
-          
 
+            _notifyIcon = new Forms.NotifyIcon();
+            _notifyIcon.DoubleClick += (s, args) => ActivateWindow();
+            _notifyIcon.Icon = Reveil.Properties.Resources.Reveil;
+            _notifyIcon.Visible = true;
 
-            mainDlg.Left = value;
-            mainDlg.Top = 16;
-            mainDlg.Show();
+            _mainDlg.Left = value;
+            _mainDlg.Top = 16;
+            _mainDlg.Show();
+        }      
+        private void ActivateWindow()
+        {
+            _mainDlg.Activate();
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            _notifyIcon.Visible = false;
+            _notifyIcon.Icon = null;
         }
     }
 }

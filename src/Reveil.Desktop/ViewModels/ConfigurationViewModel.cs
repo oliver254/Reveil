@@ -165,6 +165,7 @@ namespace Reveil.ViewModels
 
             TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);
             _parentVM.Duration = duree;
+            _logger.Info("Alarm is activated.");
         }
 
         /// <summary>
@@ -177,6 +178,7 @@ namespace Reveil.ViewModels
             ShortBreak = ConfigurationStore.DefaultShortBreak;
             Sprint = ConfigurationStore.DefaultSprint;
             RingPath = ConfigurationStore.DefaultRingPath;
+            _logger.Info("Reset is activated.");
         }
         /// <summary>
         /// Execute la commande Transparent

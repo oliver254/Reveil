@@ -59,5 +59,15 @@ namespace Reveil.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Icon semblable à (Icône).
+        /// </summary>
+        internal static System.Drawing.Icon Reveil {
+            get {
+                object obj = ResourceManager.GetObject("Reveil", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
