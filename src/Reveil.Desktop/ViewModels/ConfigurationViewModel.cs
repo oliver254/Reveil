@@ -157,15 +157,23 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteActivateCommand()
         {
-            _logger.Debug("Executing activate command...");
-            if (SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
-            {
-                return;
-            }
 
-            TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);
-            _parentVM.Duration = duree;
-            _logger.Info("Alarm is activated.");
+            _logger.Debug("Executing activate command...");
+            try
+            {
+                if (SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
+                {
+                    return;
+                }
+
+                TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);
+                _parentVM.Duration = duree;
+                _logger.Info("Alarm is activated.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
         }
 
         /// <summary>
@@ -174,11 +182,20 @@ namespace Reveil.ViewModels
         private void ExecuteResetCommand()
         {
             _logger.Debug("Executing reset command...");
-            LongBreak = ConfigurationStore.DefaultLongBreak;
-            ShortBreak = ConfigurationStore.DefaultShortBreak;
-            Sprint = ConfigurationStore.DefaultSprint;
-            RingPath = ConfigurationStore.DefaultRingPath;
-            _logger.Info("Reset is activated.");
+
+            try
+            {
+                LongBreak = ConfigurationStore.DefaultLongBreak;
+                ShortBreak = ConfigurationStore.DefaultShortBreak;
+                Sprint = ConfigurationStore.DefaultSprint;
+                RingPath = ConfigurationStore.DefaultRingPath;
+                _logger.Info("Reset is activated.");
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
         }
         /// <summary>
         /// Execute la commande Transparent
@@ -186,14 +203,22 @@ namespace Reveil.ViewModels
         private void ExecuteTransparentCommand()
         {
             _logger.Debug("Executing transparent command...");
-            _parentVM.View.Activate();
-            if (Transparent)
-            {               
-                _parentVM.View.ActivateTransparency();
-            }
-            else
+            try
             {
-                _parentVM.View.DeactiveTransparency();
+                _parentVM.View.Activate();
+                if (Transparent)
+                {
+                    _parentVM.View.ActivateTransparency();
+                }
+                else
+                {
+                    _parentVM.View.DeactiveTransparency();
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
             }
             
         }
