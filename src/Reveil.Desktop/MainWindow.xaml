@@ -5,6 +5,7 @@
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
         Height="390"
         Icon="Reveil.ico"
+        ShowInTaskbar="False"
         Title="Reveil"
         Topmost="True"
         Width="300"
