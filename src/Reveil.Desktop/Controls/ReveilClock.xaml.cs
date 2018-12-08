@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using NLog;
 using Reveil.Messages;
 using System;
 using System.ComponentModel;
@@ -60,7 +61,7 @@ namespace Reveil.Controls
                 typeof(string),
                 typeof(ReveilClock),
                 new PropertyMetadata(string.Empty, new PropertyChangedCallback(Clock_TimeChanged)));
-
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private bool _alarme = false;
         private DateTime? _end;
         private DispatcherTimer _timer;
@@ -221,12 +222,14 @@ namespace Reveil.Controls
             }
             else if (!_alarme)
             {
+                _logger.Debug("Starting alarm...");
                 Messenger.Default.Send<AlarmMessage>(new AlarmMessage
                 {
                     Time = now
                 });
                 alarmMediaElement.Play();
                 _alarme = true;
+                _logger.Info("Alarm is started.");
             }
             minute *= 6;
             second *= 6;

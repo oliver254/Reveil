@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using NLog;
 using Reveil.Configuration;
 using System;
 
@@ -9,6 +10,7 @@ namespace Reveil.ViewModels
     public class ConfigurationViewModel : ViewModelBase
     {
         #region Champs
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private MainViewModel _parentVM;
         private TimeSpan _selection;
         #endregion
@@ -147,6 +149,7 @@ namespace Reveil.ViewModels
         #region Méthodes
         public void Initialize(MainViewModel parentViewModel)
         {
+            _logger.Debug("Initializing...");
             _parentVM = parentViewModel;
         }
         /// <summary>
@@ -154,6 +157,7 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteActivateCommand()
         {
+            _logger.Debug("Executing activate command...");
             if (SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
             {
                 return;
@@ -168,6 +172,7 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteResetCommand()
         {
+            _logger.Debug("Executing reset command...");
             LongBreak = ConfigurationStore.DefaultLongBreak;
             ShortBreak = ConfigurationStore.DefaultShortBreak;
             Sprint = ConfigurationStore.DefaultSprint;
@@ -178,6 +183,7 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteTransparentCommand()
         {
+            _logger.Debug("Executing transparent command...");
             _parentVM.View.Activate();
             if (Transparent)
             {               

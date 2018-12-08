@@ -2,6 +2,7 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using NLog;
 using Reveil.Configuration;
 using System;
 
@@ -23,6 +24,7 @@ namespace Reveil.ViewModels
     {
         #region Champs
         public const string RingPathPropertyName = "RingPath";
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private TimeSpan? _duree;
         private MainWindow _view;
         #endregion
@@ -30,7 +32,7 @@ namespace Reveil.ViewModels
         #region Constructeurs
         public MainViewModel()
         {
-
+            _logger.Debug("Buidling Main ViewMode...");
             //les commandes
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.ShortBreak));
@@ -107,11 +109,12 @@ namespace Reveil.ViewModels
 
         #region Méthodes
         /// <summary>
-        /// 
+        /// Initialise le modèle de vue avec la vue spécifiée.
         /// </summary>
         /// <param name="view"></param>
         public void Initialize(MainWindow view)
         {
+            _logger.Debug("Initializing...");
             _view = view;
 
             if(Configuration.Transparent)
@@ -120,19 +123,26 @@ namespace Reveil.ViewModels
                 _view.AllowsTransparency = true;
                 _view.ActivateTransparency();
             }
+            _logger.Debug("Main ViewModel is initialized.");
         }
 
+        /// <summary>
+        /// Exécute la commande.
+        /// </summary>
+        /// <param name="duration"></param>
         private void ExecuteCommand(int duration)
         {
+            _logger.Debug("Executing command...");
             Duration = TimeSpan.FromMinutes(duration);
         }
 
 
         /// <summary>
-        /// Execute la commande Stop
+        /// Execute la commande Stop.
         /// </summary>
         private void ExecuteStopCommand()
         {
+            _logger.Debug("Executing stop command...");
             Duration = null;
         }
 

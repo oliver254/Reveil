@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using NLog;
+using Reveil.Properties;
+using System.Configuration;
 
 namespace Reveil.Configuration
 {
@@ -9,14 +11,12 @@ namespace Reveil.Configuration
         public const string DefaultRingPath = @"pack://siteoforigin:,,,/Resources/alarm.wav";
         public const int DefaultShortBreak = 5;
         public const int DefaultSprint = 25;
-        private readonly System.Configuration.Configuration _config;
         #endregion
 
         #region Constructeurs
         public ConfigurationStore()
         {
-            _config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            System.Diagnostics.Trace.WriteLine("ConfigManager's constructor is called");
+            
         }
         #endregion
 
@@ -28,17 +28,12 @@ namespace Reveil.Configuration
         {
             get
             {
-                int valeur;
-                if (!TryGet(nameof(LongBreak), out valeur))
-                {
-                    return DefaultLongBreak;
-                }
-                return valeur;
+                return Settings.Default.LongBreak;
             }
             set
             {
-                int valeur = value;
-                Save<int>(nameof(LongBreak), valeur);
+                Settings.Default.LongBreak = value;
+                Save();
             }
         }
 
@@ -49,17 +44,12 @@ namespace Reveil.Configuration
         {
             get
             {
-                string valeur;
-                if (!TryGet(nameof(RingPath), out valeur))
-                {
-                    return DefaultRingPath;
-                }
-                return valeur;
+                return Settings.Default.RingPath;
             }
             set
             {
-                string valeur = value;
-                Save<string>(nameof(RingPath), valeur);
+                Settings.Default.RingPath = value;
+                Save();
             }
         }
         /// <summary>
@@ -69,17 +59,12 @@ namespace Reveil.Configuration
         {
             get
             {
-                int valeur;
-                if (!TryGet(nameof(ShortBreak), out valeur))
-                {
-                    return DefaultShortBreak;
-                }
-                return valeur;
+                return Settings.Default.ShortBreak;
             }
             set
             {
-                int valeur = value;
-                Save<int>(nameof(ShortBreak), valeur);
+                Settings.Default.ShortBreak = value;
+                Save();
             }
         }
         /// <summary>
@@ -89,17 +74,12 @@ namespace Reveil.Configuration
         {
             get
             {
-                int valeur;
-                if (!TryGet(nameof(Sprint), out valeur))
-                {
-                    return DefaultSprint;
-                }
-                return valeur;
+                return Settings.Default.Sprint;
             }
             set
             {
-                int valeur = value;
-                Save<int>(nameof(Sprint), valeur);
+                Settings.Default.Sprint = value;
+                Save();
             }
         }
         /// <summary>
@@ -109,71 +89,20 @@ namespace Reveil.Configuration
         {
             get
             {
-                if (!TryGet(nameof(Transparent), out bool value))
-                {
-                    return false;
-                }
-                return value;
+                return Settings.Default.Transparent;
             }
             set
             {
-                Save<bool>(nameof(Transparent), value);
+                Settings.Default.Transparent = value;
+                Save();
             }
         }
         #endregion
 
         #region Méthodes
-        private void Save<T>(string name, T value)
+        private void Save()
         {
-            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
-
-            if (element == null)
-            {
-                element = new KeyValueConfigurationElement(name, value.ToString());
-                _config.AppSettings.Settings.Add(element);
-            }
-            else
-            {
-                element.Value = value.ToString();
-            }
-            _config.Save(ConfigurationSaveMode.Modified);
-        }
-
-        private bool TryGet(string name, out bool value)
-        {
-            value = false;
-
-            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
-            if (element == null)
-            {
-                return false;
-            }
-            return bool.TryParse(element.Value, out value);
-        }
-
-        private bool TryGet(string name, out int value)
-        {
-            value = 0;
-
-            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
-            if (element == null)
-            {
-                return false;
-            }
-            return int.TryParse(element.Value, out value);
-        }
-
-        private bool TryGet(string name, out string value)
-        {
-            value = string.Empty;
-
-            KeyValueConfigurationElement element = _config.AppSettings.Settings[name];
-            if (element == null)
-            {
-                return false;
-            }
-            value = element.Value;
-            return true;
+            Settings.Default.Save();
         }
         #endregion
     }

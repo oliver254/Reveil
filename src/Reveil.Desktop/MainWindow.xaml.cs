@@ -55,7 +55,6 @@ namespace Reveil
         private void Window_Activated(object sender, System.EventArgs e)
         {
             Opacity = 1d;
-            Width = 300;
             sprintButton.Visibility = Visibility.Visible;
             shortBreakButton.Visibility = Visibility.Visible;
             longBreakButton.Visibility = Visibility.Visible;
@@ -69,7 +68,6 @@ namespace Reveil
         private void Window_Deactivated(object sender, System.EventArgs e)
         {
             Opacity = 0.5d;
-            Width = 250;
             sprintButton.Visibility = Visibility.Collapsed;
             shortBreakButton.Visibility = Visibility.Collapsed;
             longBreakButton.Visibility = Visibility.Collapsed;
