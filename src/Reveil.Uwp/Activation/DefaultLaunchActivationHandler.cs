@@ -28,7 +28,7 @@ namespace Reveil.Uwp.Activation
 
             // TODO WTS: Remove or change this sample which shows a toast notification when the app is launched.
             // You can use this sample to create toast notifications where needed in your app.
-            Singleton<ToastNotificationsService>.Instance.ShowToastNotificationSample();
+            //Singleton<ToastNotificationsService>.Instance.ShowToastNotificationSample();
             await Task.CompletedTask;
         }
 
