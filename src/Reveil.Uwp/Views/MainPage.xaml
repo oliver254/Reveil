@@ -12,8 +12,13 @@
         Margin="{StaticResource MediumLeftRightMargin}">
         <Grid
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <controls:CircularClock x:Name="chronoClock"/>
-            <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <controls:CircularClock x:Name="chronoClock" />
+            <TextBlock Grid.Row="1" />
+            <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content.
                 Place your content here.-->
         </Grid>
     </Grid>

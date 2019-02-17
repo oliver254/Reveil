@@ -13,15 +13,20 @@ namespace Reveil.Uwp.Services
 {
     public class NavigationServiceEx
     {
-        public event NavigatedEventHandler Navigated;
-
-        public event NavigationFailedEventHandler NavigationFailed;
-
+        #region Champs
         private readonly Dictionary<string, Type> _pages = new Dictionary<string, Type>();
-
         private Frame _frame;
         private object _lastParamUsed;
+        #endregion
 
+        #region Evenements
+        public event NavigatedEventHandler Navigated;
+        public event NavigationFailedEventHandler NavigationFailed;
+        #endregion
+
+        #region Propriétés
+        public bool CanGoBack => Frame.CanGoBack;
+        public bool CanGoForward => Frame.CanGoForward;
         public Frame Frame
         {
             get
@@ -42,11 +47,40 @@ namespace Reveil.Uwp.Services
                 RegisterFrameEvents();
             }
         }
+        #endregion
 
-        public bool CanGoBack => Frame.CanGoBack;
+        #region Méthodes
+        public void Configure(string key, Type pageType)
+        {
+            lock (_pages)
+            {
+                if (_pages.ContainsKey(key))
+                {
+                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExKeyIsInNavigationService".GetLocalized(), key));
+                }
 
-        public bool CanGoForward => Frame.CanGoForward;
+                if (_pages.Any(p => p.Value == pageType))
+                {
+                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExTypeAlreadyConfigured".GetLocalized(), _pages.First(p => p.Value == pageType).Key));
+                }
 
+                _pages.Add(key, pageType);
+            }
+        }
+        public string GetNameOfRegisteredPage(Type page)
+        {
+            lock (_pages)
+            {
+                if (_pages.ContainsValue(page))
+                {
+                    return _pages.FirstOrDefault(p => p.Value == page).Key;
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExPageUnknow".GetLocalized(), page.Name));
+                }
+            }
+        }
         public bool GoBack()
         {
             if (CanGoBack)
@@ -86,40 +120,8 @@ namespace Reveil.Uwp.Services
                 return false;
             }
         }
-
-        public void Configure(string key, Type pageType)
-        {
-            lock (_pages)
-            {
-                if (_pages.ContainsKey(key))
-                {
-                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExKeyIsInNavigationService".GetLocalized(), key));
-                }
-
-                if (_pages.Any(p => p.Value == pageType))
-                {
-                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExTypeAlreadyConfigured".GetLocalized(), _pages.First(p => p.Value == pageType).Key));
-                }
-
-                _pages.Add(key, pageType);
-            }
-        }
-
-        public string GetNameOfRegisteredPage(Type page)
-        {
-            lock (_pages)
-            {
-                if (_pages.ContainsValue(page))
-                {
-                    return _pages.FirstOrDefault(p => p.Value == page).Key;
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format("ExceptionNavigationServiceExPageUnknow".GetLocalized(), page.Name));
-                }
-            }
-        }
-
+        private void Frame_Navigated(object sender, NavigationEventArgs e) => Navigated?.Invoke(sender, e);
+        private void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e) => NavigationFailed?.Invoke(sender, e);
         private void RegisterFrameEvents()
         {
             if (_frame != null)
@@ -137,9 +139,6 @@ namespace Reveil.Uwp.Services
                 _frame.NavigationFailed -= Frame_NavigationFailed;
             }
         }
-
-        private void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e) => NavigationFailed?.Invoke(sender, e);
-
-        private void Frame_Navigated(object sender, NavigationEventArgs e) => Navigated?.Invoke(sender, e);
+        #endregion
     }
 }

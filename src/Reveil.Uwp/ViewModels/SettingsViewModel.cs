@@ -15,8 +15,20 @@ namespace Reveil.Uwp.ViewModels
     // TODO WTS: Add other settings as necessary. For help see https://github.com/Microsoft/WindowsTemplateStudio/blob/master/docs/pages/settings.md
     public class SettingsViewModel : ViewModelBase
     {
-        private ElementTheme _elementTheme = ThemeSelectorService.Theme;
 
+        #region Champs
+        private ElementTheme _elementTheme = ThemeSelectorService.Theme;
+        private string _versionDescription;
+        private ICommand _switchThemeCommand;
+        #endregion
+
+        #region Constructeurs
+        public SettingsViewModel()
+        {
+        }
+        #endregion
+
+        #region Propriétés
         public ElementTheme ElementTheme
         {
             get { return _elementTheme; }
@@ -24,17 +36,12 @@ namespace Reveil.Uwp.ViewModels
             set { Set(ref _elementTheme, value); }
         }
 
-        private string _versionDescription;
-
         public string VersionDescription
         {
             get { return _versionDescription; }
 
             set { Set(ref _versionDescription, value); }
         }
-
-        private ICommand _switchThemeCommand;
-
         public ICommand SwitchThemeCommand
         {
             get
@@ -52,16 +59,13 @@ namespace Reveil.Uwp.ViewModels
                 return _switchThemeCommand;
             }
         }
+        #endregion
 
-        public SettingsViewModel()
-        {
-        }
-
+        #region Méthodes
         public void Initialize()
         {
             VersionDescription = GetVersionDescription();
         }
-
         private string GetVersionDescription()
         {
             var appName = "AppDisplayName".GetLocalized();
@@ -71,5 +75,6 @@ namespace Reveil.Uwp.ViewModels
 
             return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
+        #endregion
     }
 }

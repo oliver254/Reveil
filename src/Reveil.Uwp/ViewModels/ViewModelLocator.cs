@@ -10,10 +10,11 @@ namespace Reveil.Uwp.ViewModels
     [Windows.UI.Xaml.Data.Bindable]
     public class ViewModelLocator
     {
+        #region Champs
         private static ViewModelLocator _current;
+        #endregion
 
-        public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
-
+        #region Constructeurs
         private ViewModelLocator()
         {
             SimpleIoc.Default.Register(() => new NavigationServiceEx());
@@ -21,15 +22,17 @@ namespace Reveil.Uwp.ViewModels
             Register<MainViewModel, MainPage>();
             Register<SettingsViewModel, SettingsPage>();
         }
+        #endregion
 
-        public SettingsViewModel SettingsViewModel => SimpleIoc.Default.GetInstance<SettingsViewModel>();
-
+        #region Propriétés
+        public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
         public MainViewModel MainViewModel => SimpleIoc.Default.GetInstance<MainViewModel>();
-
-        public ShellViewModel ShellViewModel => SimpleIoc.Default.GetInstance<ShellViewModel>();
-
         public NavigationServiceEx NavigationService => SimpleIoc.Default.GetInstance<NavigationServiceEx>();
+        public SettingsViewModel SettingsViewModel => SimpleIoc.Default.GetInstance<SettingsViewModel>();
+        public ShellViewModel ShellViewModel => SimpleIoc.Default.GetInstance<ShellViewModel>();
+        #endregion
 
+        #region Méthodes
         public void Register<VM, V>()
             where VM : class
         {
@@ -37,5 +40,6 @@ namespace Reveil.Uwp.ViewModels
 
             NavigationService.Configure(typeof(VM).FullName, typeof(V));
         }
+        #endregion
     }
 }
