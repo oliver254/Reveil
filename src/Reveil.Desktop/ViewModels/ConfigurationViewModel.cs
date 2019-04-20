@@ -16,7 +16,6 @@ namespace Reveil.ViewModels
     {
         #region Champs
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        private MainViewModel _parentVM;
         private TimeSpan _selection;
         #endregion
 
@@ -180,7 +179,6 @@ namespace Reveil.ViewModels
         private void ExecuteResetCommand()
         {
             _logger.Debug("Executing reset command...");
-
             try
             {
                 LongBreak = ConfigurationStore.DefaultLongBreak;
@@ -201,24 +199,7 @@ namespace Reveil.ViewModels
         private void ExecuteTransparentCommand()
         {
             _logger.Debug("Executing transparent command...");
-            try
-            {
-                _parentVM.View.Activate();
-                if (Transparent)
-                {
-                    _parentVM.View.ActivateTransparency();
-                }
-                else
-                {
-                    _parentVM.View.DeactiveTransparency();
-                }
-            }
-            catch(Exception ex)
-            {
-                _logger.Error(ex);
-                throw;
-            }
-            
+            Messenger.Default.Send<TransparentMessage>(new TransparentMessage(Transparent));
         }
         #endregion
     }

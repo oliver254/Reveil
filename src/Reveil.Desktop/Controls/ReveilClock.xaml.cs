@@ -21,27 +21,29 @@ namespace Reveil.Controls
     public partial class ReveilClock : UserControl
     {
         #region Champs
-        private const string TimeFormat = "HH:mm:ss";
-        private const string DurationFormat = @"hh\:mm\:ss";
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register(nameof(Duration),
                 typeof(DateTime?),
                 typeof(ReveilClock),
                 new PropertyMetadata(new PropertyChangedCallback(Clock_DurationChanged)));
+
         public static readonly DependencyProperty RingPathProperty =
             DependencyProperty.Register(nameof(RingPath),
                 typeof(string),
                 typeof(ReveilClock),
                 new PropertyMetadata(null, new PropertyChangedCallback(Clock_RingPathChanged)));
+
         public static readonly DependencyProperty TimeProperty =
             DependencyProperty.Register(nameof(Time),
                 typeof(string),
                 typeof(ReveilClock),
                 new PropertyMetadata(string.Empty));
 
+        private const string DurationFormat = @"hh\:mm\:ss";
+        private const string TimeFormat = "HH:mm:ss";
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        private ReveilState _state; 
         private DateTime? _end;
+        private ReveilState _state;
         private DispatcherTimer _timer;
         #endregion
 
@@ -49,8 +51,12 @@ namespace Reveil.Controls
         public ReveilClock()
         {
             InitializeComponent();
-            _state = ReveilState.Clock;
+            State = ReveilState.Clock;
         }
+        #endregion
+
+        #region Evenements 
+        public EventHandler<ReveilState> StateChanged;
         #endregion
 
         #region Propriétés
@@ -93,6 +99,18 @@ namespace Reveil.Controls
             }
         }
 
+        private ReveilState State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+                OnStateChanged(_state);
+            }
+        }
         #endregion
 
         #region Méthodes
@@ -115,9 +133,32 @@ namespace Reveil.Controls
             sender.alarmMediaElement.Source = new Uri((string)args.NewValue);
         }
 
+        private void OnStateChanged(ReveilState state)
+        {
+            StateChanged?.Invoke(this, state);
+        }
+        /// <summary>
+        /// Plays the sound of the alarm.
+        /// </summary>
+        private void Play()
+        {
+            State = ReveilState.Alarm;
+            alarmMediaElement.Play();
+        }
+        /// <summary>
+        /// Sets the duration.
+        /// </summary>
+        /// <param name="duration"></param>
+        private void SetDuration(DateTime? duration)
+        {
+            _timer.Stop();
+            _end = duration;
+            State = (duration != null) ? ReveilState.Timer : ReveilState.Clock;
+            _timer.Start();
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            switch(_state)
+            switch(State)
             {
                 case ReveilState.Clock:
                     {
@@ -140,16 +181,21 @@ namespace Reveil.Controls
                     }
             }
         }
-
         /// <summary>
-        /// Plays the sound of the alarm.
+        /// Updates the duration.
         /// </summary>
-        private void Play()
+        private void UpdateDuration()
         {
-            _state = ReveilState.Alarm;
-            alarmMediaElement.Play();
+            DateTime now = DateTime.Now;
+            if (_end.Value <= now)
+            {
+                State = ReveilState.Play;
+            }
+            var duration = _end.Value - DateTime.Now;
+            secondTimeBar.Value = duration.Seconds;
+            minuteTimeBar.Value = duration.Minutes;
+            Time = duration.ToString(DurationFormat);
         }
-
         /// <summary>
         /// Updates the time.
         /// </summary>
@@ -159,34 +205,6 @@ namespace Reveil.Controls
             secondTimeBar.Value = time.Second;
             minuteTimeBar.Value = time.Minute;
             Time = time.ToString(TimeFormat);
-        }
-
-        /// <summary>
-        /// Updates the duration.
-        /// </summary>
-        private void UpdateDuration()
-        {
-            DateTime now = DateTime.Now;
-            if(_end.Value <= now)
-            {
-                _state = ReveilState.Play;
-            }
-            var duration = _end.Value - DateTime.Now;
-            secondTimeBar.Value = duration.Seconds;
-            minuteTimeBar.Value = duration.Minutes;
-            Time = duration.ToString(DurationFormat);
-        }
-
-        /// <summary>
-        /// Sets the duration.
-        /// </summary>
-        /// <param name="duration"></param>
-        private void SetDuration(DateTime? duration)
-        {
-            _timer.Stop();
-            _end = duration;
-            _state = (duration != null) ? ReveilState.Timer : ReveilState.Clock;
-            _timer.Start();
         }
         #endregion
     }

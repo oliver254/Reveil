@@ -8,7 +8,7 @@
         ShowInTaskbar="False"
         Title="Reveil"
         Topmost="True"
-        Width="200"
+        Width="190"
         WindowStyle="ToolWindow">
     <Window.CacheMode>
         <BitmapCache />
@@ -37,9 +37,7 @@
     </Window.ContextMenu>
     <Grid Background="{StaticResource ResourceKey=ControlBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- horloge -->
@@ -49,31 +47,27 @@
                               RingPath="{Binding RingPath}"
                               VerticalAlignment="Stretch" />
         <!-- buttons -->
-        <Grid x:Name="ButtonGrid"
-              Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <Button x:Name="sprintButton"
+        <StackPanel x:Name="ButtonGrid"
+                    Grid.Row="1"
+                    Orientation="Horizontal">
+            <Button x:Name="sprintButton" 
                     Command="{Binding Path=SprintCommand}"
-                Content="Sprint" />
+                    Content="Sprint" 
+                    MinWidth="60"/>
             <Button x:Name="shortBreakButton"
                     Command="{Binding Path=ShortBreakCommand}"
                     Content="Short break"
-                    Grid.Column="1" />
+                    MinWidth="60"/>
             <Button x:Name="longBreakButton"
                     Command="{Binding Path=LongBreakCommand}"
                     Content="Long break"
-                    Grid.Column="2" />
+                    MinWidth="60"/>
             <Button x:Name="stopButton"
                     Background="Red"
                     Command="{Binding Path=StopCommand}"
                     Content="Stop"
-                    Grid.Column="3" />
-        </Grid>
+                    MinWidth="60"
+                    Visibility="Collapsed"/>
+        </StackPanel>
     </Grid>
 </Window>

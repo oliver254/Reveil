@@ -15,7 +15,6 @@ namespace Reveil
         #region Champs
         private const double Opaque = 1d;
         private const double Transparency = 0.5d;
-        private ReveilState _state;
         #endregion
 
         #region Constructeurs
@@ -24,8 +23,9 @@ namespace Reveil
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.Initialize(this);
-            _state = ReveilState.Clock;
-            reveil.Show();
+            reveil.StateChanged += Reveil_StateChanged;
+            reveil.Show();          
+            Messenger.Default.Register<TransparentMessage>(this, HandleTransparentMessage);
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace Reveil
         {
             Activated += Window_Activated;
             Deactivated += Window_Deactivated;
-            Opacity = Transparency;
+            Opacity = Transparency;            
         }
 
         public void DeactiveTransparency()
@@ -53,6 +53,23 @@ namespace Reveil
             Deactivated -= Window_Deactivated;
         }
 
+        private void HandleTransparentMessage(TransparentMessage message)
+        {
+            if (message == null)
+            {
+                return;
+            }
+
+            if (message.Transparent)
+            {
+                ActivateTransparency();
+            }
+            else
+            {
+                DeactiveTransparency();
+            }
+            Activate();
+        }        
         private void MenuItemConfiguration_Click(object sender, RoutedEventArgs e)
         {
             ConfigurationView configDlg;
@@ -62,13 +79,39 @@ namespace Reveil
             configDlg.ShowDialog();
         }
 
+        private void Reveil_StateChanged(object sender, ReveilState state)
+        {
+            switch(state)
+            {
+                case ReveilState.Timer:
+                    {
+                        sprintButton.Visibility = Visibility.Collapsed;
+                        shortBreakButton.Visibility = Visibility.Collapsed;
+                        longBreakButton.Visibility = Visibility.Collapsed;
+                        stopButton.Visibility = Visibility.Visible;
+                        break;
+                    }
+                case ReveilState.Alarm:
+                case ReveilState.Play:
+                    {
+                        // skip
+                        break;
+                    }
+                default:
+                    {
+                        sprintButton.Visibility = Visibility.Visible;
+                        shortBreakButton.Visibility = Visibility.Visible;
+                        longBreakButton.Visibility = Visibility.Visible;
+                        stopButton.Visibility = Visibility.Collapsed;
+                        break;
+                    }
+            }
+        }
+
         private void Window_Activated(object sender, System.EventArgs e)
         {
             Opacity = Opaque;
-            sprintButton.Visibility = Visibility.Visible;
-            shortBreakButton.Visibility = Visibility.Visible;
-            longBreakButton.Visibility = Visibility.Visible;
-            stopButton.Visibility = Visibility.Visible;        }
+        }
 
         private void Window_CloseClick(object sender, RoutedEventArgs e)
         {
@@ -78,10 +121,6 @@ namespace Reveil
         private void Window_Deactivated(object sender, System.EventArgs e)
         {
             Opacity = Transparency;
-            sprintButton.Visibility = Visibility.Collapsed;
-            shortBreakButton.Visibility = Visibility.Collapsed;
-            longBreakButton.Visibility = Visibility.Collapsed;
-            stopButton.Visibility = Visibility.Collapsed;
         }
         #endregion
     }

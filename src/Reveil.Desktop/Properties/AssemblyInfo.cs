@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Monbsoft.com")]
 [assembly: AssemblyProduct("Reveil")]
-[assembly: AssemblyCopyright("Copyright © Monbsoft.com 2015")]
+[assembly: AssemblyCopyright("Copyright © Monbsoft.com 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
