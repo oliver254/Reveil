@@ -4,10 +4,11 @@ using CommonServiceLocator;
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-
+using GalaSoft.MvvmLight.Messaging;
 using NLog;
 
 using Reveil.Configuration;
+using Reveil.Messages;
 
 namespace Reveil.ViewModels
 {
@@ -28,7 +29,6 @@ namespace Reveil.ViewModels
             ActivateCommand = new RelayCommand(ExecuteActivateCommand);
             ResetCommand = new RelayCommand(ExecuteResetCommand);
             TransparentCommand = new RelayCommand(() => ExecuteTransparentCommand());
-
         }
         #endregion
 
@@ -78,11 +78,9 @@ namespace Reveil.ViewModels
             }
             set
             {
-                string ringPath = value;
-                Configuration.RingPath = ringPath;
+                Configuration.RingPath = value;
                 RaisePropertyChanged(nameof(RingPath));
-                _parentVM.RaisePropertyChanged(nameof(RingPath));
-
+                Messenger.Default.Send<RingMessage>(new RingMessage());
             }
         }
 
@@ -151,13 +149,8 @@ namespace Reveil.ViewModels
         #endregion
 
         #region Méthodes
-        public void Initialize(MainViewModel parentViewModel)
-        {
-            _logger.Debug("Initializing...");
-            _parentVM = parentViewModel;
-        }
         /// <summary>
-        /// Execute la commande Activate (l'alarme
+        /// Execute la commande Activate
         /// </summary>
         private void ExecuteActivateCommand()
         {
@@ -165,13 +158,14 @@ namespace Reveil.ViewModels
             _logger.Debug("Executing activate command...");
             try
             {
-                if (SelectedTime.CompareTo(DateTime.Now.TimeOfDay) <= 0)
+                var alarmDate = DateTime.Today.Add(SelectedTime);
+                if (alarmDate < DateTime.Now)
                 {
+                    _logger.Warn("Unable to activate an earlier alarm");
                     return;
                 }
 
-                TimeSpan duree = SelectedTime.Subtract(DateTime.Now.TimeOfDay);
-                _parentVM.Duration = duree;
+                Messenger.Default.Send<AlarmMessage>(new AlarmMessage(alarmDate));
                 _logger.Info("Alarm is activated.");
             }
             catch (Exception ex)

@@ -43,7 +43,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- horloge -->
-        <controls:ReveilClock HorizontalAlignment="Stretch"
+        <controls:ReveilClock x:Name="reveil" 
+                              HorizontalAlignment="Stretch"
                               Duration="{Binding Path=Duration,Mode=TwoWay}"
                               RingPath="{Binding RingPath}"
                               VerticalAlignment="Stretch" />

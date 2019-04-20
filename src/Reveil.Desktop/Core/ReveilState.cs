@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Reveil.Core
 {
-    public enum ClockState
-    {
-        Alarm,
-        Clock,
-        StopWatch
+    public enum ReveilState
+    {     
+        Clock  = 0,
+        Timer = 1,
+        Play = 10,
+        Alarm = 20
     }
 }

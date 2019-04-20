@@ -7,8 +7,7 @@
              mc:Ignorable="d" 
              x:Name="reveilClock"
              d:DesignHeight="200" 
-             d:DesignWidth="200" 
-             Loaded="Clock_Loaded">
+             d:DesignWidth="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -29,6 +28,11 @@
                                   Width="132"/>
         <TextBlock x:Name="timeTimeBlock"
                    Grid.Row="1"
+                   Style="{StaticResource TimeTextStyle}"
                    Text="{Binding ElementName=reveilClock, Path=Time, Mode=OneWay}"/>
+        <MediaElement x:Name="alarmMediaElement"
+                      Grid.Row="1"
+                      LoadedBehavior="Manual" 
+                      Volume="1"/>        
     </Grid>
 </UserControl>

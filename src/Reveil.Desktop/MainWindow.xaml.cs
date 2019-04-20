@@ -1,5 +1,7 @@
 ﻿using System.Windows;
-
+using GalaSoft.MvvmLight.Messaging;
+using Reveil.Core;
+using Reveil.Messages;
 using Reveil.ViewModels;
 using Reveil.Views;
 
@@ -10,12 +12,20 @@ namespace Reveil
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Champs
+        private const double Opaque = 1d;
+        private const double Transparency = 0.5d;
+        private ReveilState _state;
+        #endregion
+
         #region Constructeurs
         public MainWindow()
         {
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.Initialize(this);
+            _state = ReveilState.Clock;
+            reveil.Show();
         }
         #endregion
 
@@ -34,6 +44,7 @@ namespace Reveil
         {
             Activated += Window_Activated;
             Deactivated += Window_Deactivated;
+            Opacity = Transparency;
         }
 
         public void DeactiveTransparency()
@@ -47,14 +58,13 @@ namespace Reveil
             ConfigurationView configDlg;
 
             configDlg = new ConfigurationView();
-            configDlg.ViewModel.Initialize(ViewModel);
             configDlg.Owner = this;
             configDlg.ShowDialog();
         }
 
         private void Window_Activated(object sender, System.EventArgs e)
         {
-            Opacity = 1d;
+            Opacity = Opaque;
             sprintButton.Visibility = Visibility.Visible;
             shortBreakButton.Visibility = Visibility.Visible;
             longBreakButton.Visibility = Visibility.Visible;
@@ -67,14 +77,12 @@ namespace Reveil
 
         private void Window_Deactivated(object sender, System.EventArgs e)
         {
-            Opacity = 0.5d;
+            Opacity = Transparency;
             sprintButton.Visibility = Visibility.Collapsed;
             shortBreakButton.Visibility = Visibility.Collapsed;
             longBreakButton.Visibility = Visibility.Collapsed;
             stopButton.Visibility = Visibility.Collapsed;
         }
-
-
         #endregion
     }
 }

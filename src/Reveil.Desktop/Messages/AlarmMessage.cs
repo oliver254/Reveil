@@ -4,7 +4,13 @@ namespace Reveil.Messages
 {
     public class AlarmMessage
     {
-        public DateTime Time
+        public AlarmMessage(DateTime alarm)
+        {
+            Alarm = alarm;
+        }
+
+
+        public DateTime Alarm
         {
             get;
             set;

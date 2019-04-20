@@ -5,10 +5,11 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-
+using GalaSoft.MvvmLight.Messaging;
 using NLog;
 
 using Reveil.Configuration;
+using Reveil.Messages;
 
 namespace Reveil.ViewModels
 {
@@ -29,7 +30,7 @@ namespace Reveil.ViewModels
         #region Champs
         public const string RingPathPropertyName = "RingPath";
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        private TimeSpan? _duree;
+        private DateTime? _duration;
         private MainWindow _view;
         #endregion
 
@@ -42,6 +43,9 @@ namespace Reveil.ViewModels
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.ShortBreak));
             SprintCommand = new RelayCommand(() => ExecuteCommand(Configuration.Sprint));
             StopCommand = new RelayCommand(ExecuteStopCommand);
+
+            Messenger.Default.Register<AlarmMessage>(this, HandleAlarmMessage);
+            Messenger.Default.Register<RingMessage>(this, HandleRingMessage);
         }
         #endregion
 
@@ -49,17 +53,17 @@ namespace Reveil.ViewModels
         public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
 
         /// <summary>
-        /// Obtient ou d�finit la dur�e.
+        /// Obtient ou définit la durée.
         /// </summary>
-        public TimeSpan? Duration
+        public DateTime? Duration
         {
             get
             {
-                return _duree;
+                return _duration;
             }
             set
             {
-                _duree = value;
+                _duration = value;
                 RaisePropertyChanged(nameof(Duration));
             }
         }
@@ -137,7 +141,7 @@ namespace Reveil.ViewModels
         private void ExecuteCommand(int duration)
         {
             _logger.Debug("Executing command...");
-            Duration = TimeSpan.FromMinutes(duration);
+            Duration = DateTime.Now.AddMinutes(duration++);
         }
 
 
@@ -150,7 +154,25 @@ namespace Reveil.ViewModels
             Duration = null;
         }
 
+        private void HandleAlarmMessage(AlarmMessage message)
+        {
+            if(message == null)
+            {
+                _logger.Warn("Alarm message is empty.");
+                return;
+            }
+            Duration = message.Alarm;
+        }
 
+        private void HandleRingMessage(RingMessage message)
+        {
+            if(message == null)
+            {
+                _logger.Warn("Ring path message is empty.");
+                return;
+            }
+            RaisePropertyChanged(nameof(RingPath));
+        }
         #endregion
     }
 }

@@ -3,13 +3,14 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
 using GalaSoft.MvvmLight.Messaging;
 
 using NLog;
-
+using Reveil.Core;
 using Reveil.Messages;
 
 namespace Reveil.Controls
@@ -20,9 +21,11 @@ namespace Reveil.Controls
     public partial class ReveilClock : UserControl
     {
         #region Champs
+        private const string TimeFormat = "HH:mm:ss";
+        private const string DurationFormat = @"hh\:mm\:ss";
         public static readonly DependencyProperty DurationProperty =
             DependencyProperty.Register(nameof(Duration),
-                typeof(TimeSpan?),
+                typeof(DateTime?),
                 typeof(ReveilClock),
                 new PropertyMetadata(new PropertyChangedCallback(Clock_DurationChanged)));
         public static readonly DependencyProperty RingPathProperty =
@@ -34,10 +37,10 @@ namespace Reveil.Controls
             DependencyProperty.Register(nameof(Time),
                 typeof(string),
                 typeof(ReveilClock),
-                new PropertyMetadata(string.Empty, new PropertyChangedCallback(Clock_TimeChanged)));
+                new PropertyMetadata(string.Empty));
 
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        private bool _alarme = false;
+        private ReveilState _state; 
         private DateTime? _end;
         private DispatcherTimer _timer;
         #endregion
@@ -46,6 +49,7 @@ namespace Reveil.Controls
         public ReveilClock()
         {
             InitializeComponent();
+            _state = ReveilState.Clock;
         }
         #endregion
 
@@ -53,9 +57,9 @@ namespace Reveil.Controls
         /// <summary>
         /// Retourne ou définit la durée du chronomètre.
         /// </summary>
-        public TimeSpan? Duration
+        public DateTime? Duration
         {
-            get { return (TimeSpan?)GetValue(DurationProperty); }
+            get { return (DateTime?)GetValue(DurationProperty); }
             set { SetValue(DurationProperty, value); }
         }
 
@@ -92,74 +96,97 @@ namespace Reveil.Controls
         #endregion
 
         #region Méthodes
-        private static void Clock_DurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        public void Show()
         {
-            var sender = d as ReveilClock;
-            sender.SetDuration((TimeSpan?)args.NewValue);
-        }
-
-        private static void Clock_RingPathChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            ReveilClock clock = (ReveilClock)sender;
-            //clock.alarmMediaElement.Source = new Uri((string)args.NewValue);
-        }
-
-        private static void Clock_TimeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            ReveilClock reveil = (ReveilClock)sender;
-            //reveil.TimeTextBlock.Text = (string)args.NewValue;
-        }
-
-        private void Clock_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DesignerProperties.GetIsInDesignMode(this))
-            {
-                return;
-            }
             _timer = new DispatcherTimer();
             _timer.Tick += Timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
             _timer.Start();
         }
+        private static void Clock_DurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            var sender = d as ReveilClock;
+            sender.SetDuration((DateTime?)args.NewValue);
+        }
+
+        private static void Clock_RingPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            var sender = d as ReveilClock;
+            sender.alarmMediaElement.Source = new Uri((string)args.NewValue);
+        }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(_end != null)
+            switch(_state)
             {
-                UpdateDuration();
-            }
-            else
-            {
-                UpdateTime();
+                case ReveilState.Clock:
+                    {
+                        UpdateTime();
+                        break;
+                    }
+                case ReveilState.Timer:
+                    {
+                        UpdateDuration();
+                        break;
+                    }
+                case ReveilState.Play:
+                    {
+                        Play();
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
             }
         }
 
+        /// <summary>
+        /// Plays the sound of the alarm.
+        /// </summary>
+        private void Play()
+        {
+            _state = ReveilState.Alarm;
+            alarmMediaElement.Play();
+        }
+
+        /// <summary>
+        /// Updates the time.
+        /// </summary>
         private void UpdateTime()
         {
             var time = DateTime.Now;
             secondTimeBar.Value = time.Second;
             minuteTimeBar.Value = time.Minute;
-            Time = time.ToString("HH:mm:ss");
+            Time = time.ToString(TimeFormat);
         }
 
+        /// <summary>
+        /// Updates the duration.
+        /// </summary>
         private void UpdateDuration()
         {
+            DateTime now = DateTime.Now;
+            if(_end.Value <= now)
+            {
+                _state = ReveilState.Play;
+            }
             var duration = _end.Value - DateTime.Now;
             secondTimeBar.Value = duration.Seconds;
             minuteTimeBar.Value = duration.Minutes;
+            Time = duration.ToString(DurationFormat);
         }
 
-
-        private void SetDuration(TimeSpan? duration)
+        /// <summary>
+        /// Sets the duration.
+        /// </summary>
+        /// <param name="duration"></param>
+        private void SetDuration(DateTime? duration)
         {
-            _alarme = false;
-
-            if (duration == null)
-            {
-                _end = null;
-                return;
-            }
-            _end = DateTime.Now.Add(duration.Value).AddSeconds(1);
+            _timer.Stop();
+            _end = duration;
+            _state = (duration != null) ? ReveilState.Timer : ReveilState.Clock;
+            _timer.Start();
         }
         #endregion
     }
