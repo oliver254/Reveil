@@ -3371,6 +3371,60 @@
         </Setter>
     </Style>
 
+    <Style TargetType="controls:CircularTimeBar" >
+        <Setter Property="Foreground" Value="Blue" />
+        <Setter Property="Outline" Value="#FF595959" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Thickness" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:CircularTimeBar">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- Gray outline of progress bar -->
+                        <Path Fill="Transparent" Stroke="{TemplateBinding Outline}" StrokeThickness="{TemplateBinding Thickness}" StrokeDashCap="Flat">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigureCollection>
+                                            <PathFigure x:Name="OutlineFigurePart">
+                                                <PathFigure.Segments>
+                                                    <PathSegmentCollection>
+                                                        <ArcSegment x:Name="OutlineArcPart" IsLargeArc="True" SweepDirection="Clockwise"/>
+                                                    </PathSegmentCollection>
+                                                </PathFigure.Segments>
+                                            </PathFigure>
+                                        </PathFigureCollection>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <!-- Progress Bar -->
+                        <Path Fill="Transparent" Stroke="{TemplateBinding Foreground}" StrokeThickness="{TemplateBinding Thickness}" StrokeDashCap="Flat">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigureCollection>
+                                            <PathFigure x:Name="BarFigurePart">
+                                                <PathFigure.Segments>
+                                                    <PathSegmentCollection>
+                                                        <ArcSegment x:Name="BarArcPart" IsLargeArc="False" SweepDirection="Clockwise" />
+                                                    </PathSegmentCollection>
+                                                </PathFigure.Segments>
+                                            </PathFigure>
+                                        </PathFigureCollection>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
 
 

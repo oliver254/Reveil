@@ -1,10 +1,14 @@
+ï»¿using System;
+
 using CommonServiceLocator;
+
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+
 using NLog;
+
 using Reveil.Configuration;
-using System;
 
 namespace Reveil.ViewModels
 {
@@ -41,11 +45,11 @@ namespace Reveil.ViewModels
         }
         #endregion
 
-        #region Propriétés
+        #region PropriÃ©tÃ©s
         public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
 
         /// <summary>
-        /// Obtient ou définit la durée.
+        /// Obtient ou dï¿½finit la durï¿½e.
         /// </summary>
         public TimeSpan? Duration
         {
@@ -70,7 +74,7 @@ namespace Reveil.ViewModels
         }
 
         /// <summary>
-        /// Retourne ou définit le chemin de la sonnerie
+        /// Retourne ou dï¿½finit le chemin de la sonnerie
         /// </summary>
         public string RingPath
         {
@@ -107,9 +111,9 @@ namespace Reveil.ViewModels
         public MainWindow View => _view;
         #endregion
 
-        #region Méthodes
+        #region MÃ©thodes
         /// <summary>
-        /// Initialise le modèle de vue avec la vue spécifiée.
+        /// Initialise le modÃ¨le de vue avec la vue spÃ©cifiÃ©e.
         /// </summary>
         /// <param name="view"></param>
         public void Initialize(MainWindow view)
@@ -127,7 +131,7 @@ namespace Reveil.ViewModels
         }
 
         /// <summary>
-        /// Exécute la commande.
+        /// Exï¿½cute la commande.
         /// </summary>
         /// <param name="duration"></param>
         private void ExecuteCommand(int duration)

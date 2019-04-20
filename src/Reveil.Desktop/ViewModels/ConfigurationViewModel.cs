@@ -1,9 +1,13 @@
-﻿using CommonServiceLocator;
+﻿using System;
+
+using CommonServiceLocator;
+
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+
 using NLog;
+
 using Reveil.Configuration;
-using System;
 
 namespace Reveil.ViewModels
 {

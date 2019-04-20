@@ -3,81 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Reveil.Controls"
              mc:Ignorable="d" 
              x:Name="reveilClock"
-             d:DesignHeight="300" 
-             d:DesignWidth="300" 
+             d:DesignHeight="200" 
+             d:DesignWidth="200" 
              Loaded="Clock_Loaded">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Ellipse x:Name="centerEllipse"
-                 Fill="{DynamicResource HoverBrush}" 
-                 Height="230" 
-                 HorizontalAlignment="Center"
-                 Width="230" />
-        <Ellipse x:Name="centerEllipse1" 
-                 Fill="{DynamicResource ControlBackgroundBrush}" 
-                 Height="110" 
-                 HorizontalAlignment="Center"
-                 Width="110" />
-        <!-- secondes -->
-        <Path x:Name="pathSeconds" 
-                HorizontalAlignment="Center" 
-                Stroke="{Binding SecondColor, ElementName=reveilClock}"
-                StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
-                VerticalAlignment="Stretch">
-            <Path.Data>
-                <PathGeometry>
-                    <PathGeometry.Figures>
-                        <PathFigureCollection>
-                            <PathFigure x:Name="pfSeconds">
-                                <PathFigure.Segments>
-                                    <PathSegmentCollection>
-                                        <ArcSegment x:Name="arcSeconds" 
-                                                    SweepDirection="Clockwise" />
-                                    </PathSegmentCollection>
-                                </PathFigure.Segments>
-                            </PathFigure>
-                        </PathFigureCollection>
-                    </PathGeometry.Figures>
-                </PathGeometry>
-            </Path.Data>
-        </Path>
-        <!-- minutes -->
-        <Path x:Name="pathMinutes" 
-                HorizontalAlignment="Center" 
-                Stroke="{Binding MinuteColor, ElementName=reveilClock}"
-                StrokeThickness="{Binding StrokeThickness, ElementName=reveilClock}"
-                VerticalAlignment="Stretch">
-            <Path.Data>
-                <PathGeometry>
-                    <PathGeometry.Figures>
-                        <PathFigureCollection>
-                            <PathFigure x:Name="pfMinutes">
-                                <PathFigure.Segments>
-                                    <PathSegmentCollection>
-                                        <ArcSegment x:Name="arcMinutes" 
-                                                    SweepDirection="Clockwise" />
-                                    </PathSegmentCollection>
-                                </PathFigure.Segments>
-                            </PathFigure>
-                        </PathFigureCollection>
-                    </PathGeometry.Figures>
-                </PathGeometry>
-            </Path.Data>
-        </Path>
-        <!-- horloge texte -->
-        <TextBlock x:Name="TimeTextBlock"
-            Grid.Row="1" 
-            HorizontalAlignment="Center"
-            FontSize="52" 
-            FontWeight="Light"/>
-        <MediaElement x:Name="alarmMediaElement"
-                      Grid.Row="1"
-                      LoadedBehavior="Manual" 
-                      Volume="1"/>
+        <controls:CircularTimeBar x:Name="secondTimeBar"
+                                  Foreground="Red"
+                                  Height="150" 
+                                  Maximum="60" 
+                                  Thickness="10"
+                                  Value="50"
+                                  Width="150"/>
+        <controls:CircularTimeBar x:Name="minuteTimeBar" Foreground="Orange"
+                                  Height="132" 
+                                  Maximum="60"
+                                  Thickness="10"
+                                  Value="30"                                  
+                                  Width="132"/>
+        <TextBlock x:Name="timeTimeBlock"
+                   Grid.Row="1"
+                   Text="{Binding ElementName=reveilClock, Path=Time, Mode=OneWay}"/>
     </Grid>
 </UserControl>

@@ -1,6 +1,8 @@
-﻿using NLog;
+﻿using System.Configuration;
+
+using NLog;
+
 using Reveil.Properties;
-using System.Configuration;
 
 namespace Reveil.Configuration
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -216,7 +217,7 @@ namespace Reveil.Uwp.Controls
             if (clock.GetTemplateChild(MinuteTrailPartName) is Path trailPath)
             {
                 trailPath.Stroke = clock.MinuteTrailBrush;
-                trailPath.StrokeThickness = clock.StrokeThickness / 2;
+                trailPath.StrokeThickness = (double)(clock.StrokeThickness / 2);
 
                 int size = (int)(trailPath.StrokeThickness / 2);
 

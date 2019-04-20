@@ -1,5 +1,7 @@
-using CommonServiceLocator;
+ï»¿using CommonServiceLocator;
+
 using GalaSoft.MvvmLight.Ioc;
+
 using Reveil.Configuration;
 
 namespace Reveil.ViewModels
@@ -29,24 +31,24 @@ namespace Reveil.ViewModels
         }
         #endregion
 
-        #region Propriétés
+        #region Propriï¿½tï¿½s
         /// <summary>
         /// Obtient le localisateur actuel.
         /// </summary>
         public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
 
         /// <summary>
-        /// Obtient le modèle de la vue Configuration
+        /// Obtient le modï¿½le de la vue Configuration
         /// </summary>
         public ConfigurationViewModel Configuration => ServiceLocator.Current.GetInstance<ConfigurationViewModel>();
 
         /// <summary>
-        /// Obtient le modèle de la vue principale
+        /// Obtient le modï¿½le de la vue principale
         /// </summary>
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         #endregion
 
-        #region Méthodes
+        #region Mï¿½thodes
         public static void Cleanup()
         {
             SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();

@@ -117,6 +117,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\FilePicker.cs" />
+    <Compile Include="Controls\CircularTimeBar.cs" />
     <Compile Include="Controls\ReveilClock.xaml.cs">
       <DependentUpon>ReveilClock.xaml</DependentUpon>
     </Compile>

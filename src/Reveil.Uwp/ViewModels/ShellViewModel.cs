@@ -1,16 +1,20 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Reveil.Uwp.Helpers;
-using Reveil.Uwp.Services;
-using Reveil.Uwp.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+
+using Reveil.Uwp.Helpers;
+using Reveil.Uwp.Services;
+using Reveil.Uwp.Views;
+
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+
 using WinUI = Microsoft.UI.Xaml.Controls;
 
 namespace Reveil.Uwp.ViewModels

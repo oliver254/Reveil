@@ -1,6 +1,7 @@
-﻿using Reveil.ViewModels;
+﻿using System.Windows;
+
+using Reveil.ViewModels;
 using Reveil.Views;
-using System.Windows;
 
 namespace Reveil
 {

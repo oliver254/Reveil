@@ -1,9 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Win32;
-using Reveil.Messages;
-using Reveil.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+
+using Microsoft.Win32;
+
+using Reveil.Messages;
+using Reveil.ViewModels;
 
 namespace Reveil.Views
 {

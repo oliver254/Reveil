@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Reveil.Controls"
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
-        Height="390"
+        Height="250"
         Icon="Reveil.ico"
         ShowInTaskbar="False"
         Title="Reveil"
         Topmost="True"
-        Width="300"
+        Width="200"
         WindowStyle="ToolWindow">
     <Window.CacheMode>
         <BitmapCache />
@@ -46,7 +46,6 @@
         <controls:ReveilClock HorizontalAlignment="Stretch"
                               Duration="{Binding Path=Duration,Mode=TwoWay}"
                               RingPath="{Binding RingPath}"
-                              StrokeThickness="30"
                               VerticalAlignment="Stretch" />
         <!-- buttons -->
         <Grid x:Name="ButtonGrid"
