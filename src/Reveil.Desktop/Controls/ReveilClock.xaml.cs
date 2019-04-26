@@ -152,6 +152,7 @@ namespace Reveil.Controls
         private void SetDuration(DateTime? duration)
         {
             _timer.Stop();
+            alarmMediaElement.Stop();
             _end = duration;
             State = (duration != null) ? ReveilState.Timer : ReveilState.Clock;
             _timer.Start();
@@ -205,6 +206,7 @@ namespace Reveil.Controls
             secondTimeBar.Value = time.Second;
             minuteTimeBar.Value = time.Minute;
             Time = time.ToString(TimeFormat);
+ 
         }
         #endregion
     }

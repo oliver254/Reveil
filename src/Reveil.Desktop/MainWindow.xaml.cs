@@ -25,7 +25,6 @@ namespace Reveil
             ViewModel.Initialize(this);
             reveil.StateChanged += Reveil_StateChanged;
             reveil.Show();          
-            Messenger.Default.Register<TransparentMessage>(this, HandleTransparentMessage);
         }
         #endregion
 
@@ -52,24 +51,7 @@ namespace Reveil
             Activated -= Window_Activated;
             Deactivated -= Window_Deactivated;
         }
-
-        private void HandleTransparentMessage(TransparentMessage message)
-        {
-            if (message == null)
-            {
-                return;
-            }
-
-            if (message.Transparent)
-            {
-                ActivateTransparency();
-            }
-            else
-            {
-                DeactiveTransparency();
-            }
-            Activate();
-        }        
+      
         private void MenuItemConfiguration_Click(object sender, RoutedEventArgs e)
         {
             ConfigurationView configDlg;
