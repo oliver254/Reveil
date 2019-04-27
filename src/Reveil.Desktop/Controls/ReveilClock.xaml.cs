@@ -143,7 +143,8 @@ namespace Reveil.Controls
         private void Play()
         {
             State = ReveilState.Alarm;
-            alarmMediaElement.Play();
+            alarmMediaElement.Position = TimeSpan.MinValue;
+            alarmMediaElement.Play();           
         }
         /// <summary>
         /// Sets the duration.

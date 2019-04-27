@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using CommonServiceLocator;
 
 using GalaSoft.MvvmLight;
@@ -130,7 +131,6 @@ namespace Reveil.ViewModels
             _view = view;
 
             OnTransparencyChange(Configuration.Transparent);
-            OnBorderChange(Configuration.Border);
             _logger.Debug("Main ViewModel is initialized.");
         }
 
@@ -172,10 +172,6 @@ namespace Reveil.ViewModels
                 OnRingPathChange();
 
             }
-            else if(e.PropertyName == nameof(ConfigurationViewModel.Border))
-            {
-                OnBorderChange(sender.Border);
-            }
             else if(e.PropertyName == nameof(ConfigurationViewModel.Transparent))
             {
                 OnTransparencyChange(sender.Transparent);
@@ -185,18 +181,6 @@ namespace Reveil.ViewModels
         private void OnRingPathChange()
         {
             RaisePropertyChanged(nameof(RingPath));
-        }
-
-        private void OnBorderChange(bool border)
-        {
-            if(border)
-            {
-                _view.WindowStyle = WindowStyle.ToolWindow;
-            }
-            else
-            {
-                _view.WindowStyle = WindowStyle.None;
-            }
         }
 
         private void OnTransparencyChange(bool transparent)

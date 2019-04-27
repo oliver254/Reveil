@@ -24,21 +24,6 @@ namespace Reveil.Configuration
 
         #region Propriétés
         /// <summary>
-        /// Obtient ou définit si la fenêtre possède des bordures.
-        /// </summary>
-        public bool Border
-        {
-            get
-            {
-                return Settings.Default.Border;
-            }
-            set
-            {
-                Settings.Default.Border = value;
-                Save();
-            }
-        }
-        /// <summary>
         /// Obtient la durée d'une longue pause.
         /// </summary>
         public int LongBreak

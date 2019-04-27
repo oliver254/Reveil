@@ -31,24 +31,24 @@ namespace Reveil.ViewModels
         }
         #endregion
 
-        #region Propri�t�s
+        #region Propriétés
         /// <summary>
         /// Obtient le localisateur actuel.
         /// </summary>
         public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
 
         /// <summary>
-        /// Obtient le mod�le de la vue Configuration
+        /// Obtient le modèle de la vue Configuration
         /// </summary>
         public ConfigurationViewModel Configuration => ServiceLocator.Current.GetInstance<ConfigurationViewModel>();
 
         /// <summary>
-        /// Obtient le mod�le de la vue principale
+        /// Obtient le modèle de la vue principale
         /// </summary>
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         #endregion
 
-        #region M�thodes
+        #region Méthodes
         public static void Cleanup()
         {
             SimpleIoc.Default.GetInstance<MainViewModel>().Cleanup();

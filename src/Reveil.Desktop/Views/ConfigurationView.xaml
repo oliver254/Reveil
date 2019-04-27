@@ -100,11 +100,6 @@
                   Grid.Column="1"
                   Grid.Row="10"
                   IsChecked="{Binding Transparent}"/>
-        <!-- Bordure -->
-        <TextBlock Grid.Row="11"
-                   Text="Bordure:"/>
-        <CheckBox Grid.Column="1"
-                  Grid.Row="12"
-                  IsChecked="{Binding Border}"/>
+
     </Grid>
 </Window>

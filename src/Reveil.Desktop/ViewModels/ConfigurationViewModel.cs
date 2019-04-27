@@ -37,23 +37,6 @@ namespace Reveil.ViewModels
             private set;
         }
 
-        /// <summary>
-        /// Obtient ou définit si la fenêtre doit avoir des bordures.
-        /// </summary>
-        public bool Border
-        {
-            get
-            {
-                return Configuration.Border;
-            }
-            set
-            {
-                var border = value;
-                Configuration.Border = border;
-                RaisePropertyChanged(nameof(Border));
-            }
-        }
-
         public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
         /// <summary>
         /// Obtient ou définit la durée d'une longue durée.
@@ -193,7 +176,6 @@ namespace Reveil.ViewModels
                 ShortBreak = ConfigurationStore.DefaultShortBreak;
                 Sprint = ConfigurationStore.DefaultSprint;
                 RingPath = ConfigurationStore.DefaultRingPath;
-                Border = false;
                 _logger.Info("Reset is activated.");
             }
             catch (Exception ex)
