@@ -1,14 +1,11 @@
-﻿using System;
-
-using CommonServiceLocator;
-
+﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using NLog;
-
 using Reveil.Configuration;
 using Reveil.Messages;
+using System;
 
 namespace Reveil.ViewModels
 {
@@ -27,7 +24,6 @@ namespace Reveil.ViewModels
             // les commandes
             ActivateCommand = new RelayCommand(ExecuteActivateCommand);
             ResetCommand = new RelayCommand(ExecuteResetCommand);
-            TransparentCommand = new RelayCommand(() => ExecuteTransparentCommand());
         }
         #endregion
 
@@ -40,6 +36,7 @@ namespace Reveil.ViewModels
             get;
             private set;
         }
+
         public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
         /// <summary>
         /// Obtient ou définit la durée d'une longue durée.
@@ -79,7 +76,6 @@ namespace Reveil.ViewModels
             {
                 Configuration.RingPath = value;
                 RaisePropertyChanged(nameof(RingPath));
-                Messenger.Default.Send<RingMessage>(new RingMessage());
             }
         }
 
@@ -125,6 +121,10 @@ namespace Reveil.ViewModels
                 RaisePropertyChanged(nameof(Sprint));
             }
         }
+
+        /// <summary>
+        /// Obtient ou définit le mode transparent est actif.
+        /// </summary>
         public bool Transparent
         {
             get
@@ -137,14 +137,6 @@ namespace Reveil.ViewModels
                 RaisePropertyChanged(nameof(Transparent));
             }
         }
-        /// <summary>
-        /// Obtient la commande Transparent
-        /// </summary>
-        public RelayCommand TransparentCommand
-        {
-            get;
-            private set;
-        }
         #endregion
 
         #region Méthodes
@@ -153,7 +145,6 @@ namespace Reveil.ViewModels
         /// </summary>
         private void ExecuteActivateCommand()
         {
-
             _logger.Debug("Executing activate command...");
             try
             {
@@ -187,19 +178,11 @@ namespace Reveil.ViewModels
                 RingPath = ConfigurationStore.DefaultRingPath;
                 _logger.Info("Reset is activated.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex);
                 throw;
             }
-        }
-        /// <summary>
-        /// Execute la commande Transparent
-        /// </summary>
-        private void ExecuteTransparentCommand()
-        {
-            _logger.Debug("Executing transparent command...");
-            Messenger.Default.Send<TransparentMessage>(new TransparentMessage(Transparent));
         }
         #endregion
     }

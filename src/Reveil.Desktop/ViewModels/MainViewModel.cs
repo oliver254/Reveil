@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Windows;
+using System.Windows.Media;
 using CommonServiceLocator;
 
 using GalaSoft.MvvmLight;
@@ -30,14 +31,19 @@ namespace Reveil.ViewModels
         #region Champs
         public const string RingPathPropertyName = "RingPath";
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ConfigurationViewModel _configViewModel;
         private DateTime? _duration;
         private MainWindow _view;
         #endregion
 
         #region Constructeurs
-        public MainViewModel()
+        public MainViewModel(ConfigurationViewModel configViewModel)
         {
             _logger.Debug("Buidling Main ViewMode...");
+            _configViewModel = configViewModel;
+            _configViewModel.PropertyChanged += ConfigViewModel_PropertyChanged;
+
+
             //les commandes
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.ShortBreak));
@@ -45,7 +51,6 @@ namespace Reveil.ViewModels
             StopCommand = new RelayCommand(ExecuteStopCommand);
 
             Messenger.Default.Register<AlarmMessage>(this, HandleAlarmMessage);
-            Messenger.Default.Register<RingMessage>(this, HandleRingMessage);
         }
         #endregion
 
@@ -125,12 +130,7 @@ namespace Reveil.ViewModels
             _logger.Debug("Initializing...");
             _view = view;
 
-            if(Configuration.Transparent)
-            {
-                _view.WindowStyle = System.Windows.WindowStyle.None;
-                _view.AllowsTransparency = true;
-                _view.ActivateTransparency();
-            }
+            OnTransparencyChange(Configuration.Transparent);
             _logger.Debug("Main ViewModel is initialized.");
         }
 
@@ -164,14 +164,35 @@ namespace Reveil.ViewModels
             Duration = message.Alarm;
         }
 
-        private void HandleRingMessage(RingMessage message)
+        private void ConfigViewModel_PropertyChanged(object d, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(message == null)
+            var sender = d as ConfigurationViewModel;
+            if (e.PropertyName == nameof(ConfigurationViewModel.RingPath))
             {
-                _logger.Warn("Ring path message is empty.");
-                return;
+                OnRingPathChange();
+
             }
+            else if(e.PropertyName == nameof(ConfigurationViewModel.Transparent))
+            {
+                OnTransparencyChange(sender.Transparent);
+            }
+        }
+
+        private void OnRingPathChange()
+        {
             RaisePropertyChanged(nameof(RingPath));
+        }
+
+        private void OnTransparencyChange(bool transparent)
+        {
+            if(transparent)
+            {
+                _view.ActivateTransparency();
+            }
+            else
+            {
+                _view.DeactiveTransparency();
+            }
         }
         #endregion
     }

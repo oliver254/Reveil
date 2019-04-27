@@ -126,8 +126,6 @@
     <Compile Include="Core\MathUtil.cs" />
     <Compile Include="Messages\AlarmMessage.cs" />
     <Compile Include="Configuration\ConfigurationStore.cs" />
-    <Compile Include="Messages\RingMessage.cs" />
-    <Compile Include="Messages\TransparentMessage.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

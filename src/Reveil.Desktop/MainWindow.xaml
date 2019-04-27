@@ -2,14 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Reveil.Controls"
+        AllowsTransparency="True"
         Background="{StaticResource ResourceKey=ControlBackgroundBrush}"
-        Height="210"
+        Height="220"
         Icon="Reveil.ico"
+        ResizeMode="NoResize"
         ShowInTaskbar="False"
         Title="Reveil"
         Topmost="True"
         Width="190"
-        WindowStyle="ToolWindow">
+        WindowStyle="None">
     <Window.CacheMode>
         <BitmapCache />
     </Window.CacheMode>
