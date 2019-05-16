@@ -1,4 +1,5 @@
 # Reveil
+[![Build status](https://oliver254.visualstudio.com/Reveil/_apis/build/status/Reveil.CI)](https://oliver254.visualstudio.com/Reveil/_build/latest?definitionId=16)
 Reveil is a desktop alarm clock and pomodoro clock. The infrastructure is written in C# using UWP. The Application is an **unofficial application of the Pomodoro Technique®**. 
 
 <p>
