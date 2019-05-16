@@ -151,8 +151,7 @@ namespace Reveil.ViewModels
                 var alarmDate = DateTime.Today.Add(SelectedTime);
                 if (alarmDate < DateTime.Now)
                 {
-                    _logger.Warn("Unable to activate an earlier alarm");
-                    return;
+                    alarmDate = alarmDate.AddDays(1d);
                 }
 
                 Messenger.Default.Send<AlarmMessage>(new AlarmMessage(alarmDate));
