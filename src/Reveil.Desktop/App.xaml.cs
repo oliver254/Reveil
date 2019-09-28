@@ -8,7 +8,7 @@ using System.Windows;
 
 using NLog;
 
-namespace Reveil
+namespace Reveil.Desktop
 {
     /// <summary>
     /// Logique d'interaction pour App.xaml

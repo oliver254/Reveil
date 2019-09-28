@@ -17,10 +17,10 @@ using GalaSoft.MvvmLight.Messaging;
 
 using Microsoft.Win32;
 
-using Reveil.Messages;
-using Reveil.ViewModels;
+using Reveil.Desktop.Messages;
+using Reveil.Desktop.ViewModels;
 
-namespace Reveil.Views
+namespace Reveil.Desktop.Views
 {
     /// <summary>
     /// Logique d'interaction pour ConfigurationView.xaml

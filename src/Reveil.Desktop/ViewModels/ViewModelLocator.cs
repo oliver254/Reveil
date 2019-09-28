@@ -1,9 +1,9 @@
 ﻿
 using GalaSoft.MvvmLight.Ioc;
 
-using Reveil.Configuration;
+using Reveil.Desktop.Configuration;
 
-namespace Reveil.ViewModels
+namespace Reveil.Desktop.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the

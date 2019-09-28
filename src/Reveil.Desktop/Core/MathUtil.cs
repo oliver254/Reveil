@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reveil.Core
+namespace Reveil.Desktop.Core
 {
     /// <summary>
     /// Helper class that contains methods that execute mathematical operations

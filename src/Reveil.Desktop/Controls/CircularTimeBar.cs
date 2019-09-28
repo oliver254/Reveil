@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Reveil.Controls
+namespace Reveil.Desktop.Controls
 {
     /// <summary>
     /// An alternative impementation of a progress bar.

@@ -10,10 +10,10 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight.Messaging;
 
 using NLog;
-using Reveil.Core;
-using Reveil.Messages;
+using Reveil.Desktop.Core;
+using Reveil.Desktop.Messages;
 
-namespace Reveil.Controls
+namespace Reveil.Desktop.Controls
 {
     /// <summary>
     /// Logique d'interaction pour ReveilClock.xaml

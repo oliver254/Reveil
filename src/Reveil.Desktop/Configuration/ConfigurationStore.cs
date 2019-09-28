@@ -2,9 +2,9 @@
 
 using NLog;
 
-using Reveil.Properties;
+using Reveil.Desktop.Properties;
 
-namespace Reveil.Configuration
+namespace Reveil.Desktop.Configuration
 {
     public class ConfigurationStore
     {

@@ -3,11 +3,11 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using NLog;
-using Reveil.Configuration;
-using Reveil.Messages;
+using Reveil.Desktop.Configuration;
+using Reveil.Desktop.Messages;
 using System;
 
-namespace Reveil.ViewModels
+namespace Reveil.Desktop.ViewModels
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

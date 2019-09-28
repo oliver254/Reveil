@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 using Microsoft.Win32;
 
-namespace Reveil.Controls
+namespace Reveil.Desktop.Controls
 {
     [TemplatePart(Name = FilePathPart, Type = typeof(TextBox)),
     TemplatePart(Name = OpenPart, Type = typeof(Button))]

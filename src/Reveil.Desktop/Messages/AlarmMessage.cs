@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reveil.Messages
+namespace Reveil.Desktop.Messages
 {
     public class AlarmMessage
     {

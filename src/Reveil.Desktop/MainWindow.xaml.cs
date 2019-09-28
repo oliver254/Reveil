@@ -1,11 +1,9 @@
 ﻿using System.Windows;
-using GalaSoft.MvvmLight.Messaging;
-using Reveil.Core;
-using Reveil.Messages;
-using Reveil.ViewModels;
-using Reveil.Views;
+using Reveil.Desktop.Core;
+using Reveil.Desktop.ViewModels;
+using Reveil.Desktop.Views;
 
-namespace Reveil
+namespace Reveil.Desktop
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
