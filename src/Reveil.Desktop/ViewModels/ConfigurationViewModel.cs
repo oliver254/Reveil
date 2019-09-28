@@ -1,6 +1,6 @@
-﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using NLog;
 using Reveil.Configuration;
@@ -37,7 +37,7 @@ namespace Reveil.ViewModels
             private set;
         }
 
-        public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
+        public ConfigurationStore Configuration => SimpleIoc.Default.GetInstance<ConfigurationStore>();
         /// <summary>
         /// Obtient ou définit la durée d'une longue durée.
         /// </summary>

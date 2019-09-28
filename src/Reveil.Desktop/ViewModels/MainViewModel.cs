@@ -1,16 +1,11 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media;
-using CommonServiceLocator;
-
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using NLog;
-
 using Reveil.Configuration;
 using Reveil.Messages;
+using System;
 
 namespace Reveil.ViewModels
 {
@@ -43,7 +38,6 @@ namespace Reveil.ViewModels
             _configViewModel = configViewModel;
             _configViewModel.PropertyChanged += ConfigViewModel_PropertyChanged;
 
-
             //les commandes
             LongBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.LongBreak));
             ShortBreakCommand = new RelayCommand(() => ExecuteCommand(Configuration.ShortBreak));
@@ -55,7 +49,7 @@ namespace Reveil.ViewModels
         #endregion
 
         #region Propriétés
-        public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
+        public ConfigurationStore Configuration => SimpleIoc.Default.GetInstance<ConfigurationStore>();
 
         /// <summary>
         /// Obtient ou définit la durée.
@@ -144,7 +138,6 @@ namespace Reveil.ViewModels
             Duration = DateTime.Now.AddMinutes(duration++);
         }
 
-
         /// <summary>
         /// Execute la commande Stop.
         /// </summary>
@@ -156,7 +149,7 @@ namespace Reveil.ViewModels
 
         private void HandleAlarmMessage(AlarmMessage message)
         {
-            if(message == null)
+            if (message == null)
             {
                 _logger.Warn("Alarm message is empty.");
                 return;
@@ -170,9 +163,8 @@ namespace Reveil.ViewModels
             if (e.PropertyName == nameof(ConfigurationViewModel.RingPath))
             {
                 OnRingPathChange();
-
             }
-            else if(e.PropertyName == nameof(ConfigurationViewModel.Transparent))
+            else if (e.PropertyName == nameof(ConfigurationViewModel.Transparent))
             {
                 OnTransparencyChange(sender.Transparent);
             }
@@ -185,7 +177,7 @@ namespace Reveil.ViewModels
 
         private void OnTransparencyChange(bool transparent)
         {
-            if(transparent)
+            if (transparent)
             {
                 _view.ActivateTransparency();
             }

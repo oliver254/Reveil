@@ -1,5 +1,4 @@
-﻿using CommonServiceLocator;
-
+﻿
 using GalaSoft.MvvmLight.Ioc;
 
 using Reveil.Configuration;
@@ -22,7 +21,6 @@ namespace Reveil.ViewModels
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             // services
             SimpleIoc.Default.Register<ConfigurationStore>();
@@ -40,12 +38,12 @@ namespace Reveil.ViewModels
         /// <summary>
         /// Obtient le modèle de la vue Configuration
         /// </summary>
-        public ConfigurationViewModel Configuration => ServiceLocator.Current.GetInstance<ConfigurationViewModel>();
+        public ConfigurationViewModel Configuration => SimpleIoc.Default.GetInstance<ConfigurationViewModel>();
 
         /// <summary>
         /// Obtient le modèle de la vue principale
         /// </summary>
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public MainViewModel Main => SimpleIoc.Default.GetInstance<MainViewModel>();
         #endregion
 
         #region Méthodes

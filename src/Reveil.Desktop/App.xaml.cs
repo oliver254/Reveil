@@ -6,8 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-using Forms = System.Windows.Forms;
-
 using NLog;
 
 namespace Reveil
@@ -19,7 +17,6 @@ namespace Reveil
     {
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
         private MainWindow _mainDlg;
-        private Forms.NotifyIcon _notifyIcon;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -33,11 +30,6 @@ namespace Reveil
                     value = SystemParameters.VirtualScreenWidth - _mainDlg.Width;
                 }
 
-                _notifyIcon = new Forms.NotifyIcon();
-                _notifyIcon.DoubleClick += (s, args) => ActivateWindow();
-                _notifyIcon.Icon = Reveil.Properties.Resources.Reveil;
-                _notifyIcon.Visible = true;
-
                 _mainDlg.Left = value;
                 _mainDlg.Top = 16;
                 _mainDlg.Show();
@@ -48,16 +40,10 @@ namespace Reveil
                 throw;
             }
         }      
-        private void ActivateWindow()
-        {
-            _logger.Debug("Activating window...");
-            _mainDlg.Activate();
-        }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            _notifyIcon.Visible = false;
-            _notifyIcon.Icon = null;
+
         }
     }
 }
