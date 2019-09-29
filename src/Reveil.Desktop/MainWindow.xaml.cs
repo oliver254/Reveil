@@ -74,7 +74,10 @@ namespace Reveil.Desktop
                 case ReveilState.Alarm:
                 case ReveilState.Play:
                     {
-                        // skip
+                        if(Topmost == false)
+                        {
+                            Topmost = true;
+                        }
                         break;
                     }
                 default:

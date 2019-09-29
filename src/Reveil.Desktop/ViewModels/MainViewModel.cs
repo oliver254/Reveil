@@ -126,18 +126,19 @@ namespace Reveil.Desktop.ViewModels
 
             OnTransparencyChange(Configuration.Transparent);
 
-            OnTopMostChange(Configuration.TopMost);
+            OnTopMostChange();
             _logger.Debug("Main ViewModel is initialized.");
         }
 
         /// <summary>
-        /// Ex�cute la commande.
+        /// Exécute la commande.
         /// </summary>
         /// <param name="duration"></param>
         private void ExecuteCommand(int duration)
         {
             _logger.Debug("Executing command...");
             Duration = DateTime.Now.AddMinutes(duration++);
+            OnTopMostChange();
         }
 
         /// <summary>
@@ -147,6 +148,7 @@ namespace Reveil.Desktop.ViewModels
         {
             _logger.Debug("Executing stop command...");
             Duration = null;
+            OnTopMostChange();
         }
 
         private void HandleAlarmMessage(AlarmMessage message)
@@ -172,7 +174,7 @@ namespace Reveil.Desktop.ViewModels
             }
             else if(e.PropertyName == nameof(ConfigurationViewModel.TopMost))
             {
-                OnTopMostChange(sender.TopMost);
+                OnTopMostChange();
             }
         }
 
@@ -193,9 +195,13 @@ namespace Reveil.Desktop.ViewModels
             }
         }
 
-        private void OnTopMostChange(bool topMost)
+        private void OnTopMostChange()
         {
-            _view.Topmost = topMost;
+            bool topMost = Configuration.TopMost;
+            if(_view.Topmost != topMost)
+            {
+                _view.Topmost = topMost;
+            }
         }
         #endregion
     }
