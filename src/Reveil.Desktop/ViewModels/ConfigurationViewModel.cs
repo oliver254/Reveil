@@ -123,6 +123,22 @@ namespace Reveil.Desktop.ViewModels
         }
 
         /// <summary>
+        /// Obtient ou définit si le plan est actif
+        /// </summary>
+        public bool TopMost
+        {
+            get
+            {
+                return Configuration.TopMost;
+            }
+            set
+            {
+                Configuration.TopMost = value;
+                RaisePropertyChanged(nameof(TopMost));
+            }
+        }
+
+        /// <summary>
         /// Obtient ou définit le mode transparent est actif.
         /// </summary>
         public bool Transparent

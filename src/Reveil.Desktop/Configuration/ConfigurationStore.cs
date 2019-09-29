@@ -84,6 +84,24 @@ namespace Reveil.Desktop.Configuration
                 Save();
             }
         }
+
+        /// <summary>
+        /// Détermine si le Premier plan est actif.
+        /// </summary>
+        public bool TopMost
+        {
+            get
+            {
+                return Settings.Default.TopMost;
+            }
+            set
+            {
+                Settings.Default.TopMost = value;
+                Save();
+            }
+        }
+
+
         /// <summary>
         /// Détermine si le mode transparent est actif.
         /// </summary>

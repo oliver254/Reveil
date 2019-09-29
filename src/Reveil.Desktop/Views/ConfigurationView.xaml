@@ -100,6 +100,13 @@
                   Grid.Column="1"
                   Grid.Row="10"
                   IsChecked="{Binding Transparent}"/>
+        <!-- Premier plan -->
+        <TextBlock Grid.Row="11"
+                   Text="Premier plan:"/>
+        <CheckBox Content="Premier plan"
+                  Grid.Column="1"
+                  Grid.Row="12"
+                  IsChecked="{Binding TopMost}"/>
 
     </Grid>
 </Window>

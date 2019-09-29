@@ -125,6 +125,8 @@ namespace Reveil.Desktop.ViewModels
             _view = view;
 
             OnTransparencyChange(Configuration.Transparent);
+
+            OnTopMostChange(Configuration.TopMost);
             _logger.Debug("Main ViewModel is initialized.");
         }
 
@@ -168,6 +170,10 @@ namespace Reveil.Desktop.ViewModels
             {
                 OnTransparencyChange(sender.Transparent);
             }
+            else if(e.PropertyName == nameof(ConfigurationViewModel.TopMost))
+            {
+                OnTopMostChange(sender.TopMost);
+            }
         }
 
         private void OnRingPathChange()
@@ -185,6 +191,11 @@ namespace Reveil.Desktop.ViewModels
             {
                 _view.DeactiveTransparency();
             }
+        }
+
+        private void OnTopMostChange(bool topMost)
+        {
+            _view.Topmost = topMost;
         }
         #endregion
     }
