@@ -38,6 +38,24 @@ namespace Reveil.ViewModels
         }
 
         public ConfigurationStore Configuration => ServiceLocator.Current.GetInstance<ConfigurationStore>();
+
+        /// <summary>
+        /// Obtient ou définit la position horizontale de la fenêtre 
+        /// </summary>
+        public double Left
+        {
+            get
+            {
+                return Configuration.Left;
+            }
+            set
+            {
+                Configuration.Left = value;
+                RaisePropertyChanged(nameof(Left));
+            }
+        }
+                
+
         /// <summary>
         /// Obtient ou définit la durée d'une longue durée.
         /// </summary>
@@ -78,6 +96,22 @@ namespace Reveil.ViewModels
                 RaisePropertyChanged(nameof(RingPath));
             }
         }
+
+
+        /// <summary>
+        /// Obtient ou définit la position verticale de la fenêtre
+        /// </summary>
+        public double Top
+        {
+            get { return Configuration.Top; }
+            set 
+            {
+                Configuration.Top = value;
+                RaisePropertyChanged(nameof(Top));
+            }
+        }
+
+
 
         public TimeSpan SelectedTime
         {

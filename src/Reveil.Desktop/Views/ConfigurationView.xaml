@@ -100,6 +100,20 @@
                   Grid.Column="1"
                   Grid.Row="10"
                   IsChecked="{Binding Transparent}"/>
-
+        <!-- Position-->
+        <TextBlock Grid.Row="11"
+                   Text="Transparence:"/>
+        <WrapPanel Grid.Column="1"
+                   Grid.Row="12" 
+                   Orientation="Horizontal">
+            <TextBlock Margin="0,0,5,0" 
+                       Text="Left:"/>
+            <TextBox Text="{Binding Left}" 
+                     Width="50"/>
+            <TextBlock  Margin="5,0"
+                        Text="Top:"/>
+            <TextBox Text="{Binding Top}" 
+                     Width="50"/>
+        </WrapPanel>
     </Grid>
 </Window>
