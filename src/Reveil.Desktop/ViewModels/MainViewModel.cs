@@ -128,10 +128,24 @@ namespace Reveil.ViewModels
         public void Initialize(MainWindow view)
         {
             _logger.Debug("Initializing...");
+            view.Left = Configuration.Left;
+            view.Top = Configuration.Top;
             _view = view;
+
 
             OnTransparencyChange(Configuration.Transparent);
             _logger.Debug("Main ViewModel is initialized.");
+        }
+
+        /// <summary>
+        /// Enregistre la position de la fenêtre
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        public void SavePosition(double left, double top)
+        {
+            Configuration.Left = left;
+            Configuration.Top = top;
         }
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System.Configuration;
-
-using NLog;
-
-using Reveil.Properties;
+﻿using Reveil.Properties;
 
 namespace Reveil.Configuration
 {
@@ -18,11 +14,27 @@ namespace Reveil.Configuration
         #region Constructeurs
         public ConfigurationStore()
         {
-            
         }
         #endregion
 
         #region Propriétés
+
+        /// <summary>
+        /// Obtients la position Left
+        /// </summary>
+        public double Left
+        {
+            get
+            {
+                return Settings.Default.Left;
+            }
+            set
+            {
+                Settings.Default.Left = value;
+                Save();
+            }
+        }
+
         /// <summary>
         /// Obtient la durée d'une longue pause.
         /// </summary>
@@ -54,6 +66,7 @@ namespace Reveil.Configuration
                 Save();
             }
         }
+
         /// <summary>
         /// Obtient ou définit la durée d'une courte pause.
         /// </summary>
@@ -69,6 +82,7 @@ namespace Reveil.Configuration
                 Save();
             }
         }
+
         /// <summary>
         /// Obtient ou définit la durée d'un sprint.
         /// </summary>
@@ -81,6 +95,19 @@ namespace Reveil.Configuration
             set
             {
                 Settings.Default.Sprint = value;
+                Save();
+            }
+        }
+
+        public double Top
+        {
+            get
+            {
+                return Settings.Default.Top;
+            }
+            set
+            {
+                Settings.Default.Top = value;
                 Save();
             }
         }

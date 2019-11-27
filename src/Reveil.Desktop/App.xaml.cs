@@ -27,19 +27,10 @@ namespace Reveil
             {
                 _mainDlg = new MainWindow();
 
-                var value = SystemParameters.VirtualScreenLeft;
-                if (value >= 0)
-                {
-                    value = SystemParameters.VirtualScreenWidth - _mainDlg.Width;
-                }
-
                 _notifyIcon = new Forms.NotifyIcon();
                 _notifyIcon.DoubleClick += (s, args) => ActivateWindow();
                 _notifyIcon.Icon = Reveil.Properties.Resources.Reveil;
                 _notifyIcon.Visible = true;
-
-                _mainDlg.Left = value;
-                _mainDlg.Top = 16;
                 _mainDlg.Show();
             }
             catch(Exception ex)
