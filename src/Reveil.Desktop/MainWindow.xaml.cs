@@ -1,9 +1,10 @@
-﻿using System.Windows;
-using GalaSoft.MvvmLight.Messaging;
-using Reveil.Core;
-using Reveil.Messages;
+﻿using Reveil.Core;
 using Reveil.ViewModels;
 using Reveil.Views;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Reveil
 {
@@ -15,7 +16,7 @@ namespace Reveil
         #region Champs
         private const double Opaque = 1d;
         private const double Transparency = 0.5d;
-        #endregion
+        #endregion Champs
 
         #region Constructeurs
         public MainWindow()
@@ -24,11 +25,12 @@ namespace Reveil
             DataContext = ViewModel;
             ViewModel.Initialize(this);
             reveil.StateChanged += Reveil_StateChanged;
-            reveil.Show();          
+            reveil.Show();
         }
         #endregion
 
-        #region Propriétés        
+        #region Propriétés
+
         public MainViewModel ViewModel
         {
             get
@@ -39,19 +41,30 @@ namespace Reveil
         #endregion
 
         #region Méthodes
+        public void ActivateMove()
+        {
+            MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
+
+
+        }
         public void ActivateTransparency()
         {
-            Activated += Window_Activated;
-            Deactivated += Window_Deactivated;
-            Opacity = Transparency;            
+            Activated += new EventHandler(Window_Activated);
+            Deactivated += new EventHandler(Window_Deactivated);
+            Opacity = Transparency;
+        }
+        public void DeactiveMove()
+        {
+            MouseLeftButtonDown -= new MouseButtonEventHandler(Window_MouseLeftButtonDown);
+            ViewModel.SavePosition(Left, Top);
         }
 
         public void DeactiveTransparency()
         {
-            Activated -= Window_Activated;
-            Deactivated -= Window_Deactivated;
+            Activated -= new EventHandler(Window_Activated);
+            Deactivated -= new EventHandler(Window_Deactivated);
         }
-      
+
         private void MenuItemConfiguration_Click(object sender, RoutedEventArgs e)
         {
             ConfigurationView configDlg;
@@ -61,9 +74,22 @@ namespace Reveil
             configDlg.ShowDialog();
         }
 
+        private void MenuItemMove_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+
+            if( menuItem.IsChecked)
+            {
+                ActivateMove();
+            }
+            else
+            {
+                DeactiveMove();
+            }
+        }
         private void Reveil_StateChanged(object sender, ReveilState state)
         {
-            switch(state)
+            switch (state)
             {
                 case ReveilState.Timer:
                     {
@@ -90,7 +116,7 @@ namespace Reveil
             }
         }
 
-        private void Window_Activated(object sender, System.EventArgs e)
+        private void Window_Activated(object sender, EventArgs e)
         {
             Opacity = Opaque;
         }
@@ -100,9 +126,14 @@ namespace Reveil
             Application.Current.Shutdown();
         }
 
-        private void Window_Deactivated(object sender, System.EventArgs e)
+        private void Window_Deactivated(object sender, EventArgs e)
         {
             Opacity = Transparency;
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
         #endregion
     }

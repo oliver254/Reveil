@@ -128,12 +128,56 @@ namespace Reveil.ViewModels
         public void Initialize(MainWindow view)
         {
             _logger.Debug("Initializing...");
+            view.Left = Configuration.Left;
+            view.Top = Configuration.Top;
             _view = view;
+
 
             OnTransparencyChange(Configuration.Transparent);
             _logger.Debug("Main ViewModel is initialized.");
         }
 
+        /// <summary>
+        /// Enregistre la position de la fenêtre.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        public void SavePosition(double left, double top)
+        {
+            Configuration.Left = left;
+            Configuration.Top = top;
+        }
+
+        /// <summary>
+        /// Met à jour la position de la fenêtre.
+        /// </summary>
+        public void UpdatePosition()
+        {
+            if(_view == null)
+            {
+                return;
+            }
+            _view.Left = Configuration.Left;
+            _view.Top = Configuration.Top;
+        }
+
+        private void ConfigViewModel_PropertyChanged(object d, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var sender = d as ConfigurationViewModel;
+            if (e.PropertyName == nameof(ConfigurationViewModel.RingPath))
+            {
+                OnRingPathChange();
+
+            }
+            else if (e.PropertyName == nameof(ConfigurationViewModel.Transparent))
+            {
+                OnTransparencyChange(sender.Transparent);
+            }
+            else if (e.PropertyName == nameof(ConfigurationViewModel.Left) || e.PropertyName == nameof(Configuration.Top))
+            {
+                UpdatePosition();
+            }
+        }
         /// <summary>
         /// Ex�cute la commande.
         /// </summary>
@@ -163,21 +207,6 @@ namespace Reveil.ViewModels
             }
             Duration = message.Alarm;
         }
-
-        private void ConfigViewModel_PropertyChanged(object d, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            var sender = d as ConfigurationViewModel;
-            if (e.PropertyName == nameof(ConfigurationViewModel.RingPath))
-            {
-                OnRingPathChange();
-
-            }
-            else if(e.PropertyName == nameof(ConfigurationViewModel.Transparent))
-            {
-                OnTransparencyChange(sender.Transparent);
-            }
-        }
-
         private void OnRingPathChange()
         {
             RaisePropertyChanged(nameof(RingPath));

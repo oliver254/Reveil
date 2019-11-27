@@ -28,6 +28,15 @@
                 </MenuItem.Header>
             </MenuItem>
             <Separator />
+            <MenuItem x:Name="MenuItemMove"
+                      Click="MenuItemMove_Click"
+                      IsCheckable="True">
+                <MenuItem.Header>
+                    <TextBlock Foreground="Black"
+                               Text="Déplacer" />
+                </MenuItem.Header>
+            </MenuItem>
+            <Separator />
 
             <MenuItem Click="Window_CloseClick">
                 <MenuItem.Header>
@@ -43,7 +52,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- horloge -->
-        <controls:ReveilClock x:Name="reveil" 
+        <controls:ReveilClock x:Name="reveil"
                               HorizontalAlignment="Stretch"
                               Duration="{Binding Path=Duration,Mode=TwoWay}"
                               RingPath="{Binding RingPath}"
@@ -52,24 +61,24 @@
         <StackPanel x:Name="ButtonGrid"
                     Grid.Row="1"
                     Orientation="Horizontal">
-            <Button x:Name="sprintButton" 
+            <Button x:Name="sprintButton"
                     Command="{Binding Path=SprintCommand}"
-                    Content="Sprint" 
-                    MinWidth="60"/>
+                    Content="Sprint"
+                    MinWidth="60" />
             <Button x:Name="shortBreakButton"
                     Command="{Binding Path=ShortBreakCommand}"
                     Content="Short break"
-                    MinWidth="60"/>
+                    MinWidth="60" />
             <Button x:Name="longBreakButton"
                     Command="{Binding Path=LongBreakCommand}"
                     Content="Long break"
-                    MinWidth="60"/>
+                    MinWidth="60" />
             <Button x:Name="stopButton"
                     Background="Red"
                     Command="{Binding Path=StopCommand}"
                     Content="Stop"
                     MinWidth="60"
-                    Visibility="Collapsed"/>
+                    Visibility="Collapsed" />
         </StackPanel>
     </Grid>
 </Window>
